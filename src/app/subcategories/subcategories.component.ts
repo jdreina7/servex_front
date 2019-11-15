@@ -103,7 +103,7 @@ export class SubcategoriesComponent implements OnInit {
   deleteSubcategory(subcategoria: Subcategory) {
       swal({
         title: 'Are you sure?',
-        text: 'This action will DELETED the category of the system and all its functions!',
+        text: 'This action will DELETED the subcategory of the system and all its functions!',
         type: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',

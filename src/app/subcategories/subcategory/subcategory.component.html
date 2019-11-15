@@ -1,7 +1,7 @@
 <div class="row text-left">
     <div class="col-12">
-      <div *ngIf="idCategory === 'new'" class="content-header">Create Category</div>
-      <div *ngIf="idCategory !== 'new'" class="content-header">Update Category</div>
+      <div *ngIf="idSubcategory === 'new'" class="content-header">Create Subcategory</div>
+      <div *ngIf="idSubcategory !== 'new'" class="content-header">Update Subcategory</div>
     </div>
   </div>
   
@@ -21,41 +21,33 @@
           </div>
         </div>
   
-        <div *ngIf="idCategory === 'new'" class="row">
+        <div *ngIf="idSubcategory === 'new'" class="row">
           <div class="col-md-6">
             <div *ngIf="!cargando" class="card">
               <div class="card-content">
                 <div class="card-body">
-                  <form ngNativeValidate #f="ngForm" (ngSubmit)="createCategory(f.value)" class="form">
+                  <form ngNativeValidate #f="ngForm" (ngSubmit)="createSubcategory(f.value)" class="form">
                     <div class="form-body">
                       <h4 class="form-section"><i class="ft-user"></i></h4>
                       <div class="row">
                         <div class="form-group col-md-12">
-                          <input type="text" [(ngModel)]="categoria.cat_name" minlength="3" class="form-control"
-                            placeholder="Name" name="cat_name" required>
+                          <input type="text" [(ngModel)]="subcategoria.subcat_name" minlength="3" class="form-control"
+                            placeholder="Name" name="subcat_name" required>
                         </div>
                         <div class="form-group col-md-12">
-                          <input type="text" [(ngModel)]="categoria.cat_description" minlength="3" class="form-control"
-                            placeholder="Description" name="cat_description" required>
+                          <input type="text" [(ngModel)]="subcategoria.subcat_description" minlength="3" class="form-control"
+                            placeholder="Description" name="subcat_description" required>
                         </div>
                       </div>
                       <hr>
-                      <div class="row">
+                        <div class="row">
                           <div class="form-group col-md-12">
-                              <div class="text-center"><h5>Habilitado para agregarle subcategorias?</h5>
-                                <br>
-                                  <ui-switch name="cat_support_subcategories" [(ngModel)]="categoria.cat_support_subcategories"></ui-switch>
-                                </div>
-                                <br>
-                                <p class="alert-danger alert-servex-danger"><b>ADVERTENCIA:</b> Una vez guardada la categoria, no podrá modificar este campo.</p>
-
-                                <!-- <ngb-alert _ngcontent-bbs-c7="" class="alert alert-danger" role="alert" type="danger"><strong _ngcontent-bbs-c7="">ADVERTENCIA</strong> Una vez guardada la categoria, no podrá modificar este campo.</ngb-alert>-->
                           </div>
                         </div>
                     </div>
   
                     <div class="custom-file  mx-auto d-block" style="display: none !important">
-                        <input (change)="selectImg( $event.target.files[0])"  name="cat_img" type="file" class="custom-file-input" id="inputGroupFile01" name="inputGroupFile01">
+                        <input (change)="selectImg( $event.target.files[0])"  name="subcat_img" type="file" class="custom-file-input" id="inputGroupFile01" name="inputGroupFile01">
                         <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
                     </div>
   
@@ -82,8 +74,8 @@
                         <div class="form-body">
                             <h4 class="form-section"><i class="ft-image"></i></h4>
                             <div class="form-group col-md-12">  
-                              <img *ngIf="!imgTemp" [src]="categoria.cat_img | image:'categories'" name="cat_img" class="max-100 img-border gradient-summer pointer" (click)="callUploadImg()">
-                              <img *ngIf="imgTemp" [src]="imgTemp" name="cat_img" class="max-100 img-border gradient-summer pointer"  (click)="callUploadImg()">
+                              <img *ngIf="!imgTemp" [src]="subcategoria.subcat_img | image:'categories'" name="subcat_img" class="max-100 img-border gradient-summer pointer" (click)="callUploadImg()">
+                              <img *ngIf="imgTemp" [src]="imgTemp" name="subcat_img" class="max-100 img-border gradient-summer pointer"  (click)="callUploadImg()">
                             </div>
                         </div>
                     </form>
@@ -94,37 +86,33 @@
           
         </div>
   
-        <div *ngIf="idCategory !== 'new'" class="row">
+        <div *ngIf="idSubcategory !== 'new'" class="row">
             <div class="col-md-6">
               <div *ngIf="!cargando" class="card">
                 <div class="card-content">
                   <div class="card-body">
-                    <form ngNativeValidate #f="ngForm" (ngSubmit)="updateCategory(f.value)" class="form">
+                    <form ngNativeValidate #f="ngForm" (ngSubmit)="updateSubcategory(f.value)" class="form">
                       <div class="form-body">
                         <h4 class="form-section"><i class="ft-user"></i></h4>
                         <div class="row">
                           <div class="form-group col-md-12">
-                            <input type="text" [(ngModel)]="categoria.cat_name" minlength="3" class="form-control"
-                              placeholder="Name" name="cat_name" required>
+                            <input type="text" [(ngModel)]="subcategoria.subcat_name" minlength="3" class="form-control"
+                              placeholder="Name" name="subcat_name" required>
                           </div>
                           <div class="form-group col-md-12">
-                            <input type="text" [(ngModel)]="categoria.cat_description" minlength="3" class="form-control"
-                              placeholder="Description" name="cat_description" required>
+                            <input type="text" [(ngModel)]="subcategoria.subcat_description" minlength="3" class="form-control"
+                              placeholder="Description" name="subcat_description" required>
                           </div>
                         </div>
                         <hr>
                       <div class="row">
                           <div class="form-group col-md-12">
-                            <div class="text-center"><h5>Habilitado para agregarle subcategorias?</h5>
-                              <br>
-                                <ui-switch name="cat_support_subcategories" [(ngModel)]="categoria.cat_support_subcategories" [disabled]="true"></ui-switch>
-                              </div>
                           </div>
                         </div>
                       </div>
     
                       <div class="custom-file  mx-auto d-block" style="display: none !important">
-                          <input (change)="selectImg( $event.target.files[0])"  name="cat_img" type="file" class="custom-file-input" id="inputGroupFile01" name="inputGroupFile01">
+                          <input (change)="selectImg( $event.target.files[0])"  name="subcat_img" type="file" class="custom-file-input" id="inputGroupFile01" name="inputGroupFile01">
                           <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
                       </div>
     
@@ -135,7 +123,7 @@
                         </a>
     
                         <button type="submit" class="btn servex_primary_btn3">
-                          <i class="fa fa-check-square-o"></i> Update Category
+                          <i class="fa fa-check-square-o"></i> Update Subcategory
                         </button>
                       </div>
                     </form>
@@ -152,10 +140,10 @@
                           <div class="form-body">
                               <h4 class="form-section"><i class="ft-image"></i></h4>
                               <div class="form-group col-md-12">
-                                <!-- <img [src]="categoria.cat_img | image:'users'" name="cat_img" class="max-100"> -->
+                                <!-- <img [src]="subcategoria.subcat_img | image:'users'" name="subcat_img" class="max-100"> -->
     
-                                <img *ngIf="!imgTemp" [src]="categoria.cat_img | image:'categories'" name="cat_img" class="max-100 img-border gradient-summer pointer" (click)="callUploadImg()">
-                                <img *ngIf="imgTemp" [src]="imgTemp" name="cat_img" class="max-100 img-border gradient-summer pointer"  (click)="callUploadImg()">
+                                <img *ngIf="!imgTemp" [src]="subcategoria.subcat_img | image:'categories'" name="subcat_img" class="max-100 img-border gradient-summer pointer" (click)="callUploadImg()">
+                                <img *ngIf="imgTemp" [src]="imgTemp" name="subcat_img" class="max-100 img-border gradient-summer pointer"  (click)="callUploadImg()">
                               </div>
                           </div>
                       </form>

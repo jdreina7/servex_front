@@ -31,7 +31,7 @@ export class SubcategoryComponent implements OnInit {
       this.idSubcategory = params['id'];
 
       if ( this.idSubcategory !== 'new') {
-        this.obtenerCategoria(this.idSubcategory);
+        this.obtenerSubcategoria(this.idSubcategory);
       }
 
     });
@@ -70,7 +70,7 @@ export class SubcategoryComponent implements OnInit {
                     });
   }
 
-  obtenerCategoria( id: string) {
+  obtenerSubcategoria( id: string) {
     this._subcategoryService.getSubcategory(id)
                         .subscribe(subcategoria => {
                           console.log(subcategoria);
