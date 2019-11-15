@@ -1,0 +1,233 @@
+/* You can add global styles to this file, and also import other style files */
+.width-30 {
+    width: 30px !important;
+    min-height: 30px !important;
+}
+
+.width-100 {
+    min-height: 100px !important;
+}
+
+.servexLogo {
+    width: 70%;
+}
+
+.miniLogo {
+    width: 100%;
+}
+
+.servexLogoLogin {
+    width: 80%;
+    display: block;
+    margin: 20px auto;
+}
+
+.servex_login_header h4 {
+    font-weight: 700;
+    margin: auto;
+}
+
+.btn.servex_primary_btn {
+    background-color: #0B0B61;
+    color: #fff;
+    border-color: #0B0B61;
+    width: 100%;
+}
+
+.btn.servex_primary_btn:hover {
+    background-color: #fff;
+    color: #0B0B61;
+    border-color: #0B0B61;
+    width: 100%;
+}
+.btn.servex_primary_btn2 {
+    background-color: #0B0B61;
+    color: #fff;
+    border-color: #0B0B61;
+    width: 30%;
+    display: block;
+    margin: auto;
+}
+
+.btn.servex_primary_btn2:hover {
+    background-color: #fff;
+    color: #0B0B61;
+    border-color: #0B0B61;
+    width: 30%;
+}
+
+.card-body.servex_nothing_toshow {
+    text-align: center;
+    color: #ccc;
+}
+
+.btn.btn-danger-servex {
+    background-color: rgb(163, 0, 14);
+    color: #fff;
+    border-color: rgb(163, 0, 14);
+    display: inline-block;
+    margin: auto;
+}
+
+.btn.btn-danger-servex:hover {
+    background-color: #FFF;
+    color: rgb(163, 0, 14);
+    border-color: rgb(163, 0, 14);
+    display: inline-block;
+    margin: auto;
+}
+
+.btn.servex_primary_btn3 {
+    background-color: #0B0B61;
+    color: #fff;
+    border-color: #0B0B61;
+    display: inline-block;
+    margin: auto;
+}
+
+.btn.servex_primary_btn3:hover {
+    background-color: #FFF;
+    color: #0B0B61;
+    border-color: #0B0B61;
+    display: inline-block;
+    margin: auto;
+}
+
+
+.btn.servex_primary_btn4 {
+    background-color: #0B0B61;
+    color: #fff;
+    border-color: #0B0B61;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+.btn.servex_primary_btn4:hover {
+    background-color: #FFF;
+    color: #0B0B61;
+    border-color: #0B0B61;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+.btn.btn-success-servex {
+    background-color: rgb(19, 172, 65);
+    color: #fff;
+    border-color: rgb(19, 172, 65);
+    display: inline-block;
+    margin: auto;
+}
+
+.btn.btn-success-servex:hover {
+    background-color: #FFF;
+    color: rgb(19, 172, 65);
+    border-color: rgb(19, 172, 65);
+    display: inline-block;
+    margin: auto;
+}
+
+.btn.btn-secundary-servex {
+    background-color:  rgb(0, 67, 190);
+    color: #fff;
+    border-color:  rgb(0, 67, 190);
+    display: inline-block;
+    margin: auto;
+}
+
+.btn.btn-secundary-servex:hover {
+    background-color: #FFF;
+    color: rgb(0, 67, 190);
+    border-color:  rgb(0, 67, 190);
+    display: inline-block;
+    margin: auto;
+}
+
+.btn.btn-outline-primary {
+    border: 1px solid;
+    border-color: #0B0B61;
+    background-color: transparent;
+    color: #0B0B61;
+    box-shadow: none !important;
+}
+
+.btn.btn-outline-primary.btn-raised:hover {
+    border: 1px solid;
+    border-color: #0B0B61;
+    background-color: #0B0B61 !important;
+    color: #FFFFFF;
+    box-shadow: none !important;
+}
+
+.mar-10 {
+    margin: auto 10px !important;
+}
+
+.ft_right {
+    float: right !important;
+}
+
+.width-50 {
+    min-height: 50px;
+}
+
+.servex_table_bordered  {
+    border: 2px solid #0B0B61;
+}
+
+.servex_table_header {
+    background-color: #0B0B61;
+    color: #FFF;
+}
+
+.middle-servex {
+    vertical-align: middle !important;
+}
+
+.max-100 {
+    max-width: 100% !important;
+}
+
+.pointer {
+    cursor: pointer !important;
+}
+
+.alert-servex-danger {
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.myLink {
+    color: #0B0B61;
+}
+
+.fa-beat {
+    animation:fa-beat 5s ease infinite;
+  }
+  @keyframes fa-beat {
+    0% {
+      transform:scale(1);
+    }
+    5% {
+      transform:scale(1.25);
+    }
+    20% {
+      transform:scale(1);
+    }
+    30% {
+      transform:scale(1);
+    }
+    35% {
+      transform:scale(1.25);
+    }
+    50% {
+      transform:scale(1);
+    }
+    55% {
+      transform:scale(1.25);
+    }
+    70% {
+      transform:scale(1);
+    }
+  }
+  

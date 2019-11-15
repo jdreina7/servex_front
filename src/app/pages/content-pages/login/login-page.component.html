@@ -1,0 +1,53 @@
+<!--Login Page Starts-->
+<section id="login">
+  <div class="container-fluid">
+    <div class="row full-height-vh m-0">
+      <div class="col-12 d-flex align-items-center justify-content-center">
+        <div class="card">
+            <div class="card-header servex_login_header">
+              <div class="row">
+                  <img class="servexLogoLogin" src="../../../../assets/img/servexLogo.png" alt="Servex">
+              </div>
+              <div class="row">
+                <h4>API Clients Manager</h4>
+              </div>
+            </div>
+          <div class="card-content">
+            <div class="card-body">
+                <div class="col-lg-12 col-md-12 bg-white px-4 pt-3">
+                  <form ngNativeValidate #f="ngForm" (ngSubmit)="login(f)" >
+                      <input
+                      ngModel
+                      name="email"
+                      type="text"
+                      class="form-control"
+                      placeholder="Email"
+                      required
+                    />
+                    <br>
+                    <input
+                      ngModel
+                      name="password"
+                      type="password"
+                      class="form-control"
+                      placeholder="Password"
+                      required
+                    />
+                    <br>
+                    <div class="fg-actions">
+                      <div class="recover-pass">
+                        <button class="btn servex_primary_btn">Login</button>
+                      </div>
+                      <br>
+                      <a [routerLink]="['/pages/forgotpassword']" class="text-decoration-none text-primary">Forgot Password ?</a>
+                    </div>
+                  </form>
+                  </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Login Page Ends-->

@@ -1,0 +1,149 @@
+<!--User Profile Starts-->
+<!--Basic User Details Starts-->
+<section id="user-profile">
+    <div class="row animate fadeIn">
+        <div class="col-12">
+            <div class="card profile-with-cover">
+                <div class="card-img-top img-fluid bg-cover height-300"
+                    style="background: url('assets/img/photos/14.jpg') 50%;"></div>
+                <div class="media profil-cover-details row">
+                    <div class="col-5">
+                        <div class="align-self-start halfway-fab pl-3 pt-2">
+                            <div class="text-left">
+                                <h3 class="card-title white">{{ usuario.usr_name }} {{ usuario.usr_last_name}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="align-self-center halfway-fab text-center">
+                            <a class="profile-image">
+                                <!-- <img [src]="usuario.usr_img | image"
+                                    class="rounded-circle img-border gradient-summer width-100" alt="Card image"> -->
+                                <img *ngIf="!imgTemp" [src]="usuario.usr_img | image:'users'" class="rounded-circle img-border gradient-summer width-100" alt="User image profile" (click)="callUploadImg()">
+                                <img *ngIf="imgTemp" [src]="imgTemp" class="rounded-circle img-border gradient-summer width-100" alt="User image profile" (click)="callUploadImg()">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-5">
+                    </div>
+                </div>
+                <div class="profile-cover-buttons">
+                    <div class="media-body halfway-fab align-self-end">
+                        <div class="text-right d-none d-sm-none d-md-none d-lg-block">
+                            <!-- <button type="button" class="btn btn-primary btn-raised mr-2"><i class="fa fa-plus"></i> Follow</button>
+                            <button type="button" class="btn btn-success btn-raised mr-3"><i class="fa fa-dashcube"></i> Message</button> -->
+                        </div>
+                        <div class="text-right d-block d-sm-block d-md-block d-lg-none">
+                            <button type="button" class="btn btn-primary btn-raised mr-2"><i
+                                    class="fa fa-plus"></i></button>
+                            <button type="button" class="btn btn-success btn-raised mr-3"><i
+                                    class="fa fa-dashcube"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-section">
+                    <div class="row">
+                        <div class="col-lg-5 col-md-5 ">
+                            <ul class="profile-menu no-list-style">
+                                <li>
+                                    <!-- <a (click)="showPage('About')" [ngClass]="currentPage === 'About' ? 'primary font-medium-2 font-weight-600 active' : 'primary font-medium-2 font-weight-600'">About</a> -->
+                                </li>
+                                <li>
+                                    <!-- <a (click)="showPage('TimeLine')" [ngClass]="currentPage === 'TimeLine' ? 'primary font-medium-2 font-weight-600 active' : 'primary font-medium-2 font-weight-600'">Timeline</a> -->
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-2 col-md-2 text-center">
+                            <span class="font-medium-2 text-uppercase">{{ usuario.usr_name }}
+                                {{ usuario.usr_last_name}}</span>
+                            <p class="grey font-small-2">{{ usuario.usr_role }}</p>
+                        </div>
+                        <div class="col-lg-5 col-md-5">
+                            <ul class="profile-menu no-list-style">
+                                <li>
+                                    <!-- <a (click)="showPage('Friends')" [ngClass]="currentPage === 'Friends' ? 'primary font-medium-2 font-weight-600 active' : 'primary font-medium-2 font-weight-600'">Friends</a> -->
+                                </li>
+                                <li>
+                                    <!-- <a (click)="showPage('Photos')" [ngClass]="currentPage === 'Photos' ? 'primary font-medium-2 font-weight-600 active' : 'primary font-medium-2 font-weight-600'">Photos</a> -->
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Basic User Details Ends-->
+
+<!--About section starts-->
+<section id="about" *ngIf="currentPage === 'About'">
+    <div class="row">
+        <div class="col-12">
+            <div class="content-header">General Information</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <!-- <h5>Personal Information</h5> -->
+                </div>
+                <div class="card-content">
+                    <div class="card-body">
+                        <!-- <hr> -->
+                        <form ngNativeValidate #f="ngForm" (ngSubmit)="guardarPerfil(f.value)">
+                                <div class="custom-file  mx-auto d-block" style="display: none !important">
+                                    <input (change)="selectImg( $event.target.files[0] )" [ngModel]="img" type="file" class="custom-file-input" id="inputGroupFile01" name="inputGroupFile01">
+                                    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                                </div>
+                            <div class="row">
+                                <div class="col-12 col-md-6 col-lg-4">
+                                    <ul class="no-list-style">
+                                        <li class="mb-2">
+                                            <span class="text-bold-500"><a><i
+                                                        class="icon-present font-small-3"></i> Name:</a></span>
+                                            <input type="text" [ngModel]="usuario.usr_name" class="form-control" name="usr_name" placeholder="Name" required>
+                                        </li>
+                                        <li class="mb-2">
+                                            <span class="text-bold-500"><a><i
+                                                        class="ft-map-pin font-small-3"></i> Lastname:</a></span>
+                                                        <input type="text" [ngModel]="usuario.usr_last_name" class="form-control" name="usr_last_name" placeholder="Lastname" required>
+                                        </li>
+                                        <li class="mb-2">
+                                            <span class="text-bold-500"><a><i class="ft-globe font-small-3"></i>
+                                                    Role</a></span>
+                                                    <input type="text" [ngModel]="usuario.usr_role" class="form-control" name="usr_role" placeholder="Role" required disabled>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-4">
+                                    <ul class="no-list-style">
+                                        <li class="mb-2">
+                                            <span class="text-bold-500"><a><i class="ft-mail font-small-3"></i>
+                                                    Email:</a></span>
+                                                    <input type="email" [ngModel]="usuario.usr_email" class="form-control" name="usr_email" placeholder="Email" required disabled>
+                                        </li>
+                                        <li class="mb-2"></li>
+                                    </ul>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-4">
+                                    <ul class="no-list-style">
+                                        <li class="mb-2"></li>
+                                        <li class="mb-2"></li>
+                                        <li class="mb-2"></li>
+                                    </ul>
+                                </div>
+                                <button [disabled]="!f.dirty" type="submit" class="btn servex_primary_btn2"><i
+                                    class="fa fa-save"></i> Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--About section ends-->
+
+<!--User Profile Starts-->

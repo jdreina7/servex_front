@@ -1,0 +1,93 @@
+
+<div class="row text-left">
+    <div class="col-12">
+      <div class="content-header">{{words['title1'] | translate }} ({{ totalRegistros }})</div>
+    </div>
+  </div>
+
+  <section>
+    <div class="row text-left">
+      <div class="col-sm-12">
+  
+          <div *ngIf="cargando" class="card">
+              <div class="card-header">
+              </div>
+              <div class="card-content">
+                <div class="card-body servex_nothing_toshow">
+                  <h2><div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div></h2>
+                </div>
+              </div>
+            </div>  
+  
+        <div *ngIf="subcategorias.length > 0" class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-6">
+                        <input #input (keyup)="searchSubcategory(input.value)" type="text" class="form-control searchInput" id="search_usr"
+                          name="search_usr" placeholder="{{ words['placeholder1'] | translate }}">
+                    </div>
+                  <div class="col-md-6">
+                      <a [routerLink]="['/subcategories/subcategory','new']" routerLinkActive="router-link-active"  class="btn btn-outline-primary mr-1 ft_right"> <i class="fa fa-plus"></i> {{ words['title12'] | translate }}</a>
+                  </div>
+                </div>
+              </div>
+        </div>
+        <div *ngIf="!cargando" class="card">
+          <div class="card-content">
+            <div class="card-body">
+  
+                <div  *ngIf="noResults" class="card-body servex_nothing_toshow">
+                    <h2><i class="fa fa-frown-o"></i> There's any result to show here budy!</h2>
+                    <button (click)="loadSubcategories()" class="btn servex_primary_btn2"><i class="fa fa-backward"></i> Ok, take me back!</button>
+                  </div>
+  
+              <table class="table table-responsive-md text-center servex_table_bordered" *ngIf='busqueda === true' id="user_table">
+                  <thead class="servex_table_header">
+                    <tr>
+                      <th>Imagen</th>
+                      <th>{{ words['title2'] | translate }}</th>
+                      <th>{{ words['title3'] | translate }}</th>
+                      <th>{{ words['title4'] | translate }}</th>
+                      <th>{{ words['title5'] | translate }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let subcategory of subcategorias">
+                      <td class="w70 middle-servex"><img [src]="subcategory.subcat_img | image:'subcategories'" alt="User Image" class="rounded-circle width-50">
+                      </td>
+                      <td class="middle-servex">{{ subcategory.subcat_name }}</td>
+                      <td class="middle-servex">{{ subcategory.subcat_description }}</td>
+                      <td class="middle-servex">{{ subcategory.subcat_category['cat_name'] }}</td>
+                      <td class="middle-servex">
+                          <a [routerLink]="['/subcategories/subcategory', subcategory._id]" routerLinkActive="router-link-active"  class="btn btn-secundary-servex mar-10"> <i class="fa fa-edit"></i></a>
+                        <button *ngIf="subcategory.subcat_state" class="btn btn-danger-servex" (click)="deleteSubcategory(subcategory)"><i
+                            class="fa fa-trash-o"></i>
+                        </button>
+                        <button *ngIf="!subcategory.subcat_state" class="btn btn-success-servex" (click)="activateSubcategory(subcategory)"><i
+                            class="fa fa-trash-o"></i>
+                        </button>
+                      </td>
+                    </tr>
+    
+                  </tbody>
+                </table>
+                <div class="row">
+                    <div *ngIf='busqueda === true' class="col-md-6 text-left d-none d-sm-none d-md-none d-lg-block f-left">
+                        <button (click)="cambiarDesde(-5)" type="submit" id="saveProfile"
+                          class="btn btn-outline-primary btn-raised mr-2"><i class="ft-chevrons-left"></i>
+                          {{ words['title6'] | translate }}</button>
+                      </div>
+                      <div *ngIf='busqueda === true' class="col-md-6 text-right d-none d-sm-none d-md-none d-lg-block f-right">
+                        <button (click)="cambiarDesde(5)" type="submit" id="saveProfile"
+                          class="btn btn-outline-primary btn-raised mr-2">{{ words['title7'] | translate }} <i
+                            class="ft-chevrons-right"></i></button>
+                      </div>
+                </div>
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!--Shopping cart ends-->
