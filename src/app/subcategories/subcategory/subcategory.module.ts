@@ -8,6 +8,7 @@ import { PipesModule } from 'app/pipes/pipes.module';
 import { FormsModule } from '@angular/forms';
 import { UiSwitchModule } from 'ngx-ui-switch';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
     imports: [
@@ -17,7 +18,8 @@ import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
         PipesModule,
         FormsModule,
         UiSwitchModule,
-        NgbAlertModule
+        NgbAlertModule,
+        NgSelectModule
     ],
     declarations: [
         SubcategoryComponent

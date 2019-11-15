@@ -4,6 +4,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import swal from 'sweetalert2';
 import { SubcategoryService } from 'app/services/service.index';
+import { Category } from 'app/models/category.model';
+import { toArray } from 'rxjs/operators';
 
 @Component({
   selector: 'app-subcategory',
@@ -14,6 +16,7 @@ export class SubcategoryComponent implements OnInit {
 
   cargando = false;
   subcategoria: Subcategory = new Subcategory('', '', '', '');
+  categories: Category[] = [];
   imgSubir: File
   imgTemp: any
   imgTemp3: any
@@ -21,6 +24,10 @@ export class SubcategoryComponent implements OnInit {
   img = '';
   idSubcategory = '';
   cambioFoto = false;
+  totalRegistros = 0;
+  alert = false;
+
+  selectedCategory: Category;
 
   constructor(
     public _subcategoryService: SubcategoryService,
@@ -38,20 +45,27 @@ export class SubcategoryComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.obtenerCategoriasPadre();
   }
 
   createSubcategory(f: NgForm ) {
-    // console.log(user);
+    console.log(f);
 
     if (f.invalid ) {
       return;
     }
 
-    // this.subcategoria.cat_state = this.subcategoria.cat_state.toString();
+    if (this.subcategoria.subcat_category === '') {
+      this.alert = true;
+      return;
+    }
 
-    // console.log(f);
-    // console.log(this.subcategoria.cat_state);
+    if (this.subcategoria.subcat_category === null) {
+      this.alert = true;
+      return;
+    }
 
+    this.alert = false;
     this._subcategoryService.createSubcategory(this.subcategoria)
                         .subscribe( (subcategoria: any) => {
                           this._subcategoryService.changeImgSubcategory( this.imgSubir, subcategoria._id.toString() )
@@ -63,6 +77,18 @@ export class SubcategoryComponent implements OnInit {
     if (f.invalid ) {
       return;
     }
+
+    if (this.subcategoria.subcat_category === '') {
+      this.alert = true;
+      return;
+    }
+
+    if (this.subcategoria.subcat_category === null) {
+      this.alert = true;
+      return;
+    }
+
+    this.alert = false;
 
     this._subcategoryService.updateSubcategory(this.subcategoria)
                     .subscribe( (resp: any) => {
@@ -114,6 +140,13 @@ selectImg( archivo: File ) {
     // this.imgTemp2 = this.imgTemp;
 }
 
-
+obtenerCategoriasPadre() {
+  this._subcategoryService.getCategoriesEnable()
+                          .subscribe( (resp: any) => {
+                            console.log('la respuesta: ' + JSON.stringify(resp.categories));
+                            this.categories = JSON.parse(JSON.stringify(resp.categories));
+                            console.log(this.categories);
+                          });
+}
 
 }

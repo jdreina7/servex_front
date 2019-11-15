@@ -136,7 +136,7 @@ export class TypeaheadComponent {
       merge(this.hideSearchingWhenUnsubscribed)
     );
 
-  // Formatter 
+  // Formatter
   formatter = (result: string) => result.toUpperCase();
   formatter1 = (x: { name: string }) => x.name;
 

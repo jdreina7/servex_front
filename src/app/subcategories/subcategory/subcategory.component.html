@@ -42,7 +42,10 @@
                       <hr>
                         <div class="row">
                           <div class="form-group col-md-12">
+                              <ng-select placeholder="Select Category Father" notFoundText="Not categories enabled with that name" [virtualScroll]="true" [items]="categories" bindValue="_id" bindLabel="cat_name" name="subcat_category" [(ngModel)]="subcategoria.subcat_category">
+                              </ng-select>
                           </div>
+                          <p *ngIf="alert" class="alert-danger alert-servex-danger"><b>ERROR:</b> Es necesario agregar la subcategoría a una categoria padre.</p>
                         </div>
                     </div>
   
@@ -52,11 +55,11 @@
                     </div>
   
                     <div class="form-actions">
-                      <a [routerLink]="['/categories']" routerLinkActive="router-link-active"
+                      <a [routerLink]="['/subcategories']" routerLinkActive="router-link-active"
                         class="btn btn-danger-servex mar-10">
                         <i class="fa fa-mail-reply"></i> Back
                       </a>
-                      <button type="submit" class="btn servex_primary_btn3">
+                      <button [disabled]="subcategoria.subcat_category === ''" type="submit" class="btn servex_primary_btn3">
                         <i class="fa fa-check-square-o"></i> Save
                       </button>
                     </div>
@@ -74,7 +77,7 @@
                         <div class="form-body">
                             <h4 class="form-section"><i class="ft-image"></i></h4>
                             <div class="form-group col-md-12">  
-                              <img *ngIf="!imgTemp" [src]="subcategoria.subcat_img | image:'categories'" name="subcat_img" class="max-100 img-border gradient-summer pointer" (click)="callUploadImg()">
+                              <img *ngIf="!imgTemp" [src]="subcategoria.subcat_img | image:'subcategories'" name="subcat_img" class="max-100 img-border gradient-summer pointer" (click)="callUploadImg()">
                               <img *ngIf="imgTemp" [src]="imgTemp" name="subcat_img" class="max-100 img-border gradient-summer pointer"  (click)="callUploadImg()">
                             </div>
                         </div>
@@ -105,10 +108,13 @@
                           </div>
                         </div>
                         <hr>
-                      <div class="row">
-                          <div class="form-group col-md-12">
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <ng-select placeholder="Select Category Father" notFoundText="Not categories enabled with that name" [virtualScroll]="true" [items]="categories" bindValue="_id" bindLabel="cat_name" name="subcat_category" [(ngModel)]="subcategoria.subcat_category">
+                                </ng-select>
+                            </div>
+                            <p *ngIf="alert" class="alert-danger alert-servex-danger"><b>ERROR:</b> Es necesario agregar la subcategoría a una categoria padre.</p>
                           </div>
-                        </div>
                       </div>
     
                       <div class="custom-file  mx-auto d-block" style="display: none !important">
@@ -117,7 +123,7 @@
                       </div>
     
                       <div class="form-actions">
-                        <a [routerLink]="['/categories']" routerLinkActive="router-link-active"
+                        <a [routerLink]="['/subcategories']" routerLinkActive="router-link-active"
                           class="btn btn-danger-servex mar-10">
                           <i class="fa fa-mail-reply"></i> Back
                         </a>
@@ -142,7 +148,7 @@
                               <div class="form-group col-md-12">
                                 <!-- <img [src]="subcategoria.subcat_img | image:'users'" name="subcat_img" class="max-100"> -->
     
-                                <img *ngIf="!imgTemp" [src]="subcategoria.subcat_img | image:'categories'" name="subcat_img" class="max-100 img-border gradient-summer pointer" (click)="callUploadImg()">
+                                <img *ngIf="!imgTemp" [src]="subcategoria.subcat_img | image:'subcategories'" name="subcat_img" class="max-100 img-border gradient-summer pointer" (click)="callUploadImg()">
                                 <img *ngIf="imgTemp" [src]="imgTemp" name="subcat_img" class="max-100 img-border gradient-summer pointer"  (click)="callUploadImg()">
                               </div>
                           </div>

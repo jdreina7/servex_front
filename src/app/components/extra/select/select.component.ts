@@ -10,7 +10,7 @@ import {NgSelectModule, NgOption} from '@ng-select/ng-select';
 })
 export class SelectComponent implements OnInit {
 
-  
+
   cities = [
     {id: 1, name: 'Vilnius'},
     {id: 2, name: 'Kaunas'},

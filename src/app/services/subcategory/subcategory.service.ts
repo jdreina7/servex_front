@@ -168,5 +168,17 @@ export class SubcategoryService {
                     );
   }
 
+  getCategoriesEnable() {
+    let url = URL_API + '/categories/subcategory/enabledSubcategories';
+    url += '?token=' + this.token;
+
+    return this.http.get(url);
+
+    // return this.http.get(url)
+    //                 .pipe(
+    //                   map( (resp: any) => resp )
+    //                 );
+  }
+
 
 }

@@ -216,7 +216,6 @@ export class UserService {
 
   loadUsers( desde: number = 0 ) {
     const url = URL_API + '/users?desde=' + desde;
-
     return this.http.get( url );
   }
 
