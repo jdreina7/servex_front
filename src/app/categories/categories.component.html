@@ -31,6 +31,23 @@
               </div> -->
   
   
+        <div *ngIf="categorias.length <=0 && !noResults" class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-6">
+                        
+                    </div>
+                  <div class="col-md-6">
+                      <a [routerLink]="['/categories/category','new']" routerLinkActive="router-link-active"  class="btn btn-outline-primary mr-1 ft_right"> <i class="fa fa-plus"></i> {{ words['title12'] | translate }}</a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-body servex_nothing_toshow">
+                <h5>Aún no se han creado categorías, presiona el boton de <strong>Nueva categoria</strong> para iniciar</h5>
+              </div>
+        </div>
+
         <div *ngIf="categorias.length > 0" class="card">
             <div class="card-header">
                 <div class="row">
@@ -44,7 +61,8 @@
                 </div>
               </div>
         </div>
-        <div *ngIf="!cargando" class="card">
+
+        <div *ngIf="!cargando && categorias.length > 0" class="card">
           <div class="card-content">
             <div class="card-body">
   

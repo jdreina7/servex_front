@@ -239,3 +239,13 @@
 .max-w-350 {
     max-width: 350px !important;
 }
+
+.img-all-80 {
+    max-width: 80% !important;
+    margin: auto;
+    display: block;
+}
+
+.max-h-410 {
+    max-height: 410px !important;
+}

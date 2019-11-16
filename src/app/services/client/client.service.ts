@@ -145,9 +145,6 @@ export class ClientService {
                     );
   }
 
-  /*********************************************************************************/
-  /*                                   USERS FUNCTIONS                               /
-  /*********************************************************************************/
 
   loadClients( desde: number = 0 ) {
     const url = URL_API + '/clients?desde=' + desde;
@@ -172,5 +169,66 @@ export class ClientService {
                     .pipe(
                       map( (resp: any) => resp.cliente )
                     );
+  }
+
+  loadCategories() {
+    const url = URL_API + '/categories';
+    return this.http.get( url );
+  }
+
+  catcliSave(id: string, category) {
+
+    let message: any;
+    let url = URL_API + '/catcli/catcli';
+    url += '?token=' + this.token
+
+    const catcli = {
+        catcli_category: category,
+        catcli_client: id
+    }
+
+    console.log(catcli);
+
+    return this.http.post(url, catcli)
+                    .pipe(
+                      map( (resp: any) => {
+                        console.log(resp);
+                        // swal('Cliente Creado!', 'Cliente almacenado correctamente', 'success');
+                        return resp.catcli;
+                      }),
+                      catchError( err => {
+                        console.log( err.status);
+                        status = err.status;
+                        message = err.error.err.message;
+
+                        if (err.error.err.code === 11000) {
+                          swal({
+                            type: 'error',
+                            title: status,
+                            text: 'Esta Categoria en este cliente ya existe, por favor verifique e intente de nuevo'
+                          });
+                          return throwError(err);
+                        }
+
+                        swal({
+                          type: 'error',
+                          title: status,
+                          text: message
+                        });
+
+                        return throwError(err);
+                      })
+                    );
+  }
+
+  catcliLoad(id: string) {
+    let url = URL_API + '/catcli/client/' + id;
+    url += '?token=' + this.token
+
+    return this.http.get(url)
+                    .pipe(
+                      map( (resp: any) => resp )
+                    );
+
   }
 }

@@ -4,6 +4,7 @@ import { ClientService } from 'app/services/service.index';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import swal from 'sweetalert2';
+import { Category } from 'app/models/category.model';
 
 @Component({
   selector: 'app-clients',
@@ -14,6 +15,9 @@ export class ClientComponent implements OnInit {
 
   cargando = false;
   cliente: Client = new Client('', '', '', '', '', '');
+  categorias: Category[] = [];
+  categorias2 = [];
+  catcli = '';
   imgSubir: File
   imgTemp: any
   imgTemp3: any
@@ -22,6 +26,14 @@ export class ClientComponent implements OnInit {
   idClient = '';
   cambioFoto = false;
 
+  cities2 = [
+    {id: 1, name: 'Vilnius'},
+    {id: 2, name: 'Kaunas'},
+    {id: 3, name: 'Pavilnys', disabled: true},
+    {id: 4, name: 'Pabradė'},
+    {id: 5, name: 'Klaipėda'}
+];
+selectedCityIds: string[];
   constructor(
     public _clienteService: ClientService,
     public router: Router,
@@ -38,6 +50,7 @@ export class ClientComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.loadCategories();
   }
 
   createClient(f: NgForm ) {
@@ -59,17 +72,27 @@ export class ClientComponent implements OnInit {
       return;
     }
 
+    if ( this.catcli !== '') {
+      // console.log('SI ENTRO AL CATCLI Y SE ENVIARA ESTO: ' + this.cliente._id.toString() + '  ' + this.catcli );
+      this._clienteService.catcliSave( this.cliente._id.toString(), this.catcli)
+        .subscribe((resp: any) => {
+          // console.log('===========> LA RESPUESTA DE CATCLI ES: ' + resp);
+        });
+    }
+
     this._clienteService.updateClient(this.cliente)
                     .subscribe( (resp: any) => {
-                        this._clienteService.changeLogoClient( this.imgSubir, this.cliente._id.toString() )
+                        this._clienteService.changeLogoClient( this.imgSubir, this.cliente._id.toString() );
+                        this.loadCategories();
                     });
   }
 
   obtenerCliente( id: string) {
     this._clienteService.getClient(id)
                         .subscribe(cliente => {
-                          console.log(cliente);
+                          // console.log(cliente);
                           this.cliente = cliente;
+                          this.loadCatCli();
                         });
   }
 
@@ -107,6 +130,25 @@ selectImg( archivo: File ) {
         this.imgTemp = reader.result;
     }
     // this.imgTemp2 = this.imgTemp;
+}
+
+loadCategories() {
+  this._clienteService.loadCategories()
+    .subscribe((resp: any) => {
+      // console.log(resp);
+      this.categorias = resp.categories;
+      this.catcli = '';
+      this.loadCatCli();
+    });
+}
+
+loadCatCli() {
+  this._clienteService.catcliLoad(this.cliente._id.toString())
+                      .subscribe((resp: any) => {
+                        // console.log(resp.catcli);
+                        this.categorias2 = resp.catcli;
+                        // console.log('Las categorias del cliente son: ' + this.categorias2);
+                      });
 }
 
 

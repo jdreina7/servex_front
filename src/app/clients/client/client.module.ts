@@ -6,6 +6,7 @@ import { ClientComponent } from './client.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from 'app/pipes/pipes.module';
 import { FormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
     imports: [
@@ -13,7 +14,8 @@ import { FormsModule } from '@angular/forms';
         ClientRoutingModule,
         TranslateModule,
         PipesModule,
-        FormsModule
+        FormsModule,
+        NgSelectModule
     ],
     declarations: [
         ClientComponent

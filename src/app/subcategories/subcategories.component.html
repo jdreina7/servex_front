@@ -17,7 +17,24 @@
                   <h2><div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div></h2>
                 </div>
               </div>
-            </div>  
+            </div>
+
+            <div *ngIf="subcategorias.length <=0 && !noResults" class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-6">
+                            
+                        </div>
+                      <div class="col-md-6">
+                          <a [routerLink]="['/subcategories/subcategory','new']" routerLinkActive="router-link-active"  class="btn btn-outline-primary mr-1 ft_right"> <i class="fa fa-plus"></i> {{ words['title12'] | translate }}</a>
+                      </div>
+                    </div>
+                  </div>
+    
+                  <div class="card-body servex_nothing_toshow">
+                    <h5>Aún no se han creado subcategorías, presiona el boton de <strong>Nueva categoria</strong> para iniciar</h5>
+                  </div>
+            </div>
   
         <div *ngIf="subcategorias.length > 0" class="card">
             <div class="card-header">
@@ -32,7 +49,7 @@
                 </div>
               </div>
         </div>
-        <div *ngIf="!cargando" class="card">
+        <div *ngIf="!cargando && subcategorias.length > 0" class="card">
           <div class="card-content">
             <div class="card-body">
   

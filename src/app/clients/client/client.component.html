@@ -23,37 +23,21 @@
   
         <div *ngIf="idClient === 'new'" class="row">
           <div class="col-md-6">
-            <div *ngIf="!cargando" class="card">
+            <div *ngIf="!cargando" class="card max-h-410">
               <div class="card-content">
                 <div class="card-body">
                   <form ngNativeValidate #f="ngForm" (ngSubmit)="createClient(f.value)" class="form">
                     <div class="form-body">
                       <h4 class="form-section"><i class="ft-user"></i></h4>
                       <div class="row">
-                        <div class="form-group col-md-12">
-                          <input type="text" [(ngModel)]="cliente.client_name" minlength="3" class="form-control"
-                            placeholder="First Name" name="client_name" required>
-                        </div>
-                        <div class="form-group col-md-12">
-                          <input type="text" [(ngModel)]="cliente.client_last_name" minlength="3" class="form-control"
-                            placeholder="Last Name" name="client_last_name" required>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="form-group col-md-12">
-                          <input type="email" [(ngModel)]="cliente.client_email" class="form-control" placeholder="E-mail"
-                            name="client_email" required>
-                        </div>
-                        <div class="form-group col-md-12">
-                          <input type="text" minlength="6" [(ngModel)]="cliente.client_bussiness_name" class="form-control"
-                            placeholder="Bussiness Name" name="client_bussiness_name" required>
-                        </div>
-                      </div>
-                      <div class="row">
                           <div class="form-group col-md-12">
-                            <input type="text" [(ngModel)]="cliente.client_description" class="form-control" placeholder="Description"
-                              name="client_description" required>
+                              <input type="text" minlength="6" [(ngModel)]="cliente.client_bussiness_name" class="form-control"
+                              placeholder="Bussiness Name" name="client_bussiness_name" required>
                           </div>
+                          <div class="form-group col-md-12">
+                              <input type="text" [(ngModel)]="cliente.client_description" class="form-control" placeholder="Description"
+                                name="client_description" required>
+                            </div>
                         </div>
                     </div>
   
@@ -78,15 +62,15 @@
           </div>
   
           <div class="col-md-6">
-            <div *ngIf="!cargando" class="card">
+            <div *ngIf="!cargando" class="card max-h-410">
               <div class="card-content">
                 <div class="card-body">
                     <form class="form">
                         <div class="form-body">
                             <h4 class="form-section"><i class="ft-image"></i></h4>
                             <div class="form-group col-md-12">  
-                              <img *ngIf="!imgTemp" [src]="cliente.client_logo | image:'clients'" name="client_logo" class="max-100 img-border gradient-summer pointer" (click)="callUploadImg()">
-                              <img *ngIf="imgTemp" [src]="imgTemp" name="client_logo" class="max-100 img-border gradient-summer pointer"  (click)="callUploadImg()">
+                              <img *ngIf="!imgTemp" [src]="cliente.client_logo | image:'clients'" name="client_logo" class="img-all-80 img-border gradient-summer pointer" (click)="callUploadImg()">
+                              <img *ngIf="imgTemp" [src]="imgTemp" name="client_logo" class="img-all-80 img-border gradient-summer pointer"  (click)="callUploadImg()">
                             </div>
                         </div>
                     </form>
@@ -99,38 +83,33 @@
   
         <div *ngIf="idClient !== 'new'" class="row">
             <div class="col-md-6">
-              <div *ngIf="!cargando" class="card">
+              <div *ngIf="!cargando" class="card max-h-410">
                 <div class="card-content">
                   <div class="card-body">
                     <form ngNativeValidate #f="ngForm" (ngSubmit)="updateClient(f.value)" class="form">
                       <div class="form-body">
                         <h4 class="form-section"><i class="ft-user"></i></h4>
+                        
                         <div class="row">
-                          <div class="form-group col-md-12">
-                            <input type="text" [(ngModel)]="cliente.client_name" minlength="3" class="form-control"
-                              placeholder="First Name" name="client_name" required>
-                          </div>
-                          <div class="form-group col-md-12">
-                            <input type="text" [(ngModel)]="cliente.client_last_name" minlength="3" class="form-control"
-                              placeholder="Last Name" name="client_last_name" required>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="form-group col-md-12">
-                            <input type="email" [(ngModel)]="cliente.client_email" class="form-control" placeholder="E-mail"
-                              name="client_email" required>
-                          </div>
                           <div class="form-group col-md-12">
                               <input type="text" minlength="6" [(ngModel)]="cliente.client_bussiness_name" class="form-control"
                               placeholder="Bussiness Name" name="client_bussiness_name" required>
                           </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-md-12">
+                          <div class="form-group col-md-12">
                               <input type="text" [(ngModel)]="cliente.client_description" class="form-control" placeholder="Description"
                                 name="client_description" required>
                             </div>
-                          </div>
+                        </div>
+
+                          <div class="row">
+                              <div class="form-group col-md-12">
+                                <h4>Asignar categorías a cliente</h4>
+                                  <ng-select [items]="categorias" bindLabel="cat_name" bindValue="_id" name="catcli" [virtualScroll]="true" placeholder="Select categories"
+                                  [(ngModel)]="catcli">
+                                </ng-select>
+                                
+                              </div>
+                            </div>
                       </div>
     
                       <div class="custom-file  mx-auto d-block" style="display: none !important">
@@ -155,7 +134,7 @@
             </div>
     
             <div class="col-md-6">
-              <div *ngIf="!cargando" class="card">
+              <div *ngIf="!cargando" class="card max-h-410">
                 <div class="card-content">
                   <div class="card-body">
                       <form class="form">
@@ -164,14 +143,45 @@
                               <div class="form-group col-md-12">
                                 <!-- <img [src]="cliente.client_logo | image:'users'" name="client_logo" class="max-100"> -->
     
-                                <img *ngIf="!imgTemp" [src]="cliente.client_logo | image:'clients'" name="client_logo" class="max-100 img-border gradient-summer pointer" (click)="callUploadImg()">
-                                <img *ngIf="imgTemp" [src]="imgTemp" name="client_logo" class="max-100 img-border gradient-summer pointer"  (click)="callUploadImg()">
+                                <img *ngIf="!imgTemp" [src]="cliente.client_logo | image:'clients'" name="client_logo" class="img-all-80 img-border gradient-summer pointer" (click)="callUploadImg()">
+                                <img *ngIf="imgTemp" [src]="imgTemp" name="client_logo" class="img-all-80 img-border gradient-summer pointer"  (click)="callUploadImg()">
                               </div>
                           </div>
                       </form>
                   </div>
                 </div>
               </div>
+            </div>
+
+            <div class="col-md-6">
+                <div *ngIf="!cargando" class="card max-h-410">
+                    <div class="card-content">
+                      <div class="card-body">
+            
+                        <table class="table table-responsive-md text-center servex_table_bordered" id="user_table">
+                            <thead class="servex_table_header">
+                              <tr>
+                                <th>Category</th>
+                                <th>Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let category of categorias2">
+                                <td class="middle-servex">{{ category.catcli_category.cat_name }}</td>
+                                <td class="middle-servex">
+                                  <button class="btn btn-danger-servex" ><i
+                                      class="fa fa-trash"></i>
+                                  </button>
+                                </td>
+                              </tr>
+              
+                            </tbody>
+                          </table>
+                         
+                          
+                      </div>
+                    </div>
+                  </div>
             </div>
             
           </div>
