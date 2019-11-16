@@ -14,6 +14,7 @@ export const TITLES = [
      title12: 'Active',
      title13: 'Inactive',
      title14: 'New Client',
+     title15: 'Description',
      placeholder1: 'Search client'
     }
 ];

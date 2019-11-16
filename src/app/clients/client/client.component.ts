@@ -72,17 +72,16 @@ selectedCityIds: string[];
       return;
     }
 
-    if ( this.catcli !== '') {
-      // console.log('SI ENTRO AL CATCLI Y SE ENVIARA ESTO: ' + this.cliente._id.toString() + '  ' + this.catcli );
-      this._clienteService.catcliSave( this.cliente._id.toString(), this.catcli)
-        .subscribe((resp: any) => {
-          // console.log('===========> LA RESPUESTA DE CATCLI ES: ' + resp);
-        });
-    }
-
     this._clienteService.updateClient(this.cliente)
                     .subscribe( (resp: any) => {
                         this._clienteService.changeLogoClient( this.imgSubir, this.cliente._id.toString() );
+                        if ( this.catcli !== '') {
+                          // console.log('SI ENTRO AL CATCLI Y SE ENVIARA ESTO: ' + this.cliente._id.toString() + '  ' + this.catcli );
+                          this._clienteService.catcliSave( this.cliente._id.toString(), this.catcli)
+                            .subscribe((resp2: any) => {
+                              console.log('===========> LA RESPUESTA DE CATCLI ES: ' + resp);
+                            });
+                        }
                         this.loadCategories();
                     });
   }
@@ -92,7 +91,6 @@ selectedCityIds: string[];
                         .subscribe(cliente => {
                           // console.log(cliente);
                           this.cliente = cliente;
-                          this.loadCatCli();
                         });
   }
 
@@ -135,7 +133,7 @@ selectImg( archivo: File ) {
 loadCategories() {
   this._clienteService.loadCategories()
     .subscribe((resp: any) => {
-      // console.log(resp);
+      console.log(resp);
       this.categorias = resp.categories;
       this.catcli = '';
       this.loadCatCli();
@@ -143,12 +141,39 @@ loadCategories() {
 }
 
 loadCatCli() {
+
+  if (!this.cliente._id) {
+    return
+  }
+
   this._clienteService.catcliLoad(this.cliente._id.toString())
                       .subscribe((resp: any) => {
-                        // console.log(resp.catcli);
+                        console.log(resp.catcli);
                         this.categorias2 = resp.catcli;
                         // console.log('Las categorias del cliente son: ' + this.categorias2);
                       });
+}
+
+deleteCatcli(id: string) {
+  console.log(id);
+  swal({
+    title: 'Está seguro?',
+    text: 'Esta acción eliminará de manera PERMANENTE todas las SUBCATEGORÍAS y PRODUCTOS creados bajo relación Cliente - Categoria!',
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, do it!'
+  }).then((result) => {
+    if (result.value) {
+      this._clienteService.deleteCatcli(id)
+                          .subscribe( (resp: any) => {
+                            console.log(resp);
+                            this.categorias2 = []
+                            this.loadCategories();
+                          });
+    }
+  })
 }
 
 

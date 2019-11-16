@@ -153,7 +153,7 @@
               </div>
             </div>
 
-            <div class="col-md-6">
+            <div *ngIf="categorias2.length > 0" class="col-md-6">
                 <div *ngIf="!cargando" class="card max-h-410">
                     <div class="card-content">
                       <div class="card-body">
@@ -169,7 +169,7 @@
                               <tr *ngFor="let category of categorias2">
                                 <td class="middle-servex">{{ category.catcli_category.cat_name }}</td>
                                 <td class="middle-servex">
-                                  <button class="btn btn-danger-servex" ><i
+                                  <button class="btn btn-danger-servex" (click)="deleteCatcli(category._id)"><i
                                       class="fa fa-trash"></i>
                                   </button>
                                 </td>

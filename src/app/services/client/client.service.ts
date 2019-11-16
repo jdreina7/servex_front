@@ -231,4 +231,18 @@ export class ClientService {
                     );
 
   }
+
+  deleteCatcli(id: string) {
+    let url = URL_API + '/catcli/catcli/' + id;
+    url += '?token=' + this.token
+
+    return this.http.delete(url)
+                    .pipe(
+                      map( (resp: any) => {
+                        swal('Relación eliminada!!', 'Cliente - Categoria', 'success');
+                        return true;
+                      } )
+                    );
+
+  }
 }
