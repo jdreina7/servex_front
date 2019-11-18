@@ -1,3 +1,4 @@
+export { ProductsService } from './products/products.service';
 export { CategoryService } from './category/category.service';
 export { SubcategoryService } from './subcategory/subcategory.service';
 export { ClientService } from './client/client.service';

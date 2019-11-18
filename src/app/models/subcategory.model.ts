@@ -4,6 +4,7 @@ export class Subcategory {
         public subcat_description: string,
         public subcat_img: string,
         public subcat_category: string,
+        public subcat_client: string,
         public subcat_state?: string,
         public _id?: BigInteger,
     ) {}

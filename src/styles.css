@@ -249,3 +249,26 @@
 .max-h-410 {
     max-height: 410px !important;
 }
+
+.example-viewport {
+    height: 300px;
+    width: 80%;
+    border: 1px solid #0B0B61;
+    display: -webkit-box;
+    display: flex;
+    border-radius: 10px;
+    margin: auto;
+}
+
+.example-viewport2 {
+    height: 300px;
+    width: 100%;
+    border: 1px solid #0B0B61;
+    display: -webkit-box;
+    display: flex;
+    border-radius: 10px;
+    margin: auto;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

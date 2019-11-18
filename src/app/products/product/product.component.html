@@ -1,0 +1,252 @@
+<div class="row text-left">
+    <div class="col-12">
+      <div *ngIf="idProduct === 'new'" class="content-header">Create Product</div>
+      <div *ngIf="idProduct !== 'new'" class="content-header">Update Product</div>
+    </div>
+  </div>
+  
+  <section>
+    <div class="row text-left">
+      <div class="col-md-12">
+  
+        <div *ngIf="cargando" class="card">
+          <div class="card-header">
+          </div>
+          <div class="card-content">
+            <div class="card-body servex_nothing_toshow">
+              <h2>
+                <div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div>
+              </h2>
+            </div>
+          </div>
+        </div>
+  
+        <div *ngIf="idProduct === 'new'" class="row">
+          <div class="col-md-6">
+            <div *ngIf="!cargando" class="card">
+              <div class="card-content">
+                <div class="card-body">
+                  <form ngNativeValidate #f="ngForm" (ngSubmit)="createProduct(f.value)" class="form">
+                    <div class="form-body">
+                      <h4 class="form-section"><i class="ft-user"></i></h4>
+
+                      <div class="row">
+                        <div class="form-group col-md-12">
+                          <h4>Seleccione el cliente</h4>
+                            <ng-select (change)="loadCatCli()" (clear)="inactiveFields()" [items]="clientes" bindLabel="client_bussiness_name" bindValue="_id" name="product.prod_client" [virtualScroll]="true" placeholder="Select clients"
+                            [(ngModel)]="product.prod_client">
+                          </ng-select>
+                          
+                        </div>
+                      </div>
+
+                      <div class="row" animated="fadeIn">
+                        <div class="form-group col-md-12">
+                          <h4>Seleccione la categoria del cliente</h4>
+                            <ng-select (change)="loadCatCliSub()" [disabled]="product.prod_client === ''" (clear)="inactiveFields2()" [items]="categorias" bindLabel="catcli_category.cat_name" bindValue="catcli_category._id" name="product.prod_category" [virtualScroll]="true" placeholder="Select category"
+                            [(ngModel)]="product.prod_category">
+                          </ng-select>
+                          
+                        </div>
+                      </div>
+
+                      <div class="row" animated="fadeIn">
+                          <div class="form-group col-md-12">
+                            <h4>Seleccione la subcategoria del cliente</h4>
+                              <ng-select [disabled]="subcategorias.length <= 0" (clear)="inactiveFields2()" [items]="subcategorias" bindLabel="catclisub_subcategory.subcat_name" bindValue="catclisub_subcategory._id" name="product.prod_subcategory" [virtualScroll]="true" placeholder="Select subcategory"
+                              [(ngModel)]="product.prod_subcategory">
+                            </ng-select>
+                            
+                          </div>
+                        </div>
+                      <p *ngIf="!p_admite_subcat" class="alert-warning alert-servex-danger"><i class="fa fa-exclamation-triangle fa-beat" aria-hidden="true"></i> La categoría seleccionada de este cliente no está habilitada para asignarle subcategorías  y tampoco tienen ninguna asociada, <strong>el producto se creará únicamente bajo la categoría padre</strong>!</p>
+                      <p *ngIf="p_no_tiene_sub_asignadas" class="alert-danger alert-servex-danger"><i class="fa fa-ban fa-beat" aria-hidden="true"></i> La categoría seleccionada de este cliente exige que tenga una subcategoría, pero no tiene ninguna asociada, para poder crear un producto en esta categoría, <strong>primero deberá asignarle una subcategoría en el menú Subcategorías</strong>.</p>
+                      <p *ngIf="alert" class="alert-info alert-servex-danger"><i class="fa fa-info-circle fa-beat" aria-hidden="true"></i> <strong> No olvides </strong>que si seleccionaste una categoría con subcategorías habilitadas, <strong>tienes que seleccionar una subcategoría.</strong></p>
+
+                      <div class="row">
+                        <div class="form-group col-md-12">
+                          <input type="text" [disabled]="product.prod_category === ''" [(ngModel)]="product.prod_name" minlength="3" class="form-control"
+                            placeholder="Name" name="prod_name" required>
+                        </div>
+                        <div class="form-group col-md-12">
+                          <input type="text" [disabled]="product.prod_category === ''" [(ngModel)]="product.prod_description" minlength="3" class="form-control"
+                            placeholder="Description" name="prod_description" required>
+                        </div>
+                        <div class="form-group col-md-12" style="display: none !important">
+                            <input (change)="selectFileProduct( $event.target.files[0])"  type="file" class="custom-file-input" id="inputGroupFile02" name="inputGroupFile02">
+                            <span class="custom-file-control"></span>
+                          </div>
+
+                          <div class="form-group col-md-12 text-center">
+                              <button [disabled]="product.prod_name === ''" class="btn btn-success-servex" type="button" *ngIf="!fileProdSubir2" (click)="callUploadFileProd()">Seleccionar Archivo ZIP</button>
+                              <button class="btn btn-success-servex" type="button" *ngIf="fileProdSubir2" (click)="callUploadFileProd()">Archivo: {{fileProdSubirName}}</button>
+                          </div>
+
+                          <div class="form-group col-md-12 text-center">
+                            <p *ngIf="alert2" class="alert-danger alert-servex-danger">Por favor seleccione un archivo zip.</p>
+                          </div>
+
+                        
+                      </div>
+
+                    </div>
+  
+                    <div  class="custom-file  mx-auto d-block" style="display: none !important">
+                        <input (change)="selectImg( $event.target.files[0])"  name="prod_img" type="file" class="custom-file-input" id="inputGroupFile01" name="inputGroupFile01">
+                        <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                    </div>
+  
+                    <div class="form-actions">
+                      <a [routerLink]="['/products']" routerLinkActive="router-link-active"
+                        class="btn btn-danger-servex mar-10">
+                        <i class="fa fa-mail-reply"></i> Back
+                      </a>
+                      <button [disabled]="product.prod_description === ''" type="submit" class="btn servex_primary_btn3">
+                        <i class="fa fa-check-square-o"></i> Save
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="col-md-6">
+            <div *ngIf="!cargando" class="card">
+              <div class="card-content">
+                <div class="card-body">
+                    <form class="form">
+                        <div class="form-body">
+                            <h4 class="form-section"><i class="ft-image"></i></h4>
+                            <div class="form-group col-md-12">  
+                              <img *ngIf="!imgTemp" [src]="product.prod_img | image:'products'" name="prod_img" class="max-100 img-border gradient-summer pointer" (click)="callUploadImg()">
+                              <img *ngIf="imgTemp" [src]="imgTemp" name="prod_img" class="max-100 img-border gradient-summer pointer"  (click)="callUploadImg()">
+                              <p *ngIf="product.prod_img">{{product.prod_img | image:'products' }}</p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+  
+        <div *ngIf="idProduct !== 'new'" class="row">
+            <div class="col-md-6">
+              <div *ngIf="!cargando" class="card">
+                <div class="card-content">
+                  <div class="card-body">
+                    <form ngNativeValidate #f="ngForm" (ngSubmit)="updateProduct(f.value)" class="form">
+                        <div class="form-body">
+                            <h4 class="form-section"><i class="ft-user"></i></h4>
+      
+                            <div class="row">
+                              <div class="form-group col-md-12">
+                                <h4>Seleccione el cliente</h4>
+                                  <ng-select (change)="loadCatCli()" (clear)="inactiveFields()" [items]="clientes" bindLabel="client_bussiness_name" bindValue="_id" name="product.prod_client" [virtualScroll]="true" placeholder="Select clients"
+                                  [(ngModel)]="product.prod_client">
+                                </ng-select>
+                                
+                              </div>
+                            </div>
+      
+                            <div class="row" animated="fadeIn">
+                              <div class="form-group col-md-12">
+                                <h4>Seleccione la categoria del cliente</h4>
+                                  <ng-select (change)="loadCatCliSub()" [disabled]="product.prod_client === ''" (clear)="inactiveFields2()" [items]="categorias" bindLabel="catcli_category.cat_name" bindValue="catcli_category._id" name="product.prod_category" [virtualScroll]="true" placeholder="Select category"
+                                  [(ngModel)]="product.prod_category">
+                                </ng-select>
+                                
+                              </div>
+                            </div>
+      
+                            <div class="row" animated="fadeIn">
+                                <div class="form-group col-md-12">
+                                  <h4>Seleccione la subcategoria del cliente</h4>
+                                    <ng-select [disabled]="subcategorias.length <= 0" (clear)="inactiveFields2()" [items]="subcategorias" bindLabel="catclisub_subcategory.subcat_name" bindValue="catclisub_subcategory._id" name="product.prod_subcategory" [virtualScroll]="true" placeholder="Select subcategory"
+                                    [(ngModel)]="product.prod_subcategory">
+                                  </ng-select>
+                                  
+                                </div>
+                              </div>
+                            <p *ngIf="p_admite_subcat" class="alert-warning alert-servex-danger"><i class="fa fa-exclamation-triangle fa-beat" aria-hidden="true"></i> La categoría seleccionada de este cliente no está habilitada para asignarle subcategorías  y tampoco tienen ninguna asociada, <strong>el producto se creará únicamente bajo la categoría padre</strong>!</p>
+                            <p *ngIf="p_no_tiene_sub_asignadas" class="alert-danger alert-servex-danger"><i class="fa fa-ban fa-beat" aria-hidden="true"></i> La categoría seleccionada de este cliente exige que tenga una subcategoría, pero no tiene ninguna asociada, para poder crear un producto en esta categoría, <strong>primero deberá asignarle una subcategoría en el menú Subcategorías</strong>.</p>
+                            <p *ngIf="alert" class="alert-info alert-servex-danger"><i class="fa fa-info-circle fa-beat" aria-hidden="true"></i> <strong>No olvides </strong>que si seleccionaste una categoría con subcategorías habilitadas, <strong>tienes que seleccionar una subcategoría.</strong></p>
+      
+                            <div class="row">
+                              <div class="form-group col-md-12">
+                                <input type="text" [disabled]="product.prod_category === ''" [(ngModel)]="product.prod_name" minlength="3" class="form-control"
+                                  placeholder="Name" name="prod_name" required>
+                              </div>
+                              <div class="form-group col-md-12">
+                                <input type="text" [disabled]="product.prod_category === ''" [(ngModel)]="product.prod_description" minlength="3" class="form-control"
+                                  placeholder="Description" name="prod_description" required>
+                              </div>
+                              <div class="form-group col-md-12" style="display: none !important">
+                                  <input (change)="selectFileProduct( $event.target.files[0])"  type="file" class="custom-file-input" id="inputGroupFile02" name="inputGroupFile02">
+                                  <span class="custom-file-control"></span>
+                                </div>
+
+                                <div class="form-group col-md-12 text-center">
+                                    <button *ngIf="product.prod_file" class="btn btn-secundary-servex" type="button"><i class="fa fa-cloud-download" aria-hidden="true"></i> Descargar archivo actual</button>
+                                </div>
+
+                                <div class="form-group col-md-12 text-center">
+                                    <button [disabled]="product.prod_name === ''" class="btn btn-success-servex" type="button" *ngIf="!fileProdSubir2" (click)="callUploadFileProd()"><i class="fa fa-cloud-upload" aria-hidden="true"></i> Actualizar Archivo</button>
+                                    <button class="btn btn-success-servex" type="button" *ngIf="fileProdSubir2" (click)="callUploadFileProd()"><i class="fa fa-cloud-upload" aria-hidden="true"></i> Archivo: {{fileProdSubirName}}</button>
+                                </div>
+
+                                <div class="form-group col-md-12">
+                                  <p *ngIf="alert2" class="alert-danger alert-servex-danger">Por favor seleccione un archivo zip.</p>
+                                </div>
+                              
+                            </div>
+      
+                          </div>
+    
+                      <div class="custom-file  mx-auto d-block" style="display: none !important">
+                          <input (change)="selectImg( $event.target.files[0])"  name="prod_img" type="file" class="custom-file-input" id="inputGroupFile01" name="inputGroupFile01">
+                          <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                      </div>
+    
+                      <div class="form-actions">
+                        <a [routerLink]="['/products']" routerLinkActive="router-link-active"
+                          class="btn btn-danger-servex mar-10">
+                          <i class="fa fa-mail-reply"></i> Back
+                        </a>
+    
+                        <button type="submit" class="btn servex_primary_btn3">
+                          <i class="fa fa-check-square-o"></i> Update Product
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+    
+            <div class="col-md-6">
+              <div *ngIf="!cargando" class="card">
+                <div class="card-content">
+                  <div class="card-body">
+                      <form class="form">
+                          <div class="form-body">
+                              <h4 class="form-section"><i class="ft-image"></i></h4>
+                              <div class="form-group col-md-12">
+                                <!-- <img [src]="product.prod_img | image:'users'" name="prod_img" class="max-100"> -->
+    
+                                <img *ngIf="!imgTemp" [src]="product.prod_img | image:'products'" name="prod_img" class="max-100 img-border gradient-summer pointer" (click)="callUploadImg()">
+                                <img *ngIf="imgTemp" [src]="imgTemp" name="prod_img" class="max-100 img-border gradient-summer pointer"  (click)="callUploadImg()">
+                              </div>
+                          </div>
+                      </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+      </div>
+    </div>
+  </section>

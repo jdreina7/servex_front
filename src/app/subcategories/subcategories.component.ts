@@ -122,28 +122,6 @@ export class SubcategoriesComponent implements OnInit {
   }
 
 
-  activateSubcategory(subcategoria: Subcategory) {
-
-    swal({
-      title: 'Are you sure?',
-      text: 'This action will Activate the user of the system and all its functions!',
-      type: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, do it!'
-    }).then((result) => {
-      if (result.value) {
-        this._subcategoriaService.activateSubcategory(subcategoria)
-          .subscribe(resp => {
-            console.log(resp);
-            this.loadSubcategories();
-          });
-      }
-    })
-
-  }
-
   obtenerCategoriaPadre( id: string) {
   this._categoriaService.getCategory(id)
                         .subscribe(categoria => {

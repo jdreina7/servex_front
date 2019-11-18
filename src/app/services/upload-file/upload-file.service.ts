@@ -18,6 +18,8 @@ export class UploadFileService {
 
         formData.append('img', archivo, archivo.name );
 
+        console.log('EL NOMBRE DEL ARCHIVO QUE LLEGA AL UPLOAD SERVICE: ' + archivo.name);
+
         if ( clase === 'uploads') {
 
           xhr.onreadystatechange = function () {

@@ -221,13 +221,89 @@ export class ClientService {
                     );
   }
 
-  catcliLoad(id: string) {
+
+  catcliClienteLoad(id: string) {
+    let message: any;
+    let message2: any;
     let url = URL_API + '/catcli/client/' + id;
     url += '?token=' + this.token
 
     return this.http.get(url)
                     .pipe(
-                      map( (resp: any) => resp )
+                      map( (resp: any) => {
+                        console.log(resp);
+                        // swal('Cliente Creado!', 'Cliente almacenado correctamente', 'success');
+                        return resp;
+                      }),
+                      catchError( err => {
+                        console.log( err.status);
+                        status = err.status;
+                        message2 = err.error.mensaje
+
+                        if ( err.error.err) {
+                          message = err.error.err.message;
+                          if (err.error.err.code === 11000) {
+                            swal({
+                              type: 'error',
+                              title: status,
+                              text: 'Esta Subategoria en este cliente ya existe, por favor verifique e intente de nuevo'
+                            });
+                            return throwError(err);
+                          }
+                        }
+
+                        swal({
+                          type: 'info',
+                          text: 'Este cliente no tiene asignadas categorias aún, ' +
+                          'puede empezar agregandole una en el apartado de \'Asignar categorías a cliente\' en esta misma ventana.'
+                        });
+
+                        return throwError(err);
+                      })
+                    );
+
+  }
+
+
+  catcliLoad(id: string) {
+    let message: any;
+    let message2: any;
+    let url = URL_API + '/catcli/client/' + id;
+    url += '?token=' + this.token
+
+    return this.http.get(url)
+                    .pipe(
+                      map( (resp: any) => {
+                        console.log(resp);
+                        // swal('Cliente Creado!', 'Cliente almacenado correctamente', 'success');
+                        return resp;
+                      }),
+                      catchError( err => {
+                        console.log( err.status);
+                        status = err.status;
+                        message2 = err.error.mensaje
+
+                        if ( err.error.err) {
+                          message = err.error.err.message;
+                          if (err.error.err.code === 11000) {
+                            swal({
+                              type: 'error',
+                              title: status,
+                              text: 'Esta Subategoria en este cliente ya existe, por favor verifique e intente de nuevo'
+                            });
+                            return throwError(err);
+                          }
+                        }
+
+                        swal({
+                          type: 'error',
+                          title: status,
+                          text: 'Este cliente no tiene asignadas categorias aún, ' +
+                           'para asignarle categorías, vaya al menú de cliente, seleccione editar y agreguele las categorias necesarias.'
+                        });
+
+                        return throwError(err);
+                      })
                     );
 
   }
@@ -243,6 +319,36 @@ export class ClientService {
                         return true;
                       } )
                     );
+  }
+
+  catcliSubLoad(idClient: string, idCategory: string) {
+    let message2: any;
+    let url = URL_API + '/catclisub/client/' + idClient + '/category/' + idCategory;
+    url += '?token=' + this.token
+
+    return this.http.get(url)
+                    .pipe(
+                      map( (resp: any) => {
+                        console.log(resp);
+                        // swal('Cliente Creado!', 'Cliente almacenado correctamente', 'success');
+                        return resp;
+                      }),
+                      catchError( err => {
+                        console.log( err.status);
+                        status = err.status;
+                        message2 = err.error.mensaje
+
+
+                        swal({
+                          type: 'error',
+                          title: status,
+                          text: message2
+                        });
+
+                        return throwError(err);
+                      })
+                    );
 
   }
+
 }

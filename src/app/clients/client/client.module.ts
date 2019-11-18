@@ -7,6 +7,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from 'app/pipes/pipes.module';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { ScrollingModule } from '@angular/cdk/scrolling'
 
 @NgModule({
     imports: [
@@ -15,7 +16,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
         TranslateModule,
         PipesModule,
         FormsModule,
-        NgSelectModule
+        NgSelectModule,
+        ScrollingModule
     ],
     declarations: [
         ClientComponent

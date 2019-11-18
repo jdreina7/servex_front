@@ -13,7 +13,7 @@ import { CategoryService } from 'app/services/service.index';
 export class CategoryComponent implements OnInit {
 
   cargando = false;
-  categoria: Category = new Category('', '', '', '');
+  categoria: Category = new Category('', '', '', 'true');
   imgSubir: File
   imgTemp: any
   imgTemp3: any
@@ -47,10 +47,6 @@ export class CategoryComponent implements OnInit {
       return;
     }
 
-    // this.categoria.cat_state = this.categoria.cat_state.toString();
-
-    // console.log(f);
-    // console.log(this.categoria.cat_state);
 
     this._categoryService.createCategory(this.categoria)
                         .subscribe( (categoria: any) => {

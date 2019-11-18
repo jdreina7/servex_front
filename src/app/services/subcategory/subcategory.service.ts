@@ -57,6 +57,15 @@ export class SubcategoryService {
                         status = err.status;
                         message = err.error.err.message;
 
+                        if (err.error.err.code === 11000) {
+                          swal({
+                            type: 'error',
+                            title: status,
+                            text: 'Esta Subategoria en esta categoria con este cliente ya existe, por favor verifique e intente de nuevo'
+                          });
+                          return throwError(err);
+                        }
+
                         swal({
                           type: 'error',
                           title: status,
@@ -173,12 +182,109 @@ export class SubcategoryService {
     url += '?token=' + this.token;
 
     return this.http.get(url);
-
-    // return this.http.get(url)
-    //                 .pipe(
-    //                   map( (resp: any) => resp )
-    //                 );
   }
 
+
+
+  catclisubSave(cliente: string, category: string, subcategory: string) {
+
+    let message: any;
+    let url = URL_API + '/catclisub/catclisub';
+    url += '?token=' + this.token
+
+    const catclisub = {
+        catclisub_category: category,
+        catclisub_client: cliente,
+        catclisub_subcategory: subcategory
+    }
+
+    console.log(catclisub);
+
+    return this.http.post(url, catclisub)
+                    .pipe(
+                      map( (resp: any) => {
+                        console.log(resp);
+                        // swal('Cliente Creado!', 'Cliente almacenado correctamente', 'success');
+                        return resp.catclisub;
+                      }),
+                      catchError( err => {
+                        console.log( err.status);
+                        status = err.status;
+                        message = err.error.err.message;
+
+                        if (err.error.err.code === 11000) {
+                          swal({
+                            type: 'error',
+                            title: status,
+                            text: 'Esta Subategoria en esta categoria con este cliente ya existe, por favor verifique e intente de nuevo'
+                          });
+                          return throwError(err);
+                        }
+
+                        swal({
+                          type: 'error',
+                          title: status,
+                          text: message
+                        });
+
+                        return throwError(err);
+                      })
+                    );
+  }
+
+  catcliSubLoad(id: string) {
+    let message: any;
+    let message2: any;
+    let url = URL_API + '/catclisub/subcategory/' + id;
+    url += '?token=' + this.token
+
+    return this.http.get(url)
+                    .pipe(
+                      map( (resp: any) => {
+                        console.log(resp);
+                        // swal('Cliente Creado!', 'Cliente almacenado correctamente', 'success');
+                        return resp;
+                      }),
+                      catchError( err => {
+                        console.log( err.status);
+                        status = err.status;
+                        message2 = err.error.mensaje
+
+                        if ( err.error.err) {
+                          message = err.error.err.message;
+                          if (err.error.err.code === 11000) {
+                            swal({
+                              type: 'error',
+                              title: status,
+                              text: 'Esta Subategoria en este cliente ya existe, por favor verifique e intente de nuevo'
+                            });
+                            return throwError(err);
+                          }
+                        }
+
+                        swal({
+                          type: 'info',
+                          text: 'Este cliente no tiene asignadas subcategorias aún, ' +
+                          'puede empezar agregandole seleccionando un cliente y una categoría ' +
+                          ' del cliente seleccionado en esta misma ventana.'
+                        });
+
+                        return throwError(err);
+                      })
+                    );
+  }
+
+  deleteCatcliSub(id: string) {
+    let url = URL_API + '/catclisub/catclisub/' + id;
+    url += '?token=' + this.token
+
+    return this.http.delete(url)
+                    .pipe(
+                      map( (resp: any) => {
+                        swal('Relación eliminada!!', 'Cliente - Categoria - Subcategoría', 'success');
+                        return true;
+                      } )
+                    );
+  }
 
 }

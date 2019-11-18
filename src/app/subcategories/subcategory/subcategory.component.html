@@ -29,24 +29,38 @@
                   <form ngNativeValidate #f="ngForm" (ngSubmit)="createSubcategory(f.value)" class="form">
                     <div class="form-body">
                       <h4 class="form-section"><i class="ft-user"></i></h4>
+
                       <div class="row">
                         <div class="form-group col-md-12">
-                          <input type="text" [(ngModel)]="subcategoria.subcat_name" minlength="3" class="form-control"
+                          <h4>Seleccione el cliente</h4>
+                            <ng-select (change)="loadCatCli()" (clear)="inactiveFields()" [items]="clientes" bindLabel="client_bussiness_name" bindValue="_id" name="subcategoria.subcat_client" [virtualScroll]="true" placeholder="Select clients"
+                            [(ngModel)]="subcategoria.subcat_client">
+                          </ng-select>
+                          
+                        </div>
+                      </div>
+
+                      <div class="row" animated="fadeIn">
+                        <div class="form-group col-md-12">
+                          <h4>Seleccione la categoria del cliente</h4>
+                            <ng-select [disabled]="subcategoria.subcat_client === ''" (clear)="inactiveFields2()" [items]="categories" bindLabel="catcli_category.cat_name" bindValue="catcli_category._id" name="subcategoria.subcat_category" [virtualScroll]="true" placeholder="Select clients"
+                            [(ngModel)]="subcategoria.subcat_category">
+                          </ng-select>
+                          
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="form-group col-md-12">
+                          <input type="text" [disabled]="subcategoria.subcat_category === ''" [(ngModel)]="subcategoria.subcat_name" minlength="3" class="form-control"
                             placeholder="Name" name="subcat_name" required>
                         </div>
                         <div class="form-group col-md-12">
-                          <input type="text" [(ngModel)]="subcategoria.subcat_description" minlength="3" class="form-control"
+                          <input type="text" [disabled]="subcategoria.subcat_category === ''" [(ngModel)]="subcategoria.subcat_description" minlength="3" class="form-control"
                             placeholder="Description" name="subcat_description" required>
                         </div>
                       </div>
-                      <hr>
-                        <div class="row">
-                          <div class="form-group col-md-12">
-                              <ng-select placeholder="Select Category Father" notFoundText="Not categories enabled with that name" [virtualScroll]="true" [items]="categories" bindValue="_id" bindLabel="cat_name" name="subcat_category" [(ngModel)]="subcategoria.subcat_category">
-                              </ng-select>
-                          </div>
-                          <p *ngIf="alert" class="alert-danger alert-servex-danger"><b>ERROR:</b> Es necesario agregar la subcategoría a una categoria padre.</p>
-                        </div>
+                      <p *ngIf="alert" class="alert-danger alert-servex-danger">Para almacenar una subcategoría debe seleccionar un <strong>cliente</strong> y una <strong>categoría padre</strong>!</p>
                     </div>
   
                     <div class="custom-file  mx-auto d-block" style="display: none !important">
@@ -59,7 +73,7 @@
                         class="btn btn-danger-servex mar-10">
                         <i class="fa fa-mail-reply"></i> Back
                       </a>
-                      <button [disabled]="subcategoria.subcat_category === ''" type="submit" class="btn servex_primary_btn3">
+                      <button [disabled]="subcategoria.subcat_description === ''" type="submit" class="btn servex_primary_btn3">
                         <i class="fa fa-check-square-o"></i> Save
                       </button>
                     </div>
@@ -97,6 +111,22 @@
                     <form ngNativeValidate #f="ngForm" (ngSubmit)="updateSubcategory(f.value)" class="form">
                       <div class="form-body">
                         <h4 class="form-section"><i class="ft-user"></i></h4>
+
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                              <h4>Cliente</h4>
+                              <input type="text" [(ngModel)]="subcategoria.subcat_client['client_bussiness_name']" minlength="3" class="form-control"
+                                placeholder="Client" name="subcat_client" required disabled="true">
+                            </div>
+                            <div class="form-group col-md-12">
+                                <h4>Categoría del Cliente</h4>
+                              <input type="text" minlength="3" class="form-control" [(ngModel)]="subcategoria.subcat_category['cat_name']"
+                                placeholder="Category" name="subcat_category" required disabled="true">
+                            </div>
+                          </div>
+  
+  
+  
                         <div class="row">
                           <div class="form-group col-md-12">
                             <input type="text" [(ngModel)]="subcategoria.subcat_name" minlength="3" class="form-control"
@@ -107,14 +137,8 @@
                               placeholder="Description" name="subcat_description" required>
                           </div>
                         </div>
-                        <hr>
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                <ng-select placeholder="Select Category Father" notFoundText="Not categories enabled with that name" [virtualScroll]="true" [items]="categories" bindValue="_id" bindLabel="cat_name" name="subcat_category" [(ngModel)]="subcategoria.subcat_category">
-                                </ng-select>
-                            </div>
-                            <p *ngIf="alert" class="alert-danger alert-servex-danger"><b>ERROR:</b> Es necesario agregar la subcategoría a una categoria padre.</p>
-                          </div>
+
+                        <p *ngIf="alert" class="alert-danger alert-servex-danger">Para almacenar una subcategoría debe seleccionar un <strong>cliente</strong> y una <strong>categoría padre</strong>!</p>
                       </div>
     
                       <div class="custom-file  mx-auto d-block" style="display: none !important">

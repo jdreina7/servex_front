@@ -146,7 +146,7 @@ loadCatCli() {
     return
   }
 
-  this._clienteService.catcliLoad(this.cliente._id.toString())
+  this._clienteService.catcliClienteLoad(this.cliente._id.toString())
                       .subscribe((resp: any) => {
                         console.log(resp.catcli);
                         this.categorias2 = resp.catcli;

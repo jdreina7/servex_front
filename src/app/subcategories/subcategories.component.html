@@ -49,7 +49,7 @@
                 </div>
               </div>
         </div>
-        <div *ngIf="!cargando && subcategorias.length > 0" class="card">
+        <div *ngIf="!cargando" class="card">
           <div class="card-content">
             <div class="card-body">
   
@@ -63,7 +63,7 @@
                     <tr>
                       <th>Imagen</th>
                       <th>{{ words['title2'] | translate }}</th>
-                      <th>{{ words['title3'] | translate }}</th>
+                      <th>{{ words['title13'] | translate }}</th>
                       <th>{{ words['title4'] | translate }}</th>
                       <th>{{ words['title5'] | translate }}</th>
                     </tr>
@@ -73,7 +73,7 @@
                       <td class="w70 middle-servex"><img [src]="subcategory.subcat_img | image:'subcategories'" alt="User Image" class="rounded-circle width-50">
                       </td>
                       <td class="middle-servex">{{ subcategory.subcat_name }}</td>
-                      <td class="middle-servex max-w-350">{{ subcategory.subcat_description }}</td>
+                      <td class="middle-servex">{{ subcategory.subcat_client['client_bussiness_name'] }}</td>
                       <td class="middle-servex">{{ subcategory.subcat_category['cat_name'] }}</td>
                       <td class="middle-servex">
                           <a [routerLink]="['/subcategories/subcategory', subcategory._id]" routerLinkActive="router-link-active"  class="btn btn-secundary-servex mar-10"> <i class="fa fa-edit"></i></a>

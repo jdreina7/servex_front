@@ -112,6 +112,10 @@ export const Full_ROUTES: Routes = [
   {
     path: 'products',
     loadChildren: './products/products.module#ProductsModule'
+  },
+  {
+    path: 'products/product/:id',
+    loadChildren: './products/product/product.module#ProductModule'
   }
 
 ];
