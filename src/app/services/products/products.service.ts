@@ -169,6 +169,20 @@ export class ProductsService {
     return this.http.get( url );
   }
 
+  loadProductsGallery() {
+    const url = URL_API + '/products';
+    return this.http.get( url );
+  }
+
+  loadProductsWithoutSubcategory(idClient: string, idCategory: string) {
+    const url = URL_API + '/products/client/' + idClient + '/category/' + idCategory;
+    return this.http.get( url );
+  }
+
+  loadProductsWithSubcategory(idClient: string, idCategory: string, idSubcategory: string) {
+    const url = URL_API + '/products/client/' + idClient + '/category/' + idCategory + '/subcategory/' + idSubcategory;
+    return this.http.get( url );
+  }
 
   searchProducts( termino: string ) {
     const url = URL_API + '/search/all/' + termino;

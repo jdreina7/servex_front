@@ -148,7 +148,6 @@ export class ClientService {
 
   loadClients( desde: number = 0 ) {
     const url = URL_API + '/clients?desde=' + desde;
-
     return this.http.get( url );
   }
 
@@ -268,8 +267,7 @@ export class ClientService {
   catcliLoad(id: string) {
     let message: any;
     let message2: any;
-    let url = URL_API + '/catcli/client/' + id;
-    url += '?token=' + this.token
+    const url = URL_API + '/catcli/client/' + id;
 
     return this.http.get(url)
                     .pipe(
@@ -323,8 +321,7 @@ export class ClientService {
 
   catcliSubLoad(idClient: string, idCategory: string) {
     let message2: any;
-    let url = URL_API + '/catclisub/client/' + idClient + '/category/' + idCategory;
-    url += '?token=' + this.token
+    const url = URL_API + '/catclisub/client/' + idClient + '/category/' + idCategory;
 
     return this.http.get(url)
                     .pipe(

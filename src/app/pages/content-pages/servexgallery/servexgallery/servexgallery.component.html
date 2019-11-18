@@ -1,0 +1,97 @@
+<div class="container">
+  <div class="col-md-12">
+
+    <section id="hover-effects" class="card">
+        <div class="card-header text-center">
+          <h1>SERVEX GALLERY</h1>
+        </div>
+    <div class="card-content">
+
+      <div class="card-body my-gallery">
+        <hr>
+        <div *ngIf="idCliente !== null" id="logoClientSection" class="grid-hover">
+            <div class="row">
+              <div class="col-md-4 col-12">
+              </div>
+              <div class="col-md-4 col-12">
+                <figure class="effect-bubba">
+                  <img id="logoCliente" [src]="clienteLogo | image:'clients'" alt="Client Logo" class="">
+                  <figcaption>
+                    <h2>
+                      <span>{{clienteNombre}}</span>
+                    </h2>
+                  </figcaption>
+                </figure>
+              </div>
+              <div class="col-md-4 col-12">
+              </div>
+            </div>
+          </div>
+
+        <div class="row">
+                <div class="col-md-4">
+                    <!--<h5>Seleccione el Cliente</h5>-->
+                      <ng-select (change)="loadCatCli()" [(ngModel)]="idCliente" name="idCliente" (clear)="loadProducts()" [items]="clientes" bindLabel="client_bussiness_name" bindValue="_id" [virtualScroll]="true" placeholder="Clientes">
+                    </ng-select>
+                  </div>
+    
+                <div class="col-md-4">
+                    <!--<h5>Seleccione el Cliente</h5>-->
+                      <ng-select [disabled]="idCliente === null" (change)="loadCatCliSub()" (clear)="loadProducts()" [(ngModel)]="idCategoria" name="idCategoria" [items]="categorias" bindLabel="catcli_category.cat_name" bindValue="catcli_category._id" [virtualScroll]="true" placeholder="Categorias">
+                    </ng-select>
+                  </div>
+    
+                <div class="col-md-4">
+                    <!--<h5>Seleccione el Cliente</h5>-->
+                      <ng-select [disabled]="!tieneSubcategorias" (change)="loadProductsWithSubcategory()" (clear)="loadProducts()" [(ngModel)]="idSubcategoria" name="idSubcategoria" [items]="subcategorias" bindLabel="catclisub_subcategory.subcat_name" bindValue="catclisub_subcategory._id" [virtualScroll]="true" placeholder="Subcategorias">
+                    </ng-select>
+                  </div>
+        </div>
+        <hr>
+
+        <div *ngIf="cargando" class="row">
+            <div class="card-body servex_nothing_toshow">
+                <h1><div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div></h1>
+              </div>
+        </div>
+
+        <div *ngIf="noResults && !cargando" class="card-body servex_nothing_toshow">
+            <h3>Al parecer no hay clientes con productos asignados!</h3>
+          </div>
+
+        <div *ngIf="mensajeNoHayProductosConEsteCriterio" class="card-body servex_nothing_toshow">
+            <h3>No existen productos con este criterio de búsqueda, por favor intenta con otra categoría u otro cliente.</h3>
+          </div>
+
+        <div *ngIf="mensajeSinSubcategoria" class="card-body servex_nothing_toshow">
+            <h3>Esta categoría debería tener subcategorías asignadas, y no las tiene, por lo tanto no hay productos que mostrar en esta categoría.</h3>
+          </div>
+
+
+        <div class="sol-md-12">
+            <div class="grid-hover">
+                <div class="row">
+
+                  <div *ngFor="let product of productos" class="col-md-4">
+                    <figure class="effect-oscar">
+                      <img [src]="product.prod_img | image:'products'" [alt]="product.prod_name" />
+                      <figcaption>
+                        <h2>
+                          <span>{{product.prod_name}}</span>
+                        </h2>
+                        <p class="downloadIcon"><i class="fa fa-cloud-download"></i></p>
+                        <p>CLICK PARA DESCARGAR</p>
+                        <a (click)="download(product.prod_file)">View more</a>
+                      </figcaption>
+                    </figure>
+                  </div>
+
+                </div>
+              </div>
+        </div>
+        
+      </div>
+    </div>
+    </section>
+  </div>
+</div>

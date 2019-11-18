@@ -1,0 +1,58 @@
+figure.effect-bubba {
+    // background: transparent;
+    background:  rgba(0, 0, 0, 0.5) !important;
+}
+
+#logoCliente {
+    max-width: 70% !important;
+    margin: auto !important;
+}
+
+#logoClientSection {
+    margin-top: -50px;
+    margin-bottom: -50px;
+}
+
+figure.effect-oscar {
+    background: transparent;
+    max-height: 240px !important;
+    min-height: 240px !important;
+}
+
+figure.effect-oscar:hover {
+    background: #0B0B61 !important;
+}
+
+.grid-hover figure {
+    position: relative;
+    overflow: hidden;
+    margin: 30px auto !important;
+    min-width: 320px;
+    max-width: 480px;
+    max-height: 360px;
+    text-align: center;
+    cursor: pointer;
+}
+
+figure.effect-oscar figcaption {
+    padding: 2em !important;
+    // background: transparent !important;
+    background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+figure.effect-oscar h2 {
+    margin: auto !important;
+}
+
+.grid-hover figure p {
+    margin-top: 30px !important;
+}
+
+.grid-hover figure h2 span {
+    font-weight: 600;
+    font-size: 1.5rem;
+}
+
+.downloadIcon {
+    font-size: 50px;
+}

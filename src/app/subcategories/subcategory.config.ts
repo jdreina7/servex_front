@@ -13,6 +13,6 @@ export const TITLES = [
      title11: 'No',
      title12: 'New Subcategory',
      title13: 'Clients',
-     placeholder1: 'Search category'
+     placeholder1: 'Search subcategory'
     }
 ];
