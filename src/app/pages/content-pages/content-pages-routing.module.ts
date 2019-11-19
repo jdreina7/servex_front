@@ -11,14 +11,6 @@ const routes: Routes = [
     path: '',
     children: [
       {
-        path: 'error',
-        component: ErrorPageComponent,
-        data: {
-          title: 'Error Page'
-        }
-      },
-
-      {
         path: 'servexgallery',
         component: ServexgalleryComponent,
         data: {
@@ -30,6 +22,13 @@ const routes: Routes = [
         component: LoginPageComponent,
         data: {
           title: 'Login Page'
+        }
+      },
+      {
+        path: 'error',
+        component: ErrorPageComponent,
+        data: {
+          title: 'Error Page'
         }
       },
 

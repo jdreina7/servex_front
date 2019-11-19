@@ -47,13 +47,13 @@ export class Dashboard1Component implements OnInit {
         this._subcategoryService.loadSubcategories()
           .subscribe((resp: any) => {
             console.log(resp);
-            this.totalCategorias = resp.total;
+            this.totalSubcategorias = resp.total;
         });
 
         this._productService.loadProducts()
           .subscribe((resp: any) => {
             console.log(resp);
-            this.totalCategorias = resp.total;
+            this.totalProductos = resp.total;
         });
 
     }
