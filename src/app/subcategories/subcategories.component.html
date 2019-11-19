@@ -32,7 +32,7 @@
                   </div>
     
                   <div class="card-body servex_nothing_toshow">
-                    <h5>Aún no se han creado subcategorías, presiona el boton de <strong>Nueva categoria</strong> para iniciar</h5>
+                    <h5>Aún no se han creado subcategorías, presiona el boton de <strong>Nueva subcategoria</strong> para iniciar</h5>
                   </div>
             </div>
   
@@ -49,7 +49,7 @@
                 </div>
               </div>
         </div>
-        <div *ngIf="!cargando" class="card">
+        <div *ngIf="!cargando && subcategorias.length > 0" class="card">
           <div class="card-content">
             <div class="card-body">
   

@@ -20,15 +20,22 @@
             </div>
           </div>
 
-          <!-- <div *ngIf="noResults" class="card">
+          <div *ngIf="usuarios.length <=0 && !noResults" class="card">
               <div class="card-header">
-              </div>
-              <div class="card-content">
-                <div class="card-body servex_nothing_toshow">
-                  <h2><i class="fa fa-frown-o"></i> There's any result to show here budy!</h2>
+                  <div class="row">
+                      <div class="col-md-6">
+                          
+                      </div>
+                    <div class="col-md-6">
+                        <a [routerLink]="['/usuarios/usuario','new']" routerLinkActive="router-link-active"  class="btn btn-outline-primary mr-1 ft_right"> <i class="fa fa-plus"></i> {{ words['title14'] | translate }}</a>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div> -->
+  
+                <div class="card-body servex_nothing_toshow">
+                  <h5>Aún no se han creado usuarios, presiona el boton de <strong>Nuevo usuario</strong> para iniciar</h5>
+                </div>
+          </div>
 
 
       <div *ngIf="usuarios.length > 0" class="card">
@@ -44,7 +51,7 @@
               </div>
             </div>
       </div>
-      <div *ngIf="!cargando" class="card">
+      <div *ngIf="!cargando && usuarios.length > 0" class="card">
         <div class="card-content">
           <div class="card-body">
 
