@@ -122,7 +122,6 @@ export class ClientsComponent implements OnInit {
 
 
   activateClient(cliente: Client) {
-
     swal({
       title: 'Are you sure?',
       text: 'This action will Activate the user of the system and all its functions!',

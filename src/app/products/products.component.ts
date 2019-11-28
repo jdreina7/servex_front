@@ -110,7 +110,8 @@ export class ProductsComponent implements OnInit {
       }).then((result) => {
         if (result.value) {
           const idProduct = product._id;
-          this._productsService.deleteProduct(idProduct.toString())
+          const masterRelation = product.prod_master;
+          this._productsService.deleteProduct(idProduct.toString(), masterRelation)
             .subscribe(resp => {
               console.log(resp);
               this.loadProducts();

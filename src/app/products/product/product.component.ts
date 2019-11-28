@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import swal from 'sweetalert2';
-import { ProductsService, ClientService } from 'app/services/service.index';
+import { ProductsService, ClientService, SubcategoryService } from 'app/services/service.index';
 import { Product } from '../../models/products.model';
 import { URL_API } from '../../config/config';
 
@@ -36,6 +36,7 @@ export class ProductComponent implements OnInit {
   totalRegistros = 0;
   alert = false;
   alert2 = false;
+  tipoR = '';
 
   descargarImg = URL_API;
 
@@ -46,6 +47,7 @@ export class ProductComponent implements OnInit {
   constructor(
     public _productService: ProductsService,
     public _clientService: ClientService,
+    public _subcategoryService: SubcategoryService,
     public router: Router,
     public activateRoute: ActivatedRoute
   ) {
@@ -71,10 +73,10 @@ export class ProductComponent implements OnInit {
       return;
     }
 
-    if (this.product.prod_category !== null && this.product.prod_subcategory.length <= 0 && this.p_admite_subcat === true) {
-      this.alert = true;
-      return;
-    }
+    // if (this.product.prod_category !== null && this.product.prod_subcategory.length <= 0 && this.p_admite_subcat === true) {
+    //   this.alert = true;
+    //   return;
+    // }
 
     if (!this.fileProdSubir) {
       this.alert2 = true;
@@ -87,22 +89,54 @@ export class ProductComponent implements OnInit {
     // console.log('ANTES DE GUARDAR: NOMBRE   ' + this.product.prod_name);
     // console.log('ANTES DE GUARDAR: DESCRIPCION   ' + this.product.prod_description);
 
-    if (this.product.prod_category !== null && this.product.prod_subcategory.length <= 0 &&  this.p_admite_subcat === false) {
-      this.product.prod_subcategory = null;
-      console.log('==NUEVA SUBCAT==' + this.product.prod_subcategory);
-    }
+    // if (this.product.prod_category !== null && this.product.prod_subcategory.length <= 0 &&  this.p_admite_subcat === false) {
+    //   this.product.prod_subcategory = null;
+    //   console.log('==NUEVA SUBCAT==' + this.product.prod_subcategory);
+    // }
 
     // this.product.prod_file = this.fileProdSubirName;
+
+    if (this.product.prod_category === '') {
+      this.product.prod_category = null;
+    }
+
+    if (this.product.prod_subcategory === '') {
+      this.product.prod_subcategory = null;
+    }
 
     this.alert = false;
     this.alert2 = false;
     this.p_no_tiene_sub_asignadas = false;
     this.p_admite_subcat = false;
 
+      this.tipoR = 'F'
+      const client = this.product.prod_client;
+      const category = this.product.prod_category;
+      const subcategory1 = this.product.prod_subcategory;
+      const subcategory2 = null;
+      const subcategory3 = null;
+
     this._productService.createProduct(this.product)
                         .subscribe( (producto: any) => {
                           this._productService.changeImgProduct( this.imgSubir, producto._id.toString() )
-                          this._productService.uploadFileProduct( this.fileProdSubir, producto._id.toString() )
+                          if (this.fileProdSubir) {
+                            this._productService.uploadFileProduct( this.fileProdSubir, producto._id.toString() )
+                            .then( (resp2: any) => {
+                              this.obtenerProducto(producto._id.toString())
+                            })
+                            .catch( resp2 => {
+                              console.log(resp2);
+                            });
+                        }
+                          this._productService.insertProductMaster(
+                                                              client,
+                                                              category,
+                                                              this.tipoR,
+                                                              subcategory1,
+                                                              producto._id.toString())
+                            .subscribe((resp: any) => {
+                              console.log('===========> LA RESPUESTA DE MASTER: ' + resp);
+                            });
                           this.router.navigate(['/products/product', producto._id]);
                         });
   }
@@ -116,9 +150,17 @@ export class ProductComponent implements OnInit {
     this.alert = false;
 
     this._productService.updateProduct(this.product)
-                    .subscribe( (resp: any) => {
+                    .subscribe( (producto: any) => {
                         this._productService.changeImgProduct( this.imgSubir, this.product._id.toString() )
-                        this._productService.uploadFileProduct( this.fileProdSubir, this.product._id.toString() )
+                        if (this.fileProdSubir) {
+                            this._productService.uploadFileProduct( this.fileProdSubir, this.product._id.toString() )
+                            .then( (resp2: any) => {
+                              this.obtenerProducto(producto._id.toString())
+                            })
+                            .catch( resp2 => {
+                              console.log(resp2);
+                            });
+                        }
                     });
     this.fileProdSubir2 = false;
   }
@@ -128,6 +170,8 @@ export class ProductComponent implements OnInit {
                         .subscribe(producto => {
                           console.log(producto);
                           this.product = producto;
+                          this.fileProdSubir2 = null;
+                          this.fileProdSubirName = '';
                           this.descargarImg += '/server/files/products/' + this.product.prod_file;
                         });
   }
@@ -230,7 +274,7 @@ loadCatCli() {
   this.p_admite_subcat = true;
   this.alert = false;
   this.alert2 = false;
-  this._clientService.catcliLoad(this.product.prod_client.toString())
+  this._clientService.catcliClienteLoad(this.product.prod_client.toString())
                       .subscribe((resp: any) => {
                         console.log(resp.catcli);
                         this.categorias = resp.catcli;
@@ -266,6 +310,24 @@ loadCatCliSub() {
     this.inactiveFields4();
   }
 }
+
+loadSubcategoriesFromSubcategory() {
+  if (!this.product.prod_category) {
+    return
+  }
+
+  this.subcategorias = [];
+  this._productService.getSubcategories(this.product.prod_client, this.product.prod_category)
+                      .subscribe((resp: any) => {
+                        console.log(resp);
+                        this.subcategorias = resp;
+
+                        if (this.subcategorias.length <= 0) {
+                          console.log('ESTA CATEGORIA NO POSEE SUBCATEGORIAS AÚN');
+                        }
+                      });
+}
+
 
 inactiveFields() {
   this.p_cliente = '';

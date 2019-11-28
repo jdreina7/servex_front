@@ -74,7 +74,6 @@ selectedCityIds: string[];
 
     this._clienteService.updateClient(this.cliente)
                     .subscribe( (resp: any) => {
-                        this._clienteService.changeLogoClient( this.imgSubir, this.cliente._id.toString() );
                         if ( this.catcli !== '') {
                           // console.log('SI ENTRO AL CATCLI Y SE ENVIARA ESTO: ' + this.cliente._id.toString() + '  ' + this.catcli );
                           this._clienteService.catcliSave( this.cliente._id.toString(), this.catcli)
@@ -82,6 +81,19 @@ selectedCityIds: string[];
                               console.log('===========> LA RESPUESTA DE CATCLI ES: ' + resp);
                             });
                         }
+
+                        if (this.imgSubir) {
+                          this._clienteService.changeLogoClient( this.imgSubir, this.cliente._id.toString() )
+                          .then( (resp2: any) => {
+                            if (!resp2) {
+                              this.router.navigate(['/clients']);
+                            }
+                          })
+                          .catch( resp2 => {
+                            console.log(resp2);
+                          });
+                        }
+
                         this.loadCategories();
                     });
   }
@@ -148,17 +160,18 @@ loadCatCli() {
 
   this._clienteService.catcliClienteLoad(this.cliente._id.toString())
                       .subscribe((resp: any) => {
-                        console.log(resp.catcli);
+                        console.log(resp.master);
                         this.categorias2 = resp.catcli;
                         // console.log('Las categorias del cliente son: ' + this.categorias2);
                       });
 }
 
-deleteCatcli(id: string) {
-  console.log(id);
+deleteCatcli(id1: string) {
+  console.log(id1);
   swal({
-    title: 'Está seguro?',
-    text: 'Esta acción eliminará de manera PERMANENTE todas las SUBCATEGORÍAS y PRODUCTOS creados bajo relación Cliente - Categoria!',
+    title: 'ARE YOU SURE?',
+    text: 'This action will remove permanently all relations under this Client - Category, '
+    + ' and the products and subcategories will be lost!',
     type: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
@@ -166,7 +179,7 @@ deleteCatcli(id: string) {
     confirmButtonText: 'Yes, do it!'
   }).then((result) => {
     if (result.value) {
-      this._clienteService.deleteCatcli(id)
+      this._clienteService.deleteCatcli(id1)
                           .subscribe( (resp: any) => {
                             console.log(resp);
                             this.categorias2 = []

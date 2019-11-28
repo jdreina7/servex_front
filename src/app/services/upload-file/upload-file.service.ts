@@ -38,6 +38,7 @@ export class UploadFileService {
 
           xhr.open( 'PUT', this.url, true );
           xhr.send( formData );
+          return true;
 
         } else if (clase === 'files') {
           xhr.onreadystatechange = function () {
@@ -56,6 +57,8 @@ export class UploadFileService {
 
           xhr.open( 'PUT', this.url, true );
           xhr.send( formData );
+
+          return true;
         }
 
       })

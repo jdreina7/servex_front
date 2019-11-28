@@ -65,7 +65,6 @@
                     <tr>
                       <th>Logo</th>
                       <th>{{ words['title2'] | translate }}</th>
-                      <th>{{ words['title15'] | translate }}</th>
                       <th>{{ words['title7'] | translate }}</th>
                     </tr>
                   </thead>
@@ -74,7 +73,6 @@
                       <td class="w70 middle-servex"><img [src]="client.client_logo | image:'clients'" alt="User Image" class="rounded-circle width-50">
                       </td>
                       <td class="middle-servex">{{ client.client_bussiness_name }}</td>
-                      <td class="middle-servex">{{ client.client_description }}</td>
                       <td class="middle-servex">
                           <a [routerLink]="['/clients/client', client._id]" routerLinkActive="router-link-active"  class="btn btn-secundary-servex mar-10"> <i class="fa fa-edit"></i></a>
                         <button *ngIf="client.client_state" class="btn btn-danger-servex" (click)="deleteClient(client)"><i

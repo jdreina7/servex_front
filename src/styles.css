@@ -168,6 +168,7 @@
 
 .width-50 {
     min-height: 50px;
+    max-height: 50px !important;
 }
 
 .servex_table_bordered  {

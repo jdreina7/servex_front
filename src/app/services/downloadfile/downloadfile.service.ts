@@ -17,8 +17,8 @@ export class DownloadfileService {
     private _http: HttpClient,
   ) { }
 
-  download(nombreArchivo: string) {
-    this.url += '/' + nombreArchivo;
+  download(nombreArchivo: string, tipo: string) {
+    this.url += '/./files/' + tipo + '/' + nombreArchivo;
     const body = {filename: nombreArchivo};
 
     console.log(this.url)

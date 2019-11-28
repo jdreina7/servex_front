@@ -76,9 +76,9 @@ export class CategoryService {
     return this.http.put(url, c)
                     .pipe(
                       map( (resp: any) => {
-                        console.log(resp);
+                        console.log('RESPUESTA DESDE EL SERVICE: ' + resp);
                         swal('Actualizado!', 'Categoria actualizada correctamente', 'success');
-                        return true;
+                        return resp;
                       }),
                       catchError( err => {
                         console.log( err.status);
@@ -98,10 +98,56 @@ export class CategoryService {
 
   changeImgCategory( file: File, id: string ) {
     if (file) {
-      this._uploadService.uploadFile( 'uploads', file, 'categories', id )
+      return this._uploadService.uploadFile( 'uploads', file, 'categories', id )
                        .then( ( resp: any ) => {
                         console.log(resp.categoryUpdated);
                         return true;
+                       })
+                       .catch( resp => {
+                        console.log(resp);
+                        swal({
+                         title: 'UPS!',
+                         text: 'We can\'t found the current image for updated with the new, do you want delete it and try again?',
+                         type: 'warning',
+                         showCancelButton: true,
+                         confirmButtonColor: '#3085d6',
+                         cancelButtonColor: '#d33',
+                         confirmButtonText: 'Yes, do it!'
+                       }).then((result) => {
+                         if (result.value) {
+                           this.clearImgCategory(id)
+                                               .subscribe( (resp2: any) => {
+                                                 return resp2;
+                                               });
+                         }
+                       })
+                      });
+    } else {
+      return;
+    }
+  }
+
+  clearImgCategory(id: string) {
+    const url = URL_API + '/categories/clearImg/' + id;
+    return this.http.put( url, id )
+                    .pipe(
+                      map( resp => {
+                        console.log(resp);
+                        return resp;
+                      })
+                    );
+
+  }
+
+  uploadFile( file: File, id: string ) {
+    let updated;
+    if (file) {
+    return this._uploadService.uploadFile( 'files', file, 'categories', id )
+                       .then( ( resp: any ) => {
+                        console.log('RESPUESTA DESDE EL UPLOAD SERVICE: ');
+                        console.log(resp.cateUpdated);
+                        updated = resp.cateUpdated;
+                        return updated;
                        })
                        .catch( resp => {
                          console.log(resp);
@@ -110,6 +156,8 @@ export class CategoryService {
       return;
     }
   }
+
+
 
   deleteCategory( id: string ) {
     let url = URL_API + '/categories/category/' + id;
@@ -169,6 +217,32 @@ export class CategoryService {
                     );
   }
 
+  deleteFile(id: string) {
+    let message: any;
+    let url = URL_API + '/categories/category/deleteFile/' + id;
+    url += '?token=' + this.token;
+    return this.http.put(url, id)
+                    .pipe(
+                      map( (resp: any) => {
+                        console.log('RESPUESTA DESDE EL SERVICE: ' + resp);
+                        swal('Deleted!', 'The category file was deleted!', 'success');
+                        return resp;
+                      }),
+                      catchError( err => {
+                        console.log( err.status);
+                        status = err.status;
+                        message = err.error.err.message;
+
+                        swal({
+                          type: 'error',
+                          title: status,
+                          text: message
+                        });
+
+                        return throwError(err);
+                      })
+                    );
+  }
 
 
 }

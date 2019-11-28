@@ -112,7 +112,8 @@ export class SubcategoriesComponent implements OnInit {
       }).then((result) => {
         if (result.value) {
           const idSubcategory = subcategoria._id;
-          this._subcategoriaService.deleteSubcategory(idSubcategory.toString())
+          const masterRelation = subcategoria.subcat_master;
+          this._subcategoriaService.deleteSubcategory(idSubcategory.toString(), masterRelation)
             .subscribe(resp => {
               console.log(resp);
               this.loadSubcategories();

@@ -98,22 +98,49 @@ export class ClientService {
 
   changeLogoClient( file: File, id: string ) {
     if (file) {
-      this._uploadService.uploadFile( 'uploads', file, 'clients', id )
+    return this._uploadService.uploadFile( 'uploads', file, 'clients', id )
                        .then( ( resp: any ) => {
                         console.log(resp.userUpdated);
                         return true;
                        })
                        .catch( resp => {
                          console.log(resp);
+                         swal({
+                          title: 'UPS!',
+                          text: 'We can\'t found the current image for updated with the new, do you want delete it and try again?',
+                          type: 'warning',
+                          showCancelButton: true,
+                          confirmButtonColor: '#3085d6',
+                          cancelButtonColor: '#d33',
+                          confirmButtonText: 'Yes, do it!'
+                        }).then((result) => {
+                          if (result.value) {
+                            this.clearLogoClient(id)
+                                                .subscribe( (resp2: any) => {
+                                                  return resp2;
+                                                });
+                          }
+                        })
                        });
     } else {
       return;
     }
   }
 
+  clearLogoClient(id: string) {
+    const url = URL_API + '/clients/clearLogo/' + id;
+    return this.http.put( url, id )
+                    .pipe(
+                      map( resp => {
+                        console.log(resp);
+                        return resp;
+                      })
+                    );
+
+  }
+
   deleteClient( id: string ) {
-    let url = URL_API + '/clients/client/' + id;
-    url += '?token=' + this.token
+    const url = URL_API + '/clients/client/' + id;
 
     return this.http.delete( url )
                     .pipe(
@@ -129,7 +156,7 @@ export class ClientService {
   }
 
   activateClient(  cliente: Client  ) {
-    let url = URL_API + '/users/activateClient/' + cliente._id;
+    let url = URL_API + '/clients/activateClient/' + cliente._id;
     url += '?token=' + this.token
 
     return this.http.put( url, cliente )
@@ -175,11 +202,10 @@ export class ClientService {
     return this.http.get( url );
   }
 
-  catcliSave(id: string, category) {
+  catcliSave(id: string, category: string) {
 
     let message: any;
-    let url = URL_API + '/catcli/catcli';
-    url += '?token=' + this.token
+    const url = URL_API + '/catcli/catcli';
 
     const catcli = {
         catcli_category: category,
@@ -224,14 +250,13 @@ export class ClientService {
   catcliClienteLoad(id: string) {
     let message: any;
     let message2: any;
-    let url = URL_API + '/catcli/client/' + id;
-    url += '?token=' + this.token
+    const url = URL_API + '/catcli/client/' + id;
+    // url += '?token=' + this.token
 
     return this.http.get(url)
                     .pipe(
                       map( (resp: any) => {
                         console.log(resp);
-                        // swal('Cliente Creado!', 'Cliente almacenado correctamente', 'success');
                         return resp;
                       }),
                       catchError( err => {
@@ -267,7 +292,7 @@ export class ClientService {
   catcliLoad(id: string) {
     let message: any;
     let message2: any;
-    const url = URL_API + '/catcli/client/' + id;
+    const url = URL_API + '/master/client/' + id;
 
     return this.http.get(url)
                     .pipe(
@@ -306,9 +331,117 @@ export class ClientService {
 
   }
 
-  deleteCatcli(id: string) {
-    let url = URL_API + '/catcli/catcli/' + id;
-    url += '?token=' + this.token
+  loadSubcat1(idClient: string, idCategory: string) {
+    let message: any;
+    let message2: any;
+    const url = URL_API + '/master/subcategory1/client/' + idClient + '/category/' + idCategory;
+
+    return this.http.get(url)
+                    .pipe(
+                      map( (resp: any) => {
+                        console.log(resp);
+                        return resp;
+                      }),
+                      catchError( err => {
+                        console.log( err.status);
+                        status = err.status;
+                        message2 = err.error.mensaje
+
+                        if ( err.error.err) {
+                          message = err.error.err.message;
+                          if (err.error.err.code === 11000) {
+                            swal({
+                              type: 'error',
+                              title: status,
+                              text: 'Esta Subategoria en este cliente ya existe, por favor verifique e intente de nuevo'
+                            });
+                            return throwError(err);
+                          }
+                        }
+
+                        // swal({
+                        //   type: 'error',
+                        //   title: status,
+                        //   text: 'Este cliente no tiene asignadas categorias aún, ' +
+                        //    'para asignarle categorías, vaya al menú de cliente, seleccione editar y agreguele las categorias necesarias.'
+                        // });
+
+                        return throwError(err);
+                      })
+                    );
+
+  }
+
+  loadSubcat2(idClient: string, idCategory: string, idSubcategory: string) {
+    let message: any;
+    let message2: any;
+    const url = URL_API + '/master/subcategory2/' + idSubcategory + '/client/' + idClient + '/category/' + idCategory;
+
+    return this.http.get(url)
+                    .pipe(
+                      map( (resp: any) => {
+                        console.log(resp);
+                        return resp;
+                      }),
+                      catchError( err => {
+                        console.log( err.status);
+                        status = err.status;
+                        message2 = err.error.mensaje
+
+                        if ( err.error.err) {
+                          message = err.error.err.message;
+                          if (err.error.err.code === 11000) {
+                            swal({
+                              type: 'error',
+                              title: status,
+                              text: 'Esta Subategoria en este cliente ya existe, por favor verifique e intente de nuevo'
+                            });
+                            return throwError(err);
+                          }
+                        }
+                        return throwError(err);
+                      })
+                    );
+
+  }
+
+  loadSubcat3(idClient: string, idCategory: string, idSubcategory2: string, idSubcategory3: string) {
+    let message: any;
+    let message2: any;
+    // tslint:disable-next-line:max-line-length
+    const url = URL_API + '/master/subcategory2/' + idSubcategory2 + '/subcategory3/' + idSubcategory3 + '/client/' + idClient + '/category/' + idCategory;
+
+    return this.http.get(url)
+                    .pipe(
+                      map( (resp: any) => {
+                        console.log(resp);
+                        return resp;
+                      }),
+                      catchError( err => {
+                        console.log( err.status);
+                        status = err.status;
+                        message2 = err.error.mensaje
+
+                        if ( err.error.err) {
+                          message = err.error.err.message;
+                          if (err.error.err.code === 11000) {
+                            swal({
+                              type: 'error',
+                              title: status,
+                              text: 'Esta Subategoria en este cliente ya existe, por favor verifique e intente de nuevo'
+                            });
+                            return throwError(err);
+                          }
+                        }
+                        return throwError(err);
+                      })
+                    );
+
+  }
+
+
+  deleteCatcli(id1: any) {
+    const url = URL_API + '/catcli/catcli/' + id1;
 
     return this.http.delete(url)
                     .pipe(

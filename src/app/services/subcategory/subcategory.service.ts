@@ -119,18 +119,36 @@ export class SubcategoryService {
     }
   }
 
-  deleteSubcategory( id: string ) {
+  deleteSubcategory( id: string, idMaster: string ) {
     let url = URL_API + '/subcategories/subcategory/' + id;
     url += '?token=' + this.token
 
     return this.http.delete( url )
                     .pipe(
                       map( resp => {
+                        this.deleteMaster(idMaster)
+                        .subscribe((resp2) => {
+                          console.log(resp2);
+                        });
                         swal({
                             type: 'success',
                             title: 'DELETED!',
                             html: 'La subcategoria ha sido eliminada de manera permanente!',
                           });
+                        return true;
+                      })
+                    );
+  }
+
+  deleteMaster(id: string) {
+    let url = URL_API + '/master/master/' + id;
+    url += '?token=' + this.token
+
+    return this.http.delete( url )
+                    .pipe(
+                      map( resp => {
+                        console.log('RELACION MASTER ELIMINADA CORRECTAMENTE!');
+                        console.log(resp);
                         return true;
                       })
                     );
@@ -186,26 +204,30 @@ export class SubcategoryService {
 
 
 
-  catclisubSave(cliente: string, category: string, subcategory: string) {
+  catclisubSave(client: string, category: string, tipo: string, subcategory: string) {
 
     let message: any;
-    let url = URL_API + '/catclisub/catclisub';
-    url += '?token=' + this.token
+    const url = URL_API + '/master/master';
 
-    const catclisub = {
-        catclisub_category: category,
-        catclisub_client: cliente,
-        catclisub_subcategory: subcategory
+    const masterSub1 = {
+        master_client: client,
+        master_category: category,
+        master_subcategory1: subcategory,
+        master_type: tipo
     }
 
-    console.log(catclisub);
+    console.log(masterSub1);
 
-    return this.http.post(url, catclisub)
+    return this.http.post(url, masterSub1)
                     .pipe(
                       map( (resp: any) => {
                         console.log(resp);
-                        // swal('Cliente Creado!', 'Cliente almacenado correctamente', 'success');
-                        return resp.catclisub;
+                        const master = resp.master._id;
+                        this.insertMasterInSubcategory(subcategory, master)
+                        .subscribe( (resp2: any) => {
+                          console.log('RESPUESTA QUE RETORNA EL UPDATE DE LA SUBCATEGORIA CON MASTER: ' + resp2);
+                        });
+                        return resp.master;
                       }),
                       catchError( err => {
                         console.log( err.status);
@@ -230,6 +252,190 @@ export class SubcategoryService {
                         return throwError(err);
                       })
                     );
+  }
+
+  catclisub2Save(client: string, category: string, tipo: string, subcategory1: string, subcategory2: string) {
+
+    let message: any;
+    const url = URL_API + '/master/master';
+
+    const masterSub2 = {
+        master_client: client,
+        master_category: category,
+        master_subcategory1: subcategory1,
+        master_subcategory2: subcategory2,
+        master_type: tipo
+    }
+
+    console.log(masterSub2);
+
+    return this.http.post(url, masterSub2)
+                    .pipe(
+                      map( (resp: any) => {
+                        console.log(resp);
+                        const master = resp.master._id;
+                        this.insertMasterInSubcategory(subcategory2, master)
+                        .subscribe( (resp2: any) => {
+                          console.log('RESPUESTA QUE RETORNA EL UPDATE DE LA SUBCATEGORIA CON MASTER: ' + resp2);
+                        });
+                        return resp.master;
+                      }),
+                      catchError( err => {
+                        console.log( err.status);
+                        status = err.status;
+                        message = err.error.err.message;
+
+                        if (err.error.err.code === 11000) {
+                          swal({
+                            type: 'error',
+                            title: status,
+                            text: 'Esta Subategoria en esta categoria con este cliente ya existe, por favor verifique e intente de nuevo'
+                          });
+                          return throwError(err);
+                        }
+
+                        swal({
+                          type: 'error',
+                          title: status,
+                          text: message
+                        });
+
+                        return throwError(err);
+                      })
+                    );
+  }
+
+  catclisub3Save(client: string, category: string, tipo: string, subcategory1: string, subcategory2: string, subcategory3: string) {
+
+    let message: any;
+    const url = URL_API + '/master/master';
+
+    const masterSub3 = {
+        master_client: client,
+        master_category: category,
+        master_subcategory1: subcategory1,
+        master_subcategory2: subcategory2,
+        master_subcategory3: subcategory3,
+        master_type: tipo
+    }
+
+    console.log(masterSub3);
+
+    return this.http.post(url, masterSub3)
+                    .pipe(
+                      map( (resp: any) => {
+                        console.log(resp);
+                        const master = resp.master._id;
+                        this.insertMasterInSubcategory(subcategory3, master)
+                        .subscribe( (resp2: any) => {
+                          console.log('RESPUESTA QUE RETORNA EL UPDATE DE LA SUBCATEGORIA CON MASTER: ' + resp2);
+                        });
+                        return resp.master;
+                      }),
+                      catchError( err => {
+                        console.log( err.status);
+                        status = err.status;
+                        message = err.error.err.message;
+
+                        if (err.error.err.code === 11000) {
+                          swal({
+                            type: 'error',
+                            title: status,
+                            text: 'Esta Subategoria en esta categoria con este cliente ya existe, por favor verifique e intente de nuevo'
+                          });
+                          return throwError(err);
+                        }
+
+                        swal({
+                          type: 'error',
+                          title: status,
+                          text: message
+                        });
+
+                        return throwError(err);
+                      })
+                    );
+  }
+
+  // tslint:disable-next-line:max-line-length
+  catclisub4Save(client: string, category: string, tipo: string, subcategory1: string, subcategory2: string, subcategory3: string, subcategory4: string) {
+
+    let message: any;
+    const url = URL_API + '/master/master';
+
+    const masterSub4 = {
+        master_client: client,
+        master_category: category,
+        master_subcategory1: subcategory1,
+        master_subcategory2: subcategory2,
+        master_subcategory3: subcategory3,
+        master_subcategory4: subcategory4,
+        master_type: tipo
+    }
+
+    console.log(masterSub4);
+
+    return this.http.post(url, masterSub4)
+                    .pipe(
+                      map( (resp: any) => {
+                        console.log(resp);
+                        const master = resp.master._id;
+                        this.insertMasterInSubcategory(subcategory4, master)
+                        .subscribe( (resp2: any) => {
+                          console.log('RESPUESTA QUE RETORNA EL UPDATE DE LA SUBCATEGORIA CON MASTER: ' + resp2);
+                        });
+                        return resp.master;
+                      }),
+                      catchError( err => {
+                        console.log( err.status);
+                        status = err.status;
+                        message = err.error.err.message;
+
+                        if (err.error.err.code === 11000) {
+                          swal({
+                            type: 'error',
+                            title: status,
+                            text: 'Esta Subategoria en esta categoria con este cliente ya existe, por favor verifique e intente de nuevo'
+                          });
+                          return throwError(err);
+                        }
+
+                        swal({
+                          type: 'error',
+                          title: status,
+                          text: message
+                        });
+
+                        return throwError(err);
+                      })
+                    );
+  }
+
+  insertMasterInSubcategory(subcategory: string, master: string) {
+    let message: any;
+    const url = URL_API + '/subcategories/subcategory/' + subcategory + '/master/' + master;
+    return this.http.put(url, master)
+                    .pipe(
+                      map( (resp: any) => {
+                        console.log(resp);
+                        console.log('ACTUALIZO CORRECTAMENTE LA CATEGORIA INSERTANDO EL MASTER');
+                        return true;
+                      }),
+                      catchError( err => {
+                        console.log( err.status);
+                        status = err.status;
+                        message = err.error.err.message;
+
+                        swal({
+                          type: 'error',
+                          title: status,
+                          text: message
+                        });
+
+                        return throwError(err);
+                      })
+                    );
+
   }
 
   catcliSubLoad(id: string) {
@@ -286,5 +492,51 @@ export class SubcategoryService {
                       } )
                     );
   }
+
+  uploadFile( file: File, id: string ) {
+    let updated;
+    if (file) {
+    return this._uploadService.uploadFile( 'files', file, 'subcategories', id )
+                       .then( ( resp: any ) => {
+                        console.log('RESPUESTA DESDE EL UPLOAD SERVICE: ');
+                        console.log(resp.subcatUpdated);
+                        updated = resp.subcatUpdated;
+                        return updated;
+                       })
+                       .catch( resp => {
+                         console.log(resp);
+                       });
+    } else {
+      return;
+    }
+  }
+
+  deleteFile(id: string) {
+    let message: any;
+    let url = URL_API + '/subcategories/subcategory/deleteFile/' + id;
+    url += '?token=' + this.token;
+    return this.http.put(url, id)
+                    .pipe(
+                      map( (resp: any) => {
+                        console.log('RESPUESTA DESDE EL SERVICE: ' + resp);
+                        swal('Deleted!', 'The subcategory file was deleted!', 'success');
+                        return resp;
+                      }),
+                      catchError( err => {
+                        console.log( err.status);
+                        status = err.status;
+                        message = err.error.err.message;
+
+                        swal({
+                          type: 'error',
+                          title: status,
+                          text: message
+                        });
+
+                        return throwError(err);
+                      })
+                    );
+  }
+
 
 }

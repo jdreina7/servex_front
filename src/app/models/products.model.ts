@@ -8,6 +8,7 @@ export class Product {
         public prod_category: string,
         public prod_subcategory: string,
         public prod_state?: string,
+        public prod_master?: string,
         public _id?: BigInteger,
     ) {}
 }

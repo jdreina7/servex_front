@@ -43,10 +43,37 @@
                       <div class="row" animated="fadeIn">
                         <div class="form-group col-md-12">
                           <h4>Seleccione la categoria del cliente</h4>
-                            <ng-select [disabled]="subcategoria.subcat_client === ''" (clear)="inactiveFields2()" [items]="categories" bindLabel="catcli_category.cat_name" bindValue="catcli_category._id" name="subcategoria.subcat_category" [virtualScroll]="true" placeholder="Select clients"
+                            <ng-select (change)="loadSubcat1()" (clear)="inactiveFields2()"  [disabled]="subcategoria.subcat_client === ''" (clear)="inactiveFields2()" [items]="categories" bindLabel="catcli_category.cat_name" bindValue="catcli_category._id" name="subcategoria.subcat_category" [virtualScroll]="true" placeholder="Select category"
                             [(ngModel)]="subcategoria.subcat_category">
                           </ng-select>
                           
+                        </div>
+                      </div>
+
+                      <div *ngIf="subcategories1.length > 0" class="row" animated="fadeIn">
+                        <div class="form-group col-md-12">
+                          <h4>Select a subcategory (OPTIONAL)</h4>
+                            <ng-select (change)="loadSubcat2()" (clear)="inactiveFields3()"  [disabled]="subcategoria.subcat_client === ''" (clear)="inactiveFields2()" [items]="subcategories1" bindLabel="master_subcategory1.subcat_name" bindValue="master_subcategory1._id" name="subcategoria.subcat_subcategory1" [virtualScroll]="true" placeholder="Select a subcategory"
+                            [(ngModel)]="subcategoria.subcat_subcategory1">
+                          </ng-select>
+                        </div>
+                      </div>
+
+                      <div *ngIf="subcategories2.length > 0" class="row" animated="fadeIn">
+                        <div class="form-group col-md-12">
+                          <h4>Select a subcategory level 2 (OPTIONAL)</h4>
+                            <ng-select (change)="loadSubcat3()" (clear)="inactiveFields4()"  [disabled]="subcategoria.subcat_client === ''" (clear)="inactiveFields2()" [items]="subcategories2" bindLabel="master_subcategory2.subcat_name" bindValue="master_subcategory2._id" name="subcategoria.subcat_subcategory2" [virtualScroll]="true" placeholder="Select a subcategory"
+                            [(ngModel)]="subcategoria.subcat_subcategory2">
+                          </ng-select>
+                        </div>
+                      </div>
+
+                      <div *ngIf="subcategories3.length > 0" class="row" animated="fadeIn">
+                        <div class="form-group col-md-12">
+                          <h4>Select a subcategory level 3 (OPTIONAL)</h4>
+                            <ng-select (change)="lastSubcategory()" (clear)="inactiveFields5()"  [disabled]="subcategoria.subcat_client === ''" (clear)="inactiveFields2()" [items]="subcategories3" bindLabel="master_subcategory3.subcat_name" bindValue="master_subcategory3._id" name="subcategoria.subcat_subcategory3" [virtualScroll]="true" placeholder="Select a subcategory"
+                            [(ngModel)]="subcategoria.subcat_subcategory3">
+                          </ng-select>
                         </div>
                       </div>
 
@@ -59,6 +86,15 @@
                           <input type="text" [disabled]="subcategoria.subcat_category === ''" [(ngModel)]="subcategoria.subcat_description" minlength="3" class="form-control"
                             placeholder="Description" name="subcat_description">
                         </div>
+                      </div>
+
+                      <div class="form-group col-md-12 text-center">
+                        <button [disabled]="subcategoria.subcat_name === ''" class="btn btn-success-servex" type="button" *ngIf="!fileSubir2" (click)="callUploadFileProd()">Select ZIP file</button>
+                        <button class="btn btn-success-servex" type="button" *ngIf="fileSubir2" (click)="callUploadFileProd()">File: {{fileSubirName}}</button>
+                      </div>
+                      <div class="form-group col-md-12" style="display: none !important">
+                        <input (change)="selectFile( $event.target.files[0])" name="subcat_file" type="file" class="custom-file-input" id="inputGroupFile02" name="inputGroupFile02">
+                        <span class="custom-file-control"></span>
                       </div>
                       <p *ngIf="alert" class="alert-danger alert-servex-danger">Para almacenar una subcategoría debe seleccionar un <strong>cliente</strong> y una <strong>categoría padre</strong>!</p>
                     </div>
@@ -120,8 +156,32 @@
                             </div>
                             <div class="form-group col-md-12">
                                 <h4>Categoría del Cliente</h4>
-                              <input type="text" minlength="3" class="form-control" [(ngModel)]="subcategoria.subcat_category['cat_name']"
+                                <input type="text" minlength="3" class="form-control" [(ngModel)]="subcategoria.subcat_category['cat_name']"
                                 placeholder="Category" name="subcat_category" required disabled="true">
+                            </div>
+                          </div>
+
+                          <div class="row" *ngIf="subcategoria.subcat_subcategory1">
+                            <div class="form-group col-md-12">
+                              <h4>Subcategory level 1</h4>
+                              <input type="text" [(ngModel)]="subcategoria.subcat_subcategory1['subcat_name']" minlength="3" class="form-control"
+                                placeholder="Subcategory" name="subcat_subcategory1" required disabled="true">
+                            </div>
+                          </div>
+
+                          <div class="row" *ngIf="subcategoria.subcat_subcategory2">
+                            <div class="form-group col-md-12">
+                                <h4>Subcategory Level 2</h4>
+                                <input type="text" minlength="3" class="form-control" [(ngModel)]="subcategoria.subcat_subcategory2['subcat_name']"
+                                placeholder="Category" name="subcat_subcategory2" required disabled="true">
+                            </div>
+                          </div>
+
+                          <div class="row" *ngIf="subcategoria.subcat_subcategory3">
+                            <div class="form-group col-md-12">
+                                <h4>Subcategory Level 3</h4>
+                                <input type="text" minlength="3" class="form-control" [(ngModel)]="subcategoria.subcat_subcategory3['subcat_name']"
+                                placeholder="Category" name="subcat_subcategory3" required disabled="true">
                             </div>
                           </div>
   
@@ -136,6 +196,23 @@
                             <input type="text" [(ngModel)]="subcategoria.subcat_description" minlength="3" class="form-control"
                               placeholder="Description" name="subcat_description">
                           </div>
+                        </div>
+                        <hr>
+                        <div class="form-group col-md-12 text-center">
+                          <button [disabled]="subcategoria.subcat_name === ''" class="btn btn-success-servex" type="button" *ngIf="!fileSubir2" (click)="callUploadFileProd()"><i class="fa fa-cloud-upload"></i> Upload new ZIP</button>
+                          <button class="btn btn-success-servex" type="button" *ngIf="fileSubir2" (click)="callUploadFileProd()">File: {{fileSubirName}}</button>
+                        </div>
+                        <div class="form-group col-md-12" style="display: none !important">
+                          <input (change)="selectFile( $event.target.files[0])" name="subcat_file" type="file" class="custom-file-input" id="inputGroupFile02" name="inputGroupFile02">
+                          <span class="custom-file-control"></span>
+                        </div>
+                        <div class="form-group col-md-12 text-center">
+                          <button class="btn servex_primary_btn3" type="button" *ngIf="subcategoria.subcat_file && subcategoria.subcat_file !== ''" (click)="downloadFile(subcategoria.subcat_file)"><i class="fa fa-cloud-download"></i> Download current ZIP file {{subcategoria.subcat_file}}</button>
+                          <button [disabled]="subcategoria.subcat_file === null || subcategoria.subcat_file === ''" class="btn servex_primary_btn3" type="button" *ngIf="subcategoria.subcat_file === null || subcategoria.subcat_file === ''" (click)="callUploadFileProd()">This category not have files to download</button>
+                        </div>
+
+                        <div class="form-group col-md-12 text-center" *ngIf="subcategoria.subcat_file && subcategoria.subcat_file !== ''">
+                          <button class="btn btn-danger-servex" type="button" (click)="deleteFiles(subcategoria._id)"><i class="fa fa-trash"></i> Delete ZIP file</button>
                         </div>
 
                         <p *ngIf="alert" class="alert-danger alert-servex-danger">Para almacenar una subcategoría debe seleccionar un <strong>cliente</strong> y una <strong>categoría padre</strong>!</p>

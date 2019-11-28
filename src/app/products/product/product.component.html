@@ -43,7 +43,7 @@
                       <div class="row" animated="fadeIn">
                         <div class="form-group col-md-12">
                           <h4>Seleccione la categoria del cliente</h4>
-                            <ng-select (change)="loadCatCliSub()" [disabled]="product.prod_client === ''" (clear)="inactiveFields2()" [items]="categorias" bindLabel="catcli_category.cat_name" bindValue="catcli_category._id" name="product.prod_category" [virtualScroll]="true" placeholder="Select category"
+                            <ng-select (change)="loadSubcategoriesFromSubcategory()" [disabled]="product.prod_client === ''" (clear)="inactiveFields2()" [items]="categorias" bindLabel="catcli_category.cat_name" bindValue="catcli_category._id" name="product.prod_category" [virtualScroll]="true" placeholder="Select category"
                             [(ngModel)]="product.prod_category">
                           </ng-select>
                           
@@ -53,23 +53,22 @@
                       <div class="row" animated="fadeIn">
                           <div class="form-group col-md-12">
                             <h4>Seleccione la subcategoria del cliente</h4>
-                              <ng-select [disabled]="subcategorias.length <= 0" (clear)="inactiveFields2()" [items]="subcategorias" bindLabel="catclisub_subcategory.subcat_name" bindValue="catclisub_subcategory._id" name="product.prod_subcategory" [virtualScroll]="true" placeholder="Select subcategory"
+                              <ng-select [disabled]="subcategorias.length <= 0" (clear)="inactiveFields2()" [items]="subcategorias" bindLabel="subcat_name" bindValue="_id" name="product.prod_subcategory" [virtualScroll]="true" placeholder="Select subcategory"
                               [(ngModel)]="product.prod_subcategory">
                             </ng-select>
                             
                           </div>
                         </div>
-                      <p *ngIf="!p_admite_subcat" class="alert-warning alert-servex-danger"><i class="fa fa-exclamation-triangle fa-beat" aria-hidden="true"></i> La categoría seleccionada de este cliente no está habilitada para asignarle subcategorías  y tampoco tienen ninguna asociada, <strong>el producto se creará únicamente bajo la categoría padre</strong>!</p>
+                      <!--<p *ngIf="!p_admite_subcat" class="alert-warning alert-servex-danger"><i class="fa fa-exclamation-triangle fa-beat" aria-hidden="true"></i> La categoría seleccionada de este cliente no está habilitada para asignarle subcategorías  y tampoco tienen ninguna asociada, <strong>el producto se creará únicamente bajo la categoría padre</strong>!</p>
                       <p *ngIf="p_no_tiene_sub_asignadas" class="alert-danger alert-servex-danger"><i class="fa fa-ban fa-beat" aria-hidden="true"></i> La categoría seleccionada de este cliente exige que tenga una subcategoría, pero no tiene ninguna asociada, para poder crear un producto en esta categoría, <strong>primero deberá asignarle una subcategoría en el menú Subcategorías</strong>.</p>
-                      <p *ngIf="alert" class="alert-info alert-servex-danger"><i class="fa fa-info-circle fa-beat" aria-hidden="true"></i> <strong> No olvides </strong>que si seleccionaste una categoría con subcategorías habilitadas, <strong>tienes que seleccionar una subcategoría.</strong></p>
-
+                      <p *ngIf="alert" class="alert-info alert-servex-danger"><i class="fa fa-info-circle fa-beat" aria-hidden="true"></i> <strong> No olvides </strong>que si seleccionaste una categoría con subcategorías habilitadas, <strong>tienes que seleccionar una subcategoría.</strong></p> -->
                       <div class="row">
                         <div class="form-group col-md-12">
-                          <input type="text" [disabled]="product.prod_category === ''" [(ngModel)]="product.prod_name" minlength="3" class="form-control"
+                          <input type="text" [disabled]="product.prod_client === ''" [(ngModel)]="product.prod_name" minlength="3" class="form-control"
                             placeholder="Name" name="prod_name" required>
                         </div>
                         <div class="form-group col-md-12">
-                          <input type="text" [disabled]="product.prod_category === ''" [(ngModel)]="product.prod_description" minlength="3" class="form-control"
+                          <input type="text" [disabled]="product.prod_client === ''" [(ngModel)]="product.prod_description" minlength="3" class="form-control"
                             placeholder="Description" name="prod_description">
                         </div>
                         <div class="form-group col-md-12" style="display: none !important">
@@ -149,7 +148,7 @@
                               </div>
                             </div>
       
-                            <div class="row" animated="fadeIn">
+                            <div *ngIf="product.prod_category" class="row" animated="fadeIn">
                               <div class="form-group col-md-12">
                                 <h4>Categoría del Cliente</h4>
                                 <input type="text" disabled="true" [(ngModel)]="product.prod_category['cat_name']" minlength="3" class="form-control"
@@ -157,7 +156,7 @@
                               </div>
                             </div>
       
-                            <div class="row" animated="fadeIn">
+                            <div *ngIf="product.prod_subcategory"  class="row" animated="fadeIn">
                                 <div class="form-group col-md-12">
                                   <h4>Subategoría</h4>
                                   <input type="text" disabled="true" [(ngModel)]="product.prod_subcategory['subcat_name']" minlength="3" class="form-control"

@@ -9,7 +9,6 @@ import { CONTENT_ROUTES } from './shared/routes/content-layout.routes';
 
 import { AuthGuard } from './shared/auth/auth-guard.service';
 import { LoginGuard } from './services/guards/login.guard';
-import { FiltersGuard } from './services/guards/filters.guard';
 
 const appRoutes: Routes = [
   {
@@ -21,8 +20,7 @@ const appRoutes: Routes = [
   { path: '', component: ContentLayoutComponent, data: { title: 'content Views' }, children: CONTENT_ROUTES },
   {
     path: 'filters',
-    redirectTo: 'pages/servexgallery',
-    canActivate: [FiltersGuard]
+    redirectTo: 'pages/servexgallery'
   },
   {
     path: '**',

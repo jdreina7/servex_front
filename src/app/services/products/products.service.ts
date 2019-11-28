@@ -134,7 +134,7 @@ export class ProductsService {
 
   uploadFileProduct( file: File, id: string ) {
     if (file) {
-      this._uploadService.uploadFile( 'files', file, 'products', id )
+    return this._uploadService.uploadFile( 'files', file, 'products', id )
                        .then( ( resp: any ) => {
                         console.log(resp.productUpdated);
                         return true;
@@ -147,18 +147,36 @@ export class ProductsService {
     }
   }
 
-  deleteProduct( id: string ) {
+  deleteProduct( id: string, idMaster: string ) {
     let url = URL_API + '/products/product/' + id;
     url += '?token=' + this.token
 
     return this.http.delete( url )
                     .pipe(
                       map( resp => {
+                        this.deleteMaster(idMaster)
+                        .subscribe((resp2) => {
+                          console.log(resp2);
+                        });
                         swal({
                             type: 'success',
                             title: 'DELETED!',
                             html: 'El Producto ha sido eliminado de manera permanente!',
                           });
+                        return true;
+                      })
+                    );
+  }
+
+  deleteMaster(id: string) {
+    let url = URL_API + '/master/master/' + id;
+    url += '?token=' + this.token
+
+    return this.http.delete( url )
+                    .pipe(
+                      map( resp => {
+                        console.log('RELACION MASTER ELIMINADA CORRECTAMENTE!');
+                        console.log(resp);
                         return true;
                       })
                     );
@@ -204,6 +222,98 @@ export class ProductsService {
   }
   // SERVICIOS COMPLEMENTARIOS
 
+  getSubcategories(idClient: string, idCategory: string) {
+    const url = URL_API + '/subcategories/subcategory/client/' + idClient + '/category/' + idCategory;
+    return this.http.get(url)
+                    .pipe(
+                      map( (resp: any) => {
+                        console.log(resp.subcategorias);
+                        return resp.subcategorias;
+                      })
+                    );
+  }
+
+   // tslint:disable-next-line:max-line-length
+   insertProductMaster(client: string, category: string, tipo: string, subcategory1: string, product: string) {
+
+    let message: any;
+    const url = URL_API + '/master/master';
+
+    const masterSub5 = {
+        master_client: client,
+        master_category: category,
+        master_subcategory1: subcategory1,
+        master_subcategory2: null,
+        master_subcategory3: null,
+        master_subcategory4: null,
+        master_type: tipo,
+        master_product: product
+    }
+
+    console.log(masterSub5);
+
+    return this.http.post(url, masterSub5)
+                    .pipe(
+                      map( (resp: any) => {
+                        console.log(resp);
+                        const master = resp.master._id;
+                        this.insertMasterInProduct(product, master)
+                        .subscribe( (resp2: any) => {
+                          console.log('RESPUESTA QUE RETORNA EL UPDATE DEL PRODUCTO CON MASTER: ' + resp2);
+                        });
+                        return resp.master;
+                      }),
+                      catchError( err => {
+                        console.log( err.status);
+                        status = err.status;
+                        message = err.error.err.message;
+
+                        if (err.error.err.code === 11000) {
+                          swal({
+                            type: 'error',
+                            title: status,
+                            text: 'Esta Subategoria en esta categoria con este cliente ya existe, por favor verifique e intente de nuevo'
+                          });
+                          return throwError(err);
+                        }
+
+                        swal({
+                          type: 'error',
+                          title: status,
+                          text: message
+                        });
+
+                        return throwError(err);
+                      })
+                    );
+  }
+
+  insertMasterInProduct(product: string, master: string) {
+    let message: any;
+    const url = URL_API + '/products/product/' + product + '/master/' + master;
+    return this.http.put(url, master)
+                    .pipe(
+                      map( (resp: any) => {
+                        console.log(resp);
+                        console.log('ACTUALIZO CORRECTAMENTE EL PRODUCTO INSERTANDO EL MASTER');
+                        return true;
+                      }),
+                      catchError( err => {
+                        console.log( err.status);
+                        status = err.status;
+                        message = err.error.err.message;
+
+                        swal({
+                          type: 'error',
+                          title: status,
+                          text: message
+                        });
+
+                        return throwError(err);
+                      })
+                    );
+
+  }
 
 
 

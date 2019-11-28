@@ -217,7 +217,7 @@ download(nombreArchivo: string) {
     });
     return;
   }
-  this._downloadService.download(nombreArchivo)
+  this._downloadService.download(nombreArchivo, 'products')
   .subscribe(
       data => saveAs(data, nombreArchivo),
       // data => console.log(data, nombreArchivo),
