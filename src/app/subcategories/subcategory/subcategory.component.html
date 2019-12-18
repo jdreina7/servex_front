@@ -103,6 +103,7 @@
                         <input (change)="selectImg( $event.target.files[0])"  name="subcat_img" type="file" class="custom-file-input" id="inputGroupFile01" name="inputGroupFile01">
                         <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
                     </div>
+                    <p *ngIf="alertSize" class="alert-warning alert-servex-danger"><strong><i class="fa fa-exclamation-triangle fa-beat" aria-hidden="true"></i> WARNING!:</strong> You are uploading a big file, this will be take a few seconds while we upload the file to the server.</p>
   
                     <div class="form-actions">
                       <a [routerLink]="['/subcategories']" routerLinkActive="router-link-active"
@@ -207,15 +208,16 @@
                           <span class="custom-file-control"></span>
                         </div>
                         <div class="form-group col-md-12 text-center">
-                          <button class="btn servex_primary_btn3" type="button" *ngIf="subcategoria.subcat_file && subcategoria.subcat_file !== ''" (click)="downloadFile(subcategoria.subcat_file)"><i class="fa fa-cloud-download"></i> Download current ZIP file {{subcategoria.subcat_file}}</button>
+                          <button class="btn servex_primary_btn3" type="button" *ngIf="subcategoria.subcat_file && subcategoria.subcat_file !== ''" (click)="downloadFile()"><i class="fa fa-cloud-download"></i> Download current ZIP file {{subcategoria.subcat_file}}</button>
                           <button [disabled]="subcategoria.subcat_file === null || subcategoria.subcat_file === ''" class="btn servex_primary_btn3" type="button" *ngIf="subcategoria.subcat_file === null || subcategoria.subcat_file === ''" (click)="callUploadFileProd()">This category not have files to download</button>
+                          <a href="{{url_api}}/files/subcategories/{{subcategoria.subcat_file}}" id="downloadFile" style="display: none !important"></a>
                         </div>
 
                         <div class="form-group col-md-12 text-center" *ngIf="subcategoria.subcat_file && subcategoria.subcat_file !== ''">
                           <button class="btn btn-danger-servex" type="button" (click)="deleteFiles(subcategoria._id)"><i class="fa fa-trash"></i> Delete ZIP file</button>
                         </div>
 
-                        <p *ngIf="alert" class="alert-danger alert-servex-danger">Para almacenar una subcategoría debe seleccionar un <strong>cliente</strong> y una <strong>categoría padre</strong>!</p>
+                        <p *ngIf="alertSize" class="alert-warning alert-servex-danger"><strong><i class="fa fa-exclamation-triangle fa-beat" aria-hidden="true"></i> WARNING!:</strong> You are uploading a big file, this will be take a few seconds while we upload the file to the server.</p>
                       </div>
     
                       <div class="custom-file  mx-auto d-block" style="display: none !important">

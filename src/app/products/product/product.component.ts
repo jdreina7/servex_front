@@ -14,6 +14,7 @@ import { URL_API } from '../../config/config';
 })
 export class ProductComponent implements OnInit {
 
+  url_api = URL_API;
   cargando = false;
   product: Product = new Product('', '', '', '', '', '', '');
 
@@ -37,6 +38,7 @@ export class ProductComponent implements OnInit {
   alert = false;
   alert2 = false;
   tipoR = '';
+  alertSize = false;
 
   descargarImg = URL_API;
 
@@ -120,14 +122,27 @@ export class ProductComponent implements OnInit {
                         .subscribe( (producto: any) => {
                           this._productService.changeImgProduct( this.imgSubir, producto._id.toString() )
                           if (this.fileProdSubir) {
+                            swal({
+                              title: 'Uploading file...',
+                              // tslint:disable-next-line:max-line-length
+                              html: '<div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div>',
+                              showConfirmButton: false
+                            })
                             this._productService.uploadFileProduct( this.fileProdSubir, producto._id.toString() )
                             .then( (resp2: any) => {
+                              swal('Producto Creado!', 'Product almacenado correctamente', 'success');
                               this.obtenerProducto(producto._id.toString())
                             })
                             .catch( resp2 => {
                               console.log(resp2);
                             });
                         }
+
+                        if (!this.fileProdSubir) {
+                          swal('Producto Creado!', 'Product almacenado correctamente', 'success');
+                          this.obtenerProducto(producto._id.toString())
+                        }
+
                           this._productService.insertProductMaster(
                                                               client,
                                                               category,
@@ -153,16 +168,27 @@ export class ProductComponent implements OnInit {
                     .subscribe( (producto: any) => {
                         this._productService.changeImgProduct( this.imgSubir, this.product._id.toString() )
                         if (this.fileProdSubir) {
+                          swal({
+                            title: 'Uploading file...',
+                            // tslint:disable-next-line:max-line-length
+                            html: '<div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div>',
+                            showConfirmButton: false
+                          })
                             this._productService.uploadFileProduct( this.fileProdSubir, this.product._id.toString() )
                             .then( (resp2: any) => {
+                              swal('Actualizado!', 'Producto actualizado correctamente', 'success');
                               this.obtenerProducto(producto._id.toString())
                             })
                             .catch( resp2 => {
                               console.log(resp2);
                             });
                         }
+
+                        if (!this.fileProdSubir) {
+                          swal('Actualizado!', 'Producto actualizado correctamente', 'success');
+                          this.obtenerProducto(producto._id.toString())
+                        }
                     });
-    this.fileProdSubir2 = false;
   }
 
   obtenerProducto( id: string) {
@@ -171,6 +197,8 @@ export class ProductComponent implements OnInit {
                           console.log(producto);
                           this.product = producto;
                           this.fileProdSubir2 = null;
+                          this.fileProdSubir = null;
+                          this.alertSize = false;
                           this.fileProdSubirName = '';
                           this.descargarImg += '/server/files/products/' + this.product.prod_file;
                         });
@@ -230,10 +258,24 @@ selectFileProduct( archivo: File ) {
       swal({
           type: 'error',
           title: 'Error type',
-          html: 'Solo están permitidos archivos de extención .zip.'
+          html: 'Only ZIP files.'
       });
       this.fileProdSubir = null;
       return;
+  }
+
+  if (archivo.size >= 100000000 ) {
+    swal({
+      type: 'error',
+      title: 'Max File Upload Error - MAX 100 MB',
+      html: 'This file is too big, please consider upload another file more lightweight'
+  });
+  this.fileProdSubir = null;
+  return;
+  }
+
+  if (archivo.size > 15000000 && archivo.size <= 50000000 ) {
+    this.alertSize = true;
   }
 
   this.fileProdSubir = archivo;
@@ -251,7 +293,7 @@ selectFileProduct( archivo: File ) {
 }
 
 loadClients() {
-  this._clientService.loadClients()
+  this._clientService.loadClients2()
     .subscribe((resp: any) => {
       console.log(resp);
       this.clientes = resp.clients;
@@ -378,6 +420,8 @@ inactiveFields4() {
 }
 
 
-
+downloadFile() {
+  document.getElementById('downloadFile').click();
+}
 
 }

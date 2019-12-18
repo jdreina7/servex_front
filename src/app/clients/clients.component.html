@@ -70,9 +70,9 @@
                   </thead>
                   <tbody>
                     <tr *ngFor="let client of clientes">
-                      <td class="w70 middle-servex"><img [src]="client.client_logo | image:'clients'" alt="User Image" class="rounded-circle width-50">
+                      <td class="w70 middle-servex"><img [src]="client.client_logo | image:'clients'" alt="User Image" class="servex-clientes-logo">
                       </td>
-                      <td class="middle-servex">{{ client.client_bussiness_name }}</td>
+                      <td class="middle-servex w500">{{ client.client_bussiness_name }}</td>
                       <td class="middle-servex">
                           <a [routerLink]="['/clients/client', client._id]" routerLinkActive="router-link-active"  class="btn btn-secundary-servex mar-10"> <i class="fa fa-edit"></i></a>
                         <button *ngIf="client.client_state" class="btn btn-danger-servex" (click)="deleteClient(client)"><i

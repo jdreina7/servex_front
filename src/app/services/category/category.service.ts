@@ -50,7 +50,6 @@ export class CategoryService {
                     .pipe(
                       map( (resp: any) => {
                         console.log(resp);
-                        swal('Categoria Creada!', 'Categoria almacenada correctamente', 'success');
                         return resp.categoria;
                       }),
                       catchError( err => {
@@ -77,7 +76,6 @@ export class CategoryService {
                     .pipe(
                       map( (resp: any) => {
                         console.log('RESPUESTA DESDE EL SERVICE: ' + resp);
-                        swal('Actualizado!', 'Categoria actualizada correctamente', 'success');
                         return resp;
                       }),
                       catchError( err => {

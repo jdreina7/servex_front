@@ -51,7 +51,6 @@ export class ProductsService {
                     .pipe(
                       map( (resp: any) => {
                         console.log(resp);
-                        swal('Producto Creado!', 'Product almacenado correctamente', 'success');
                         return resp.producto;
                       }),
                       catchError( err => {
@@ -88,7 +87,6 @@ export class ProductsService {
                     .pipe(
                       map( (resp: any) => {
                         console.log(resp);
-                        swal('Actualizado!', 'Producto actualizado correctamente', 'success');
                         return true;
                       }),
                       catchError( err => {

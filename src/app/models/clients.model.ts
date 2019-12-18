@@ -6,7 +6,9 @@ export class Client {
         public client_description: string,
         public client_email: string,
         public client_logo: string,
+        public client_file: string,
         public client_state?: string,
+        public client_master?: string,
         public _id?: BigInteger,
     ) {}
 }

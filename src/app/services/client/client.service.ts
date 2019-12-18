@@ -50,7 +50,6 @@ export class ClientService {
                     .pipe(
                       map( (resp: any) => {
                         console.log(resp);
-                        swal('Cliente Creado!', 'Cliente almacenado correctamente', 'success');
                         return resp.cliente;
                       }),
                       catchError( err => {
@@ -77,7 +76,6 @@ export class ClientService {
                     .pipe(
                       map( (resp: any) => {
                         console.log(resp);
-                        swal('Actualizado!', 'Cliente actualizado correctamente', 'success');
                         return true;
                       }),
                       catchError( err => {
@@ -178,6 +176,11 @@ export class ClientService {
     return this.http.get( url );
   }
 
+  loadClients2() {
+    const url = URL_API + '/clients';
+    return this.http.get( url );
+  }
+
   searchClient( termino: string ) {
     const url = URL_API + '/search/all/' + termino;
 
@@ -219,6 +222,13 @@ export class ClientService {
                       map( (resp: any) => {
                         console.log(resp);
                         // swal('Cliente Creado!', 'Cliente almacenado correctamente', 'success');
+                        this.insertRelationInMaster(id, category)
+                        .subscribe( (master) => {
+                          this.insertMasterInClient(id, master._id)
+                          .subscribe((hecho) => {
+                            console.log('LA RESPUESTA DE LA INSERCION DEL MASTER EN CLIENT: ' + hecho);
+                          });
+                        });
                         return resp.catcli;
                       }),
                       catchError( err => {
@@ -230,7 +240,7 @@ export class ClientService {
                           swal({
                             type: 'error',
                             title: status,
-                            text: 'Esta Categoria en este cliente ya existe, por favor verifique e intente de nuevo'
+                            text: 'This Category in this client already exists, please check and try again.'
                           });
                           return throwError(err);
                         }
@@ -246,6 +256,85 @@ export class ClientService {
                     );
   }
 
+  insertRelationInMaster(client: string, category: string) {
+
+    let message: any;
+    const url = URL_API + '/master/master';
+
+    const masterSub4 = {
+        master_client: client,
+        master_category: category,
+        master_subcategory1: null,
+        master_subcategory2: null,
+        master_subcategory3: null,
+        master_subcategory4: null,
+        master_type: 'A'
+    }
+
+    console.log(masterSub4);
+
+    return this.http.post(url, masterSub4)
+                    .pipe(
+                      map( (resp: any) => {
+                        console.log(resp);
+                        const master = resp.master._id;
+                        this.insertMasterInClient(client, master)
+                        .subscribe( (resp2: any) => {
+                          console.log('RESPUESTA QUE RETORNA EL UPDATE DE LA SUBCATEGORIA CON MASTER: ' + resp2);
+                        });
+                        return resp.master;
+                      }),
+                      catchError( err => {
+                        console.log( err.status);
+                        status = err.status;
+                        message = err.error.err.message;
+
+                        if (err.error.err.code === 11000) {
+                          swal({
+                            type: 'error',
+                            title: status,
+                            text: 'This Subcategory in this client already exists, please check and try again.'
+                          });
+                          return throwError(err);
+                        }
+
+                        swal({
+                          type: 'error',
+                          title: status,
+                          text: message
+                        });
+
+                        return throwError(err);
+                      })
+                    );
+  }
+
+  insertMasterInClient(client: string, master: string) {
+    let message: any;
+    const url = URL_API + '/clients/client/' + client + '/master/' + master;
+    return this.http.put(url, master)
+                    .pipe(
+                      map( (resp: any) => {
+                        console.log(resp);
+                        console.log('ACTUALIZO CORRECTAMENTE EL CLIENTE INSERTANDO EL MASTER');
+                        return true;
+                      }),
+                      catchError( err => {
+                        console.log( err.status);
+                        status = err.status;
+                        message = err.error.err.message;
+
+                        swal({
+                          type: 'error',
+                          title: status,
+                          text: message
+                        });
+
+                        return throwError(err);
+                      })
+                    );
+
+  }
 
   catcliClienteLoad(id: string) {
     let message: any;
@@ -270,24 +359,23 @@ export class ClientService {
                             swal({
                               type: 'error',
                               title: status,
-                              text: 'Esta Subategoria en este cliente ya existe, por favor verifique e intente de nuevo'
+                              text: 'This Subcategory in this client already exists, please check and try again.'
                             });
                             return throwError(err);
                           }
                         }
 
-                        swal({
-                          type: 'info',
-                          text: 'Este cliente no tiene asignadas categorias aún, ' +
-                          'puede empezar agregandole una en el apartado de \'Asignar categorías a cliente\' en esta misma ventana.'
-                        });
+                        // swal({
+                        //   type: 'info',
+                        //   text: 'Este cliente no tiene asignadas categorias aún, ' +
+                        //   'puede empezar agregandole una en el apartado de \'Asignar categorías a cliente\' en esta misma ventana.'
+                        // });
 
                         return throwError(err);
                       })
                     );
 
   }
-
 
   catcliLoad(id: string) {
     let message: any;
@@ -312,7 +400,7 @@ export class ClientService {
                             swal({
                               type: 'error',
                               title: status,
-                              text: 'Esta Subategoria en este cliente ya existe, por favor verifique e intente de nuevo'
+                              text: 'This Subcategory in this client already exists, please check and try again.'
                             });
                             return throwError(err);
                           }
@@ -353,7 +441,7 @@ export class ClientService {
                             swal({
                               type: 'error',
                               title: status,
-                              text: 'Esta Subategoria en este cliente ya existe, por favor verifique e intente de nuevo'
+                              text: 'This Subcategory in this client already exists, please check and try again.'
                             });
                             return throwError(err);
                           }
@@ -428,7 +516,7 @@ export class ClientService {
                             swal({
                               type: 'error',
                               title: status,
-                              text: 'Esta Subategoria en este cliente ya existe, por favor verifique e intente de nuevo'
+                              text: 'This Subcategory in this client already exists, please check and try again.'
                             });
                             return throwError(err);
                           }
@@ -479,6 +567,50 @@ export class ClientService {
                       })
                     );
 
+  }
+
+  uploadFile( file: File, id: string ) {
+    let updated;
+    if (file) {
+    return this._uploadService.uploadFile( 'files', file, 'clients', id )
+                       .then( ( resp: any ) => {
+                        console.log('RESPUESTA DESDE EL UPLOAD SERVICE: ');
+                        console.log(resp.clientUpdated);
+                        updated = resp.clientUpdated;
+                        return updated;
+                       })
+                       .catch( resp => {
+                         console.log(resp);
+                       });
+    } else {
+      return;
+    }
+  }
+
+  deleteFile(id: string) {
+    let message: any;
+    const url = URL_API + '/clients/client/deleteFile/' + id;
+    return this.http.put(url, id)
+                    .pipe(
+                      map( (resp: any) => {
+                        console.log('RESPUESTA DESDE EL SERVICE: ' + resp);
+                        swal('Deleted!', 'The client file was deleted!', 'success');
+                        return resp;
+                      }),
+                      catchError( err => {
+                        console.log( err.status);
+                        status = err.status;
+                        message = err.error.err.message;
+
+                        swal({
+                          type: 'error',
+                          title: status,
+                          text: message
+                        });
+
+                        return throwError(err);
+                      })
+                    );
   }
 
 }

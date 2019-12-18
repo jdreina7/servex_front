@@ -77,12 +77,14 @@
                           </div>
 
                           <div class="form-group col-md-12 text-center">
-                              <button [disabled]="product.prod_name === ''" class="btn btn-success-servex" type="button" *ngIf="!fileProdSubir2" (click)="callUploadFileProd()">Seleccionar Archivo ZIP</button>
-                              <button class="btn btn-success-servex" type="button" *ngIf="fileProdSubir2" (click)="callUploadFileProd()">Archivo: {{fileProdSubirName}}</button>
+                              <button [disabled]="product.prod_name === ''" class="btn btn-success-servex" type="button" *ngIf="!fileProdSubir2" (click)="callUploadFileProd()"><i class="fa fa-cloud-upload"></i> Select ZIP file</button>
+                              <button class="btn btn-success-servex" type="button" *ngIf="fileProdSubir2" (click)="callUploadFileProd()">File: {{fileProdSubirName}}</button>
                           </div>
 
+                          <p *ngIf="alertSize" class="alert-warning alert-servex-danger"><strong><i class="fa fa-exclamation-triangle fa-beat" aria-hidden="true"></i> WARNING!:</strong> You are uploading a big file, this will be take a few seconds while we upload the file to the server.</p>
+
                           <div class="form-group col-md-12 text-center">
-                            <p *ngIf="alert2" class="alert-danger alert-servex-danger">Por favor seleccione un archivo zip.</p>
+                            <p *ngIf="alert2" class="alert-danger alert-servex-danger">Please select a ZIP file.</p>
                           </div>
 
                         
@@ -179,16 +181,19 @@
                                 </div>
 
                                 <div class="form-group col-md-12 text-center">
-                                    <button *ngIf="product.prod_file" class="btn btn-secundary-servex" type="button"><i class="fa fa-cloud-download" aria-hidden="true"></i> Descargar archivo actual</button>
+                                    <button *ngIf="product.prod_file" class="btn btn-secundary-servex" type="button"(click)="downloadFile()"><i class="fa fa-cloud-download"></i> Download current ZIP file {{product.prod_file}}</button>
+                                    <a href="{{url_api}}/files/products/{{product.prod_file}}" id="downloadFile" style="display: none !important"></a>
                                 </div>
 
                                 <div class="form-group col-md-12 text-center">
-                                    <button [disabled]="product.prod_name === ''" class="btn btn-success-servex" type="button" *ngIf="!fileProdSubir2" (click)="callUploadFileProd()"><i class="fa fa-cloud-upload" aria-hidden="true"></i> Actualizar Archivo</button>
-                                    <button class="btn btn-success-servex" type="button" *ngIf="fileProdSubir2" (click)="callUploadFileProd()"><i class="fa fa-cloud-upload" aria-hidden="true"></i> Archivo: {{fileProdSubirName}}</button>
+                                    <button [disabled]="product.prod_name === ''" class="btn btn-success-servex" type="button" *ngIf="!fileProdSubir2" (click)="callUploadFileProd()"><i class="fa fa-cloud-upload" aria-hidden="true"></i> Update File</button>
+                                    <button class="btn btn-success-servex" type="button" *ngIf="fileProdSubir2" (click)="callUploadFileProd()"><i class="fa fa-cloud-upload" aria-hidden="true"></i> File: {{fileProdSubirName}}</button>
                                 </div>
 
+                                <p *ngIf="alertSize" class="alert-warning alert-servex-danger"><strong><i class="fa fa-exclamation-triangle fa-beat" aria-hidden="true"></i> WARNING!:</strong> You are uploading a big file, this will be take a few seconds while we upload the file to the server.</p>
+
                                 <div class="form-group col-md-12">
-                                  <p *ngIf="alert2" class="alert-danger alert-servex-danger">Por favor seleccione un archivo zip.</p>
+                                  <p *ngIf="alert2" class="alert-danger alert-servex-danger">Please select a ZIP file.</p>
                                 </div>
                               
                             </div>

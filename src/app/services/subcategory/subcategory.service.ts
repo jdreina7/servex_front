@@ -85,7 +85,6 @@ export class SubcategoryService {
                     .pipe(
                       map( (resp: any) => {
                         console.log(resp);
-                        swal('Actualizado!', 'Subcategoria actualizada correctamente', 'success');
                         return true;
                       }),
                       catchError( err => {

@@ -39,8 +39,19 @@
                                 name="client_description">
                             </div>
                         </div>
+
+                        <hr>
+                        <div class="form-group col-md-12 text-center">
+                            <button [disabled]="cliente.client_bussiness_name === ''" class="btn btn-success-servex" type="button" *ngIf="!fileSubir2" (click)="callUploadFile()">Seleccionar Archivo ZIP</button>
+                            <button class="btn btn-success-servex" type="button" *ngIf="fileSubir2" (click)="callUploadFile()">Archivo: {{fileSubirName}}</button>
+                            <p *ngIf="alertSize" class="alert-warning alert-servex-danger"><strong><i class="fa fa-exclamation-triangle fa-beat" aria-hidden="true"></i> WARNING!:</strong> You are uploading a big file, this will be take a few seconds while we upload the file to the server.</p>
+                          </div>
+                          <div class="form-group col-md-12" style="display: none !important">
+                            <input (change)="selectFile( $event.target.files[0])" name="client_file" type="file" class="custom-file-input" id="inputGroupFile02" name="inputGroupFile02">
+                            <span class="custom-file-control"></span>
+                          </div>
                     </div>
-  
+
                     <div class="custom-file  mx-auto d-block" style="display: none !important">
                         <input (change)="selectImg( $event.target.files[0])"  name="client_logo" type="file" class="custom-file-input" id="inputGroupFile01" name="inputGroupFile01">
                         <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
@@ -62,7 +73,7 @@
           </div>
   
           <div class="col-md-6">
-            <div *ngIf="!cargando" class="card max-h-410">
+            <div *ngIf="!cargando" class="card">
               <div class="card-content">
                 <div class="card-body">
                     <form class="form">
@@ -83,7 +94,7 @@
   
         <div *ngIf="idClient !== 'new'" class="row">
             <div class="col-md-6">
-              <div *ngIf="!cargando" class="card max-h-410">
+              <div *ngIf="!cargando" class="card">
                 <div class="card-content">
                   <div class="card-body">
                     <form ngNativeValidate #f="ngForm" (ngSubmit)="updateClient(f.value)" class="form">
@@ -101,13 +112,34 @@
                             </div>
                         </div>
 
+                        <hr>
+                        <div class="form-group col-md-12 text-center">
+                            <button [disabled]="cliente.client_bussiness_name === ''" class="btn btn-success-servex" type="button" *ngIf="!fileSubir2" (click)="callUploadFile()"><i class="fa fa-cloud-upload"></i> Upload new ZIP</button>
+                            <button class="btn btn-success-servex" type="button" *ngIf="fileSubir2" (click)="callUploadFile()">File: {{fileSubirName}}</button>
+                          </div>
+                          <div class="form-group col-md-12" style="display: none !important">
+                            <input (change)="selectFile( $event.target.files[0])" name="client_file" type="file" class="custom-file-input" id="inputGroupFile02" name="inputGroupFile02">
+                            <span class="custom-file-control"></span>
+                          </div>
+                          <div class="form-group col-md-12 text-center">
+                            <button class="btn servex_primary_btn3" type="button" *ngIf="cliente.client_file && cliente.client_file !== ''" (click)="downloadFile()" ><i class="fa fa-cloud-download"></i> Download current ZIP file {{cliente.client_file}}</button>
+                            <button [disabled]="cliente.client_file === null || cliente.client_file === ''" class="btn servex_primary_btn3" type="button" *ngIf="cliente.client_file === null || cliente.client_file === ''" (click)="callUploadFile()">This client not have files to download</button>
+                            <a href="{{url_api}}/files/clients/{{cliente.client_file}}" id="downloadFile" style="display: none !important"></a>
+                          </div>
+                          <p *ngIf="alertSize" class="alert-warning alert-servex-danger"><strong><i class="fa fa-exclamation-triangle fa-beat" aria-hidden="true"></i> WARNING!:</strong> You are uploading a big file, this will be take a few seconds while we upload the file to the server.</p>
+  
+                          <div class="form-group col-md-12 text-center" *ngIf="cliente.client_file && cliente.client_file !== ''">
+                            <button class="btn btn-danger-servex" type="button" (click)="deleteFiles(cliente._id)"><i class="fa fa-trash"></i> Delete ZIP file</button>
+                          </div>
+
+                        <hr>
+
                           <div class="row">
                               <div class="form-group col-md-12">
                                 <h4>Asignar categorías a cliente</h4>
                                   <ng-select [items]="categorias" bindLabel="cat_name" bindValue="_id" name="catcli" [virtualScroll]="true" placeholder="Select categories"
                                   [(ngModel)]="catcli">
                                 </ng-select>
-                                
                               </div>
                             </div>
                       </div>
@@ -134,7 +166,7 @@
             </div>
     
             <div class="col-md-6">
-              <div *ngIf="!cargando" class="card max-h-410">
+              <div *ngIf="!cargando" class="card">
                 <div class="card-content">
                   <div class="card-body">
                       <form class="form">

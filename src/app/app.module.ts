@@ -25,6 +25,7 @@ import { DragulaService } from 'ng2-dragula';
 import { AuthService } from './shared/auth/auth.service';
 import { AuthGuard } from './shared/auth/auth-guard.service';
 import { HttpModule } from '@angular/http';
+import { UserProfilePageComponent } from './pages/full-pages/user-profile/user-profile-page.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -51,7 +52,7 @@ export function createTranslateLoader(http: HttpClient) {
         provide: TranslateLoader,
         useFactory: createTranslateLoader,
         deps: [HttpClient]
-      }
+      },
     }),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCERobClkCv1U4mDijGm1FShKva_nxsGJY'

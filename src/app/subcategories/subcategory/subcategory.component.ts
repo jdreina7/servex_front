@@ -7,6 +7,7 @@ import { SubcategoryService, ClientService, DownloadfileService } from 'app/serv
 import { Category } from 'app/models/category.model';
 import { toArray } from 'rxjs/operators';
 import { Client } from '../../models/clients.model';
+import { URL_API } from 'app/config/config';
 
 @Component({
   selector: 'app-subcategory',
@@ -15,6 +16,7 @@ import { Client } from '../../models/clients.model';
 })
 export class SubcategoryComponent implements OnInit {
 
+  url_api = URL_API;
   cargando = false;
   subcategoria: Subcategory = new Subcategory('', '', '', '', '', '', '', '', '', '');
   categories = [];
@@ -45,6 +47,7 @@ export class SubcategoryComponent implements OnInit {
   subcategory2Selected = null;
   subcategory3Selected = null;
   idSubcategory3 = '';
+  alertSize = false;
 
   fileSubir: File;
   fileSubir2: any;
@@ -135,7 +138,7 @@ export class SubcategoryComponent implements OnInit {
     }
 
     if (this.flag === 2) {
-      alert('Entro al segundo juan');
+      // alert('Entro al segundo juan');
       this.tipoR = 'C'
       const client = this.subcategoria.subcat_client;
       const category = this.subcategoria.subcat_category;
@@ -157,7 +160,7 @@ export class SubcategoryComponent implements OnInit {
     }
 
     if (this.flag === 3) {
-      alert('Entro al tercero juan');
+      // alert('Entro al tercero juan');
       this.tipoR = 'D'
       const client = this.subcategoria.subcat_client;
       const category = this.subcategoria.subcat_category;
@@ -179,7 +182,7 @@ export class SubcategoryComponent implements OnInit {
     }
 
     if (this.flag === 4) {
-      alert('Entro al cuarto juan');
+      // alert('Entro al cuarto juan');
       this.tipoR = 'E'
       const client = this.subcategoria.subcat_client;
       const category = this.subcategoria.subcat_category;
@@ -219,23 +222,6 @@ export class SubcategoryComponent implements OnInit {
 
     this.alert = false;
 
-    swal({
-      title: 'Loading...',
-      html: '<div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div>',
-      timer: 3000,
-      showConfirmButton: false
-    })
-
-    if (this.fileSubir2) {
-      this._subcategoryService.uploadFile( this.fileSubir, this.subcategoria._id.toString() )
-                        .then( (resp2: any) => {
-                          this.obtenerSubcategoria(this.subcategoria._id.toString())
-                        })
-                        .catch( resp2 => {
-                          console.log(resp2);
-                        });
-    }
-
     if (this.imgTemp) {
       this._subcategoryService.changeImgSubcategory( this.imgSubir, this.subcategoria._id.toString() )
     }
@@ -243,6 +229,28 @@ export class SubcategoryComponent implements OnInit {
     this._subcategoryService.updateSubcategory(this.subcategoria)
                     .subscribe( (resp: any) => {
                         this._subcategoryService.changeImgSubcategory( this.imgSubir, this.subcategoria._id.toString() )
+
+                        if (this.fileSubir) {
+                          swal({
+                            title: 'Uploading file...',
+                            // tslint:disable-next-line:max-line-length
+                            html: '<div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div>',
+                            showConfirmButton: false
+                          })
+                          this._subcategoryService.uploadFile( this.fileSubir, this.subcategoria._id.toString() )
+                                            .then( (resp2: any) => {
+                                              swal('Actualizado!', 'Subcategoria actualizada correctamente', 'success');
+                                              this.obtenerSubcategoria(this.subcategoria._id.toString())
+                                            })
+                                            .catch( resp2 => {
+                                              console.log(resp2);
+                                            });
+                        }
+
+                        if (!this.fileSubir) {
+                          swal('Actualizado!', 'Subcategoria actualizada correctamente', 'success');
+                          this.obtenerSubcategoria(this.subcategoria._id.toString())
+                        }
                     });
   }
 
@@ -251,6 +259,7 @@ export class SubcategoryComponent implements OnInit {
                         .subscribe(subcategoria => {
                           console.log(subcategoria);
                           this.fileSubir2 = null;
+                          this.fileSubir = null;
                           this.fileDescargarName = '';
                           this.subcategoria = subcategoria;
                         });
@@ -458,14 +467,28 @@ selectFile( archivo: File ) {
   }
 
   if ( archivo.type.indexOf('x-zip-compressed') < 0 ) {
-      swal({
-          type: 'error',
-          title: 'Error type',
-          html: 'Solo están permitidos archivos de extención .zip.'
-      });
-      this.fileSubir = null;
-      return;
-  }
+    swal({
+        type: 'error',
+        title: 'Error type',
+        html: 'Only ZIP files.'
+    });
+    this.fileSubir = null;
+    return;
+}
+
+if (archivo.size >= 100000000 ) {
+  swal({
+    type: 'error',
+    title: 'Max File Upload Error - MAX 100 MB',
+    html: 'This file is too big, please consider upload another file more lightweight'
+});
+this.fileSubir = null;
+return;
+}
+
+if (archivo.size > 15000000 && archivo.size <= 50000000 ) {
+  this.alertSize = true;
+}
 
   this.fileSubir = archivo;
   const reader = new FileReader();
@@ -510,14 +533,8 @@ deleteFiles(id: string) {
 
 }
 
-downloadFile(file: string) {
-  console.log(file);
-  this._downloadService.download(file, 'categories')
-  .subscribe(
-      data => saveAs(data, file),
-      // data => console.log(data, nombreArchivo),
-      error => console.error(error)
-  );
+downloadFile() {
+  document.getElementById('downloadFile').click();
 }
 
 }

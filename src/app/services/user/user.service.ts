@@ -117,8 +117,8 @@ export class UserService {
   }
 
   updateUser(u: User) {
-    let url = URL_API + '/users/user/' + u._id;
-    url += '?token=' + this.token;
+    const url = URL_API + '/users/user/' + u._id;
+    // url += '?token=' + this.token;
     return this.http.put(url, u)
                     .pipe(
                       map( (resp: any) => {

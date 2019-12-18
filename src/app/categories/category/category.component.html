@@ -54,6 +54,8 @@
                         <input (change)="selectImg( $event.target.files[0])"  name="cat_img" type="file" class="custom-file-input" id="inputGroupFile01" name="inputGroupFile01">
                         <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
                     </div>
+
+                    <p *ngIf="alertSize" class="alert-warning alert-servex-danger"><strong><i class="fa fa-exclamation-triangle fa-beat" aria-hidden="true"></i> WARNING!:</strong> You are uploading a big file, this will be take a few seconds while we upload the file to the server.</p>
   
                     <div class="form-actions">
                       <a [routerLink]="['/categories']" routerLinkActive="router-link-active"
@@ -118,8 +120,9 @@
                           <span class="custom-file-control"></span>
                         </div>
                         <div class="form-group col-md-12 text-center">
-                          <button class="btn servex_primary_btn3" type="button" *ngIf="categoria.cat_file && categoria.cat_file !== ''" (click)="downloadFile(categoria.cat_file)"><i class="fa fa-cloud-download"></i> Download current ZIP file {{categoria.cat_file}}</button>
+                          <button class="btn servex_primary_btn3" type="button" *ngIf="categoria.cat_file && categoria.cat_file !== ''" (click)="downloadFile(categoria._id)"><i class="fa fa-cloud-download"></i> Download current ZIP file {{categoria.cat_file}}</button>
                           <button [disabled]="categoria.cat_file === null || categoria.cat_file === ''" class="btn servex_primary_btn3" type="button" *ngIf="categoria.cat_file === null || categoria.cat_file === ''" (click)="callUploadFileProd()">This category not have files to download</button>
+                          <a href="{{url_api}}/files/categories/{{categoria.cat_file}}" id="downloadFile" style="display: none !important"></a>
                         </div>
 
                         <div class="form-group col-md-12 text-center" *ngIf="categoria.cat_file && categoria.cat_file !== ''">
@@ -127,6 +130,8 @@
                         </div>
                       </div>
     
+                      <p *ngIf="alertSize" class="alert-warning alert-servex-danger"><strong><i class="fa fa-exclamation-triangle fa-beat" aria-hidden="true"></i> WARNING!:</strong> You are uploading a big file, this will be take a few seconds while we upload the file to the server.</p>
+                      
                       <div class="custom-file  mx-auto d-block" style="display: none !important">
                           <input (change)="selectImg( $event.target.files[0])"  name="cat_img" type="file" class="custom-file-input" id="inputGroupFile01" name="inputGroupFile01">
                           <label class="custom-file-label" for="inputGroupFile01">Choose file</label>

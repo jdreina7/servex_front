@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import swal from 'sweetalert2';
 import { CategoryService, DownloadfileService } from 'app/services/service.index';
+import { URL_API } from 'app/config/config';
 
 @Component({
   selector: 'app-category',
@@ -16,11 +17,13 @@ export class CategoryComponent implements OnInit {
   categoria: Category = new Category('', '', '', '', 'true');
   imgSubir: File
   imgTemp: any
+  url_api = URL_API;
 
   fileSubir: File;
   fileSubir2: any;
   fileSubirName: string;
   fileDescargarName = '';
+  alertSize = false;
 
   img = '';
   idCategory = '';
@@ -55,16 +58,6 @@ export class CategoryComponent implements OnInit {
 
     this._categoryService.createCategory(this.categoria)
                         .subscribe( (categoria: any) => {
-                          if (this.fileSubir2) {
-                            this._categoryService.uploadFile( this.fileSubir, categoria._id.toString() )
-                                              .then( (resp2: any) => {
-                                                this.obtenerCategoria(categoria._id.toString())
-                                              })
-                                              .catch( resp2 => {
-                                                console.log(resp2);
-                                              });
-                          }
-
                           if (this.imgTemp) {
                             this._categoryService.changeImgCategory( this.imgSubir, categoria._id.toString() )
                                                   .then( (resp2: any) => {
@@ -75,14 +68,25 @@ export class CategoryComponent implements OnInit {
                                                   });
                           }
 
-                          swal({
-                            title: 'Loading...',
-                            html: '<div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div>',
-                            timer: 3000,
-                            showConfirmButton: false
-                          })
+                          if (this.fileSubir2) {
+                            swal({
+                              title: 'Uploading file...',
+                              // tslint:disable-next-line:max-line-length
+                              html: '<div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div>',
+                              showConfirmButton: false
+                            })
+                            this._categoryService.uploadFile( this.fileSubir, categoria._id.toString() )
+                                              .then( (resp2: any) => {
+                                                this.alertSize = false;
+                                                this.obtenerCategoria(categoria._id.toString())
+                                                swal('Categoria Creada!', 'Categoria almacenada correctamente', 'success');
+                                                this.router.navigate(['/categories/category', categoria._id]);
+                                              })
+                                              .catch( resp2 => {
+                                                console.log(resp2);
+                                              });
+                          }
 
-                          this.router.navigate(['/categories/category', categoria._id]);
                         });
   }
 
@@ -92,41 +96,46 @@ export class CategoryComponent implements OnInit {
     }
 
 
-    swal({
-      title: 'Loading...',
-      html: '<div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div>',
-      timer: 3000,
-      showConfirmButton: false
-    })
-
-    if (this.fileSubir2) {
-      this._categoryService.uploadFile( this.fileSubir, this.categoria._id.toString() )
-                        .then( (resp2: any) => {
-                          this.obtenerCategoria(this.categoria._id.toString())
-                        })
-                        .catch( resp2 => {
-                          console.log(resp2);
-                        });
-    }
-
-    if (this.imgTemp) {
-      this._categoryService.changeImgCategory( this.imgSubir, this.categoria._id.toString() )
-                            .then( (resp2: any) => {
-                              if (!resp2) {
-                                this.router.navigate(['/categories']);
-                              } else {
-                                this.obtenerCategoria(this.categoria._id.toString())
-                              }
-                            })
-                            .catch( resp2 => {
-                              console.log(resp2);
-                            });
-    }
-
     this._categoryService.updateCategory(this.categoria)
                       .subscribe( (resp: any) => {
                           this.categoria = resp.categoria;
-                          this.router.navigate(['/categories/category', this.categoria._id]);
+
+                          if (this.imgTemp) {
+                            this._categoryService.changeImgCategory( this.imgSubir, this.categoria._id.toString() )
+                                                  .then( (resp2: any) => {
+                                                    if (!resp2) {
+                                                      this.router.navigate(['/categories']);
+                                                    } else {
+                                                      this.obtenerCategoria(this.categoria._id.toString())
+                                                    }
+                                                  })
+                                                  .catch( resp2 => {
+                                                    console.log(resp2);
+                                                  });
+                          }
+
+                          if (this.fileSubir2) {
+                            swal({
+                              title: 'Uploading file...',
+                              html: '<div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div>',
+                              showConfirmButton: false
+                            })
+                            this._categoryService.uploadFile( this.fileSubir, this.categoria._id.toString() )
+                                              .then( (resp2: any) => {
+                                                this.obtenerCategoria(this.categoria._id.toString())
+                                                swal('Actualizado!', 'Categoria actualizada correctamente', 'success');
+                                                this.router.navigate(['/categories/category', this.categoria._id]);
+                                              })
+                                              .catch( resp2 => {
+                                                console.log(resp2);
+                                              });
+                          }
+
+                          if (!this.fileSubir2) {
+                            swal('Actualizado!', 'Categoria actualizada correctamente', 'success');
+                            this.router.navigate(['/categories/category', this.categoria._id]);
+                          }
+
                         });
   }
 
@@ -194,10 +203,24 @@ selectFile( archivo: File ) {
       swal({
           type: 'error',
           title: 'Error type',
-          html: 'Solo están permitidos archivos de extención .zip.'
+          html: 'Only ZIP files.'
       });
       this.fileSubir = null;
       return;
+  }
+
+  if (archivo.size >= 100000000 ) {
+    swal({
+      type: 'error',
+      title: 'Max File Upload Error - MAX 100 MB',
+      html: 'This file is too big, please consider upload another file more lightweight'
+  });
+  this.fileSubir = null;
+  return;
+  }
+
+  if (archivo.size > 15000000 && archivo.size <= 50000000 ) {
+    this.alertSize = true;
   }
 
   this.fileSubir = archivo;
@@ -244,13 +267,14 @@ deleteFiles(id: string) {
 }
 
 downloadFile(file: string) {
-  console.log(file);
-  this._downloadService.download(file, 'categories')
-  .subscribe(
-      data => saveAs(data, file),
-      // data => console.log(data, nombreArchivo),
-      error => console.error(error)
-  );
+  document.getElementById('downloadFile').click();
+  // console.log(file);
+  // this._downloadService.download(file, 'categories')
+  // .subscribe(
+  //     data => saveAs(data, file),
+  //     // data => console.log(data, nombreArchivo),
+  //     error => console.error(error)
+  // );
 }
 
 

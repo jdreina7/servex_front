@@ -56,7 +56,7 @@
                         <div class="col-lg-2 col-md-2 text-center">
                             <span class="font-medium-2 text-uppercase">{{ usuario.usr_name }}
                                 {{ usuario.usr_last_name}}</span>
-                            <p class="grey font-small-2">{{ usuario.usr_role }}</p>
+                            <!-- <p class="grey font-small-2">{{ usuario.usr_role }}</p> -->
                         </div>
                         <div class="col-lg-5 col-md-5">
                             <ul class="profile-menu no-list-style">
@@ -102,12 +102,12 @@
                                     <ul class="no-list-style">
                                         <li class="mb-2">
                                             <span class="text-bold-500"><a><i
-                                                        class="icon-present font-small-3"></i> Name:</a></span>
+                                                        class="fa fa-id-card"></i> Name:</a></span>
                                             <input type="text" [ngModel]="usuario.usr_name" class="form-control" name="usr_name" placeholder="Name" required>
                                         </li>
                                         <li class="mb-2">
                                             <span class="text-bold-500"><a><i
-                                                        class="ft-map-pin font-small-3"></i> Lastname:</a></span>
+                                                        class="fa fa-id-card-o"></i> Lastname:</a></span>
                                                         <input type="text" [ngModel]="usuario.usr_last_name" class="form-control" name="usr_last_name" placeholder="Lastname" required>
                                         </li>
                                         <li class="mb-2">
