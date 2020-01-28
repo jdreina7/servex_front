@@ -49,14 +49,19 @@
                 </div>
               </div>
         </div>
+
+        <div *ngIf="noResults" class="card-content">
+          <div class="card-body">
+              <div class="card-body servex_nothing_toshow">
+                  <h2><i class="fa fa-frown-o"></i> There's any result to show here budy!</h2>
+                  <button (click)="loadProducts()" class="btn servex_primary_btn2"><i class="fa fa-backward"></i> Ok, take me back!</button>
+                </div>
+          </div>
+        </div>
+
         <div *ngIf="!cargando && productos.length > 0" class="card">
           <div class="card-content">
             <div class="card-body">
-  
-                <div  *ngIf="noResults" class="card-body servex_nothing_toshow">
-                    <h2><i class="fa fa-frown-o"></i> There's any result to show here budy!</h2>
-                    <button (click)="loadProducts()" class="btn servex_primary_btn2"><i class="fa fa-backward"></i> Ok, take me back!</button>
-                  </div>
   
               <table class="table table-responsive-md text-center servex_table_bordered" *ngIf='busqueda === true' id="user_table">
                   <thead class="servex_table_header">
@@ -74,7 +79,9 @@
                       <td class="w70 middle-servex"><img [src]="product.prod_img | image:'products'" alt="Product Image" class="rounded-circle width-50">
                       </td>
                       <td class="middle-servex">{{ product.prod_name }}</td>
-                      <td class="middle-servex">{{ product.prod_client['client_bussiness_name'] }}</td>
+                      <td *ngIf="product.prod_client" class="middle-servex">{{ product.prod_client['client_bussiness_name'] }}</td>
+                      <td *ngIf="!product.prod_client" class="middle-servex"><span
+                        class="badge badge-dark">WITHOUT CLIENT</span></td>
 
                       <td *ngIf="product.prod_category" class="middle-servex">{{ product.prod_category['cat_name'] }}</td>
                       <td *ngIf="!product.prod_category" class="middle-servex"><span

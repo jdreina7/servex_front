@@ -132,7 +132,7 @@ export class SubcategoryService {
                         swal({
                             type: 'success',
                             title: 'DELETED!',
-                            html: 'La subcategoria ha sido eliminada de manera permanente!',
+                            html: 'The subcategory has been deleted!',
                           });
                         return true;
                       })
@@ -237,7 +237,7 @@ export class SubcategoryService {
                           swal({
                             type: 'error',
                             title: status,
-                            text: 'Esta Subategoria en esta categoria con este cliente ya existe, por favor verifique e intente de nuevo'
+                            text: 'This subcategory in this client already exist, please try again!'
                           });
                           return throwError(err);
                         }
@@ -288,7 +288,7 @@ export class SubcategoryService {
                           swal({
                             type: 'error',
                             title: status,
-                            text: 'Esta Subategoria en esta categoria con este cliente ya existe, por favor verifique e intente de nuevo'
+                            text: 'This subcategory with this category father in this client already exist, please try again!'
                           });
                           return throwError(err);
                         }
@@ -340,7 +340,7 @@ export class SubcategoryService {
                           swal({
                             type: 'error',
                             title: status,
-                            text: 'Esta Subategoria en esta categoria con este cliente ya existe, por favor verifique e intente de nuevo'
+                            text: 'This subcategory with this category father in this client already exist, please try again!'
                           });
                           return throwError(err);
                         }
@@ -394,7 +394,7 @@ export class SubcategoryService {
                           swal({
                             type: 'error',
                             title: status,
-                            text: 'Esta Subategoria en esta categoria con este cliente ya existe, por favor verifique e intente de nuevo'
+                            text: 'This subcategory with this category father in this client already exist, please try again!'
                           });
                           return throwError(err);
                         }
@@ -461,7 +461,7 @@ export class SubcategoryService {
                             swal({
                               type: 'error',
                               title: status,
-                              text: 'Esta Subategoria en este cliente ya existe, por favor verifique e intente de nuevo'
+                              text: 'This subcategory in this client already exist, please try again'
                             });
                             return throwError(err);
                           }

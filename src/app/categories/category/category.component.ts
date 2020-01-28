@@ -14,7 +14,7 @@ import { URL_API } from 'app/config/config';
 export class CategoryComponent implements OnInit {
 
   cargando = false;
-  categoria: Category = new Category('', '', '', '', 'true');
+  categoria: Category = new Category('', '', '', '', '', 'true');
   imgSubir: File
   imgTemp: any
   url_api = URL_API;
@@ -56,7 +56,7 @@ export class CategoryComponent implements OnInit {
     }
 
 
-    this._categoryService.createCategory(this.categoria)
+    this._categoryService.createCategory(this.categoria, this.categoria._id.toString())
                         .subscribe( (categoria: any) => {
                           if (this.imgTemp) {
                             this._categoryService.changeImgCategory( this.imgSubir, categoria._id.toString() )
@@ -123,7 +123,7 @@ export class CategoryComponent implements OnInit {
                             this._categoryService.uploadFile( this.fileSubir, this.categoria._id.toString() )
                                               .then( (resp2: any) => {
                                                 this.obtenerCategoria(this.categoria._id.toString())
-                                                swal('Actualizado!', 'Categoria actualizada correctamente', 'success');
+                                                swal('Updated!', 'Category updated succesfully', 'success');
                                                 this.router.navigate(['/categories/category', this.categoria._id]);
                                               })
                                               .catch( resp2 => {
@@ -132,7 +132,7 @@ export class CategoryComponent implements OnInit {
                           }
 
                           if (!this.fileSubir2) {
-                            swal('Actualizado!', 'Categoria actualizada correctamente', 'success');
+                            swal('Updated!', 'Category updated succesfully', 'success');
                             this.router.navigate(['/categories/category', this.categoria._id]);
                           }
 

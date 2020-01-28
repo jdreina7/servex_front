@@ -8,6 +8,7 @@ import { PipesModule } from 'app/pipes/pipes.module';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ScrollingModule } from '@angular/cdk/scrolling'
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
     imports: [
@@ -17,7 +18,8 @@ import { ScrollingModule } from '@angular/cdk/scrolling'
         PipesModule,
         FormsModule,
         NgSelectModule,
-        ScrollingModule
+        ScrollingModule,
+        NgbModule
     ],
     declarations: [
         ClientComponent

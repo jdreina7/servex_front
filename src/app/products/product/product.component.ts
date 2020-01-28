@@ -264,7 +264,8 @@ selectFileProduct( archivo: File ) {
       return;
   }
 
-  if (archivo.size >= 100000000 ) {
+  // if (archivo.size >= 100000000 ) {
+  if (archivo.size >= 200000000 ) {
     swal({
       type: 'error',
       title: 'Max File Upload Error - MAX 100 MB',
@@ -274,7 +275,7 @@ selectFileProduct( archivo: File ) {
   return;
   }
 
-  if (archivo.size > 15000000 && archivo.size <= 50000000 ) {
+  if (archivo.size > 15000000 ) {
     this.alertSize = true;
   }
 

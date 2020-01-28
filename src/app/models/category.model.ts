@@ -1,6 +1,7 @@
 export class Category {
     constructor(
         public cat_name: string,
+        public cat_client: string,
         public cat_description: string,
         public cat_img: string,
         public cat_file: string,

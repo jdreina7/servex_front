@@ -15,7 +15,7 @@ import { Category } from 'app/models/category.model';
 export class SubcategoriesComponent implements OnInit {
 
   subcategorias: Subcategory[] = [];
-  categoriaPadre: Category = new Category('', '', '', '', '');
+  categoriaPadre: Category = new Category('', '', '', '', '', '');
   desde = 0;
   totalRegistros = 0;
   cargando = true;
@@ -101,6 +101,7 @@ export class SubcategoriesComponent implements OnInit {
 
 
   deleteSubcategory(subcategoria: Subcategory) {
+    console.log(subcategoria._id);
       swal({
         title: 'Are you sure?',
         text: 'This action will DELETED the subcategory of the system and all its functions!',

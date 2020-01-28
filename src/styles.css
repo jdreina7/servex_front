@@ -59,6 +59,9 @@
 .card-body.servex_nothing_toshow {
     text-align: center;
     color: #ccc;
+    background-color: #FFF;
+    padding: 50px;
+    border-radius: 15px;
 }
 
 .btn.btn-danger-servex {

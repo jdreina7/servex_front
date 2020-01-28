@@ -49,14 +49,19 @@
                 </div>
               </div>
         </div>
+
+        <div *ngIf="noResults" class="card-content">
+          <div class="card-body">
+              <div class="card-body servex_nothing_toshow">
+                  <h2><i class="fa fa-frown-o"></i> There's any result to show here budy!</h2>
+                  <button (click)="loadSubcategories()" class="btn servex_primary_btn2"><i class="fa fa-backward"></i> Ok, take me back!</button>
+                </div>
+          </div>
+        </div>
+
         <div *ngIf="!cargando && subcategorias.length > 0" class="card">
           <div class="card-content">
             <div class="card-body">
-  
-                <div  *ngIf="noResults" class="card-body servex_nothing_toshow">
-                    <h2><i class="fa fa-frown-o"></i> There's any result to show here budy!</h2>
-                    <button (click)="loadSubcategories()" class="btn servex_primary_btn2"><i class="fa fa-backward"></i> Ok, take me back!</button>
-                  </div>
   
               <table class="table table-responsive-md text-center servex_table_bordered" *ngIf='busqueda === true' id="user_table">
                   <thead class="servex_table_header">
@@ -73,8 +78,10 @@
                       <td class="w70 middle-servex"><img [src]="subcategory.subcat_img | image:'subcategories'" alt="User Image" class="rounded-circle width-50">
                       </td>
                       <td class="middle-servex">{{ subcategory.subcat_name }}</td>
-                      <td class="middle-servex">{{ subcategory.subcat_client['client_bussiness_name'] }}</td>
-                      <td class="middle-servex">{{ subcategory.subcat_category['cat_name'] }}</td>
+                      <td *ngIf="subcategory.subcat_client !== null" class="middle-servex">{{ subcategory.subcat_client['client_bussiness_name'] }}</td>
+                      <td *ngIf="subcategory.subcat_client === null" class="middle-servex"><span class="badge badge-dark">WHITHOUT CLIENT</span></td>
+                      <td *ngIf="subcategory.subcat_category !== null" class="middle-servex">{{ subcategory.subcat_category['cat_name'] }}</td>
+                      <td *ngIf="subcategory.subcat_category === null" class="middle-servex"><span class="badge badge-dark">WHITHOUT CATEGORY FATHER</span></td>
                       <td class="middle-servex">
                           <a [routerLink]="['/subcategories/subcategory', subcategory._id]" routerLinkActive="router-link-active"  class="btn btn-secundary-servex mar-10"> <i class="fa fa-edit"></i></a>
                         <button *ngIf="subcategory.subcat_state" class="btn btn-danger-servex" (click)="deleteSubcategory(subcategory)"><i

@@ -2,6 +2,7 @@ import { Component, ViewEncapsulation, Input } from '@angular/core';
 import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
+    // tslint:disable-next-line:component-selector
     selector: 'ngbd-modal-content',
     template: `
     <div class="modal-header">
@@ -19,6 +20,7 @@ import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-
   `
 })
 
+// tslint:disable-next-line:component-class-suffix
 export class NgbdModalContent {
     @Input() name;
     constructor(public activeModal: NgbActiveModal) { }

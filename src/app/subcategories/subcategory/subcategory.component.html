@@ -32,7 +32,7 @@
 
                       <div class="row">
                         <div class="form-group col-md-12">
-                          <h4>Seleccione el cliente</h4>
+                          <h4>Select client</h4>
                             <ng-select (change)="loadCatCli()" (clear)="inactiveFields()" [items]="clientes" bindLabel="client_bussiness_name" bindValue="_id" name="subcategoria.subcat_client" [virtualScroll]="true" placeholder="Select clients"
                             [(ngModel)]="subcategoria.subcat_client">
                           </ng-select>
@@ -42,7 +42,7 @@
 
                       <div class="row" animated="fadeIn">
                         <div class="form-group col-md-12">
-                          <h4>Seleccione la categoria del cliente</h4>
+                          <h4>Select a category of the client</h4>
                             <ng-select (change)="loadSubcat1()" (clear)="inactiveFields2()"  [disabled]="subcategoria.subcat_client === ''" (clear)="inactiveFields2()" [items]="categories" bindLabel="catcli_category.cat_name" bindValue="catcli_category._id" name="subcategoria.subcat_category" [virtualScroll]="true" placeholder="Select category"
                             [(ngModel)]="subcategoria.subcat_category">
                           </ng-select>
@@ -96,7 +96,7 @@
                         <input (change)="selectFile( $event.target.files[0])" name="subcat_file" type="file" class="custom-file-input" id="inputGroupFile02" name="inputGroupFile02">
                         <span class="custom-file-control"></span>
                       </div>
-                      <p *ngIf="alert" class="alert-danger alert-servex-danger">Para almacenar una subcategoría debe seleccionar un <strong>cliente</strong> y una <strong>categoría padre</strong>!</p>
+                      <p *ngIf="alert" class="alert-danger alert-servex-danger">To save a subcategory, please select a <strong>client</strong> and a <strong>category father.</strong>!</p>
                     </div>
   
                     <div class="custom-file  mx-auto d-block" style="display: none !important">
@@ -151,12 +151,12 @@
 
                         <div class="row">
                             <div class="form-group col-md-12">
-                              <h4>Cliente</h4>
+                              <h4>Client</h4>
                               <input type="text" [(ngModel)]="subcategoria.subcat_client['client_bussiness_name']" minlength="3" class="form-control"
                                 placeholder="Client" name="subcat_client" required disabled="true">
                             </div>
                             <div class="form-group col-md-12">
-                                <h4>Categoría del Cliente</h4>
+                                <h4>Category of the client</h4>
                                 <input type="text" minlength="3" class="form-control" [(ngModel)]="subcategoria.subcat_category['cat_name']"
                                 placeholder="Category" name="subcat_category" required disabled="true">
                             </div>

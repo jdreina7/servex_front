@@ -9,6 +9,7 @@ import { map, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { User } from '../../models/users.model';
 import { Category } from '../../models/category.model';
+import { ClientService } from '../client/client.service';
 
 
 @Injectable({
@@ -24,7 +25,8 @@ export class CategoryService {
   constructor(
     public http: HttpClient,
     public router: Router,
-    public _uploadService: UploadFileService
+    public _uploadService: UploadFileService,
+    public _clientService: ClientService
   ) {
     this.loadFromStorage();
     console.log('servicio de Categoria listo!');
@@ -40,8 +42,7 @@ export class CategoryService {
     }
   }
 
-
-  createCategory(c: Category) {
+  createCategory(c: Category, idClient: string) {
     let message: any;
     let url = URL_API + '/categories/category';
     url += '?token=' + this.token;
@@ -50,6 +51,7 @@ export class CategoryService {
                     .pipe(
                       map( (resp: any) => {
                         console.log(resp);
+                        this._clientService.catcliSave(resp.categoria._id, idClient);
                         return resp.categoria;
                       }),
                       catchError( err => {
@@ -57,11 +59,14 @@ export class CategoryService {
                         status = err.status;
                         message = err.error.err.message;
 
-                        swal({
-                          type: 'error',
-                          title: status,
-                          text: message
-                        });
+                        if (err.error.err.code === 11000) {
+                          swal({
+                            type: 'error',
+                            title: status,
+                            text: 'This Category in this client already exists, please check and try again.'
+                          });
+                          return throwError(err);
+                        }
 
                         return throwError(err);
                       })
@@ -167,7 +172,7 @@ export class CategoryService {
                         swal({
                             type: 'success',
                             title: 'DELETED!',
-                            html: 'La categoria ha sido eliminada de manera permanente!',
+                            html: 'The category has been deleted!',
                           });
                         return true;
                       })

@@ -44,7 +44,7 @@ export class ImagePipe implements PipeTransform {
         url += '/users/cualquiera';
     }
 
-    console.log('ESTA ES LA URL QUE DEVUELVE EL PIPE DE IMG: ' + url);
+    // console.log('ESTA ES LA URL QUE DEVUELVE EL PIPE DE IMG: ' + url);
     return url;
   }
 

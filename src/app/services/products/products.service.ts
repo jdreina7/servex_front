@@ -159,7 +159,7 @@ export class ProductsService {
                         swal({
                             type: 'success',
                             title: 'DELETED!',
-                            html: 'El Producto ha sido eliminado de manera permanente!',
+                            html: 'The product has been deleted!',
                           });
                         return true;
                       })

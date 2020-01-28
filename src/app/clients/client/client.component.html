@@ -80,8 +80,8 @@
                         <div class="form-body">
                             <h4 class="form-section"><i class="ft-image"></i></h4>
                             <div class="form-group col-md-12">  
-                              <img *ngIf="!imgTemp" [src]="cliente.client_logo | image:'clients'" name="client_logo" class="img-all-80 img-border gradient-summer pointer" (click)="callUploadImg()">
-                              <img *ngIf="imgTemp" [src]="imgTemp" name="client_logo" class="img-all-80 img-border gradient-summer pointer"  (click)="callUploadImg()">
+                              <img *ngIf="!imgTemp" [src]="cliente.client_logo | image:'clients'" name="client_logo" class="img-all-80 img-border  pointer" (click)="callUploadImg()">
+                              <img *ngIf="imgTemp" [src]="imgTemp" name="client_logo" class="img-all-80 img-border  pointer"  (click)="callUploadImg()">
                             </div>
                         </div>
                     </form>
@@ -93,119 +93,198 @@
         </div>
   
         <div *ngIf="idClient !== 'new'" class="row">
-            <div class="col-md-6">
-              <div *ngIf="!cargando" class="card">
+            <div class="col-md-12">
+                    <div *ngIf="!cargando" class="card">
+                        <div class="card-content">
+                          <div class="card-body">
+                              <div class="row">
+                                    <form ngNativeValidate #f="ngForm" (ngSubmit)="updateClient(f.value)" class="form" style="padding: 20px;">
+                                        <div class="form-body">
+                                          <div class="row">
+                                              <div class="col-md-6">
+                                                  <h4 class="form-section"><i class="ft-user"></i></h4>
+                                              
+                                                  <div class="row">
+                                                    <div class="form-group col-md-12">
+                                                        <input type="text" minlength="6" [(ngModel)]="cliente.client_bussiness_name" class="form-control"
+                                                        placeholder="Bussiness Name" name="client_bussiness_name" required>
+                                                    </div>
+                                                    <div class="form-group col-md-12">
+                                                        <input type="text" [(ngModel)]="cliente.client_description" class="form-control" placeholder="Description"
+                                                          name="client_description">
+                                                      </div>
+                                                  </div>
+                          
+                                                  <hr>
+                                                  <div class="form-group col-md-12 text-center">
+                                                      <button [disabled]="cliente.client_bussiness_name === ''" class="btn btn-success-servex" type="button" *ngIf="!fileSubir2" (click)="callUploadFile()"><i class="fa fa-cloud-upload"></i> Upload new ZIP</button>
+                                                      <button class="btn btn-success-servex" type="button" *ngIf="fileSubir2" (click)="callUploadFile()">File: {{fileSubirName}}</button>
+                                                    </div>
+                                                    <div class="form-group col-md-12" style="display: none !important">
+                                                      <input (change)="selectFile( $event.target.files[0])" name="client_file" type="file" class="custom-file-input" id="inputGroupFile02" name="inputGroupFile02">
+                                                      <span class="custom-file-control"></span>
+                                                    </div>
+                                                    <div class="form-group col-md-12 text-center">
+                                                      <button class="btn servex_primary_btn3" type="button" *ngIf="cliente.client_file && cliente.client_file !== ''" (click)="downloadFile()" ><i class="fa fa-cloud-download"></i> Download current ZIP file {{cliente.client_file}}</button>
+                                                      <button [disabled]="cliente.client_file === null || cliente.client_file === ''" class="btn servex_primary_btn3" type="button" *ngIf="cliente.client_file === null || cliente.client_file === ''" (click)="callUploadFile()">This client not have files to download</button>
+                                                      <a href="{{url_api}}/files/clients/{{cliente.client_file}}" id="downloadFile" style="display: none !important"></a>
+                                                    </div>
+                                                    <p *ngIf="alertSize" class="alert-warning alert-servex-danger"><strong><i class="fa fa-exclamation-triangle fa-beat" aria-hidden="true"></i> WARNING!:</strong> You are uploading a big file, this will be take a few seconds while we upload the file to the server.</p>
+                            
+                                                    <div class="form-group col-md-12 text-center" *ngIf="cliente.client_file && cliente.client_file !== ''">
+                                                      <button class="btn btn-danger-servex" type="button" (click)="deleteFiles(cliente._id)"><i class="fa fa-trash"></i> Delete ZIP file</button>
+                                                    </div>
+                                              </div>
+    
+                                              <div class="col-md-6">
+                                                  <form class="form">
+                                                      <div class="form-body">
+                                                          <h4 class="form-section"><i class="ft-image"></i></h4>
+                                                          <div class="form-group col-md-12">
+                                                            <!-- <img [src]="cliente.client_logo | image:'users'" name="client_logo" class="max-100"> -->
+                                
+                                                            <img *ngIf="!imgTemp" [src]="cliente.client_logo | image:'clients'" name="client_logo" class="img-all-80 img-border  pointer" (click)="callUploadImg()">
+                                                            <img *ngIf="imgTemp" [src]="imgTemp" name="client_logo" class="img-all-80 img-border  pointer"  (click)="callUploadImg()">
+                                                          </div>
+                                                      </div>
+                                                  </form>
+                                                  <div class="custom-file  mx-auto d-block" style="display: none !important">
+                                                      <input (change)="selectImg( $event.target.files[0])"  name="client_logo" type="file" class="custom-file-input" id="inputGroupFile01" name="inputGroupFile01">
+                                                      <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                          <br>
+                                          <hr>
+                                          <div class="row">
+                                              <div class="col-md-6">
+                                                <br>
+                                                <br>
+                                                <br>
+                                                    <div class="row">
+                                                        <button type="button" style="display: block; margin: auto;" class="btn btn-lg btn-outline-primary" (click)="open(mymodal)">Asign Category</button>
+                                                        <!--<div class="form-group col-md-12">
+                                                          <h4>Asign existing category to this client</h4>
+                                                            <ng-select [items]="categorias" bindLabel="cat_name" bindValue="_id" name="catcli" [virtualScroll]="true" placeholder="Select categories"
+                                                            [(ngModel)]="catcli">
+                                                          </ng-select>
+                                                        </div>-->
+                                                      </div>
+                                              </div>
+    
+                                              <div class="col-md-6">
+                                                  <div *ngIf="categorias2.length > 0" class="row">
+                                                      <cdk-virtual-scroll-viewport itemSize="100px" class="example-viewport">
+                                                          <ul class="list-group" *cdkVirtualFor="let category of categorias2">
+                                                              <li class="list-group-item">{{ category.catcli_category.cat_name }} 
+                                                                  <a [routerLink]="['/categories/category', category.catcli_category._id]" routerLinkActive="router-link-active"  class="btn btn-secundary-servex mar-10 ft_right"> <i class="fa fa-edit"></i></a>
+                                                                  <button type="button" class="btn btn-danger-servex ft_right" (click)="deleteCatcli(category._id, category.catcli_category._id)"><i
+                                                                    class="fa fa-trash"></i>
+                                                                </button>
+                                                              </li>
+                                                          </ul>
+                                                        </cdk-virtual-scroll-viewport>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                        </div>
+
+                                        <div class="form-actions">
+                                          <a [routerLink]="['/clients']" routerLinkActive="router-link-active"
+                                            class="btn btn-danger-servex mar-10">
+                                            <i class="fa fa-mail-reply"></i> Back
+                                          </a>
+                      
+                                          <button type="submit" class="btn servex_primary_btn3">
+                                            <i class="fa fa-check-square-o"></i> Update Client
+                                          </button>
+                                        </div>
+                                      </form>
+                                </div>
+                                
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+            </div>
+
+            
+          </div>
+      </div>
+      
+  </section>
+
+
+<ng-template #mymodal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Create category for {{cliente.client_bussiness_name}} </h4>
+    <button type="button"  id="closeModal1" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
                 <div class="card-content">
                   <div class="card-body">
-                    <form ngNativeValidate #f="ngForm" (ngSubmit)="updateClient(f.value)" class="form">
+                    <form ngNativeValidate #f="ngForm" (ngSubmit)="createCategory(f.value)" class="form">
                       <div class="form-body">
-                        <h4 class="form-section"><i class="ft-user"></i></h4>
-                        
                         <div class="row">
                           <div class="form-group col-md-12">
-                              <input type="text" minlength="6" [(ngModel)]="cliente.client_bussiness_name" class="form-control"
-                              placeholder="Bussiness Name" name="client_bussiness_name" required>
+                            <input type="text" [(ngModel)]="categoria.cat_name" minlength="3" class="form-control"
+                              placeholder="Name" name="cat_name" required>
                           </div>
                           <div class="form-group col-md-12">
-                              <input type="text" [(ngModel)]="cliente.client_description" class="form-control" placeholder="Description"
-                                name="client_description">
-                            </div>
+                            <input type="text" [(ngModel)]="categoria.cat_description" minlength="3" class="form-control"
+                              placeholder="Description" name="cat_description">
+                          </div>
                         </div>
-
-                        <hr>
+      
                         <div class="form-group col-md-12 text-center">
-                            <button [disabled]="cliente.client_bussiness_name === ''" class="btn btn-success-servex" type="button" *ngIf="!fileSubir2" (click)="callUploadFile()"><i class="fa fa-cloud-upload"></i> Upload new ZIP</button>
-                            <button class="btn btn-success-servex" type="button" *ngIf="fileSubir2" (click)="callUploadFile()">File: {{fileSubirName}}</button>
-                          </div>
-                          <div class="form-group col-md-12" style="display: none !important">
-                            <input (change)="selectFile( $event.target.files[0])" name="client_file" type="file" class="custom-file-input" id="inputGroupFile02" name="inputGroupFile02">
-                            <span class="custom-file-control"></span>
-                          </div>
-                          <div class="form-group col-md-12 text-center">
-                            <button class="btn servex_primary_btn3" type="button" *ngIf="cliente.client_file && cliente.client_file !== ''" (click)="downloadFile()" ><i class="fa fa-cloud-download"></i> Download current ZIP file {{cliente.client_file}}</button>
-                            <button [disabled]="cliente.client_file === null || cliente.client_file === ''" class="btn servex_primary_btn3" type="button" *ngIf="cliente.client_file === null || cliente.client_file === ''" (click)="callUploadFile()">This client not have files to download</button>
-                            <a href="{{url_api}}/files/clients/{{cliente.client_file}}" id="downloadFile" style="display: none !important"></a>
-                          </div>
-                          <p *ngIf="alertSize" class="alert-warning alert-servex-danger"><strong><i class="fa fa-exclamation-triangle fa-beat" aria-hidden="true"></i> WARNING!:</strong> You are uploading a big file, this will be take a few seconds while we upload the file to the server.</p>
-  
-                          <div class="form-group col-md-12 text-center" *ngIf="cliente.client_file && cliente.client_file !== ''">
-                            <button class="btn btn-danger-servex" type="button" (click)="deleteFiles(cliente._id)"><i class="fa fa-trash"></i> Delete ZIP file</button>
-                          </div>
-
-                        <hr>
-
-                          <div class="row">
-                              <div class="form-group col-md-12">
-                                <h4>Asignar categorías a cliente</h4>
-                                  <ng-select [items]="categorias" bindLabel="cat_name" bindValue="_id" name="catcli" [virtualScroll]="true" placeholder="Select categories"
-                                  [(ngModel)]="catcli">
-                                </ng-select>
-                              </div>
-                            </div>
+                          <button [disabled]="categoria.cat_name === ''" class="btn btn-success-servex" type="button" *ngIf="!fileSubir2" (click)="callUploadFileCat()">Seleccionar Archivo ZIP</button>
+                          <button class="btn btn-success-servex" type="button" *ngIf="fileSubir2" (click)="callUploadFileCat()">Archivo: {{fileSubirName}}</button>
+                        </div>
+                        <div class="form-group col-md-12" style="display: none !important">
+                          <input (change)="selectFile( $event.target.files[0])" name="cat_file" type="file" class="custom-file-input" id="inputGroupFileCat" name="inputGroupFileCat">
+                          <span class="custom-file-control"></span>
+                        </div>
                       </div>
-    
+      
                       <div class="custom-file  mx-auto d-block" style="display: none !important">
-                          <input (change)="selectImg( $event.target.files[0])"  name="client_logo" type="file" class="custom-file-input" id="inputGroupFile01" name="inputGroupFile01">
+                          <input (change)="selectImgCat( $event.target.files[0])"  name="cat_img" type="file" class="custom-file-input" id="inputGroupFileCat2" name="inputGroupFileCat2">
                           <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
                       </div>
-    
+      
+                      <p *ngIf="alertSize" class="alert-warning alert-servex-danger"><strong><i class="fa fa-exclamation-triangle fa-beat" aria-hidden="true"></i> WARNING!:</strong> You are uploading a big file, this will be take a few seconds while we upload the file to the server.</p>
+      
                       <div class="form-actions">
-                        <a [routerLink]="['/clients']" routerLinkActive="router-link-active"
-                          class="btn btn-danger-servex mar-10">
-                          <i class="fa fa-mail-reply"></i> Back
-                        </a>
-    
                         <button type="submit" class="btn servex_primary_btn3">
-                          <i class="fa fa-check-square-o"></i> Update Client
+                          <i class="fa fa-check-square-o"></i> Save
                         </button>
                       </div>
                     </form>
                   </div>
                 </div>
-              </div>
             </div>
+        </div>
     
-            <div class="col-md-6">
-              <div *ngIf="!cargando" class="card">
-                <div class="card-content">
-                  <div class="card-body">
-                      <form class="form">
-                          <div class="form-body">
-                              <h4 class="form-section"><i class="ft-image"></i></h4>
-                              <div class="form-group col-md-12">
-                                <!-- <img [src]="cliente.client_logo | image:'users'" name="client_logo" class="max-100"> -->
-    
-                                <img *ngIf="!imgTemp" [src]="cliente.client_logo | image:'clients'" name="client_logo" class="img-all-80 img-border gradient-summer pointer" (click)="callUploadImg()">
-                                <img *ngIf="imgTemp" [src]="imgTemp" name="client_logo" class="img-all-80 img-border gradient-summer pointer"  (click)="callUploadImg()">
-                              </div>
-                          </div>
-                      </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div *ngIf="categorias2.length > 0" class="col-md-6">
-                <div *ngIf="!cargando" class="card max-h-410">
-                    <div class="card-content">
-                      <div class="card-body">
-
-                          <cdk-virtual-scroll-viewport itemSize="100px" class="example-viewport">
-                            <ul class="list-group" *cdkVirtualFor="let category of categorias2">
-                                <li class="list-group-item">{{ category.catcli_category.cat_name }} 
-                                    <button class="btn btn-danger-servex ft_right" (click)="deleteCatcli(category._id)"><i
-                                      class="fa fa-trash"></i>
-                                  </button>
-                                </li>
-                            </ul>
-                          </cdk-virtual-scroll-viewport>
-                          
-                      </div>
+          <div class="col-md-6">
+                <div class="card">
+                  <div class="card-content">
+                    <div class="card-body">
+                        <form class="form">
+                            <div class="form-body">
+                                <div class="form-group col-md-12">  
+                                  <img *ngIf="!imgTempCat" [src]="categoria.cat_img | image:'categories'" name="cat_img" class="max-100 img-border  pointer" (click)="callUploadImgCat()">
+                                  <img *ngIf="imgTempCat" [src]="imgTempCat" name="cat_img" class="max-100 img-border pointer"  (click)="callUploadImgCat()">
+                                </div>
+                            </div>
+                        </form>
                     </div>
                   </div>
-            </div>
-            
+                </div>
           </div>
-      </div>
     </div>
-  </section>
+  </div>
+</ng-template>

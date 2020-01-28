@@ -51,15 +51,19 @@
                 </div>
               </div>
         </div>
+
+        <div *ngIf="noResults" class="card-content">
+          <div class="card-body">
+              <div  class="card-body servex_nothing_toshow">
+                  <h2><i class="fa fa-frown-o"></i> There's any result to show here budy!</h2>
+                  <button (click)="loadClients()" class="btn servex_primary_btn2"><i class="fa fa-backward"></i> Ok, take me back!</button>
+                </div>
+          </div>
+        </div>
+
         <div *ngIf="!cargando && clientes.length > 0" class="card">
           <div class="card-content">
             <div class="card-body">
-  
-                <div  *ngIf="noResults" class="card-body servex_nothing_toshow">
-                    <h2><i class="fa fa-frown-o"></i> There's any result to show here budy!</h2>
-                    <button (click)="loadClients()" class="btn servex_primary_btn2"><i class="fa fa-backward"></i> Ok, take me back!</button>
-                  </div>
-  
               <table class="table table-responsive-md text-center servex_table_bordered" *ngIf='busqueda === true' id="user_table">
                   <thead class="servex_table_header">
                     <tr>

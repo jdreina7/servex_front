@@ -302,7 +302,7 @@ selectImg( archivo: File ) {
 }
 
 loadClients() {
-  this._clienteService.loadClients()
+  this._clienteService.loadClients2()
     .subscribe((resp: any) => {
       console.log(resp);
       this.clientes = resp.clients;

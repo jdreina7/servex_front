@@ -139,18 +139,57 @@ export class ClientService {
 
   deleteClient( id: string ) {
     const url = URL_API + '/clients/client/' + id;
+    const url2 = URL_API + '/master/deleteByclient/' + id;
 
     return this.http.delete( url )
                     .pipe(
                       map( resp => {
+                        this.http.delete( url )
+                        .pipe(
+                          map( resp2 => {
+                            console.log('Cliente eliminado de master: ' + resp2);
+                          }))
                         swal({
                             type: 'success',
                             title: 'DELETED!',
-                            html: 'El cliente ha sido eliminado de manera permanente!',
+                            html: 'The client has been deleted permantly!',
                           });
                         return true;
                       })
                     );
+  }
+
+  deleteMasterByCategoryClient( idClient: string, idCategory: string ) {
+    const url = URL_API + '/master/client/' + idClient + '/category/' + idCategory;
+    const url1 = URL_API + '/master/deleteByclient/' + idClient + '/category/' + idCategory;
+
+    const idMasterDelete = this.http.get( url1 )
+                              .pipe(
+                                map( (resp2: any) => {
+                                  console.log(resp2.master);
+                                  console.log('ID del master a eliminar: ' + resp2.master._id);
+                                  return resp2.master._id;
+                                })
+                              );
+
+    const url2 = URL_API + '/master/master/' + idMasterDelete;
+
+    this.http.delete( url2 )
+                    .pipe(
+                      map( (resp: any) => {
+                        console.log('Se elimino EL MASTER: ' + resp.master);
+                        return true;
+                      })
+                    );
+
+    return this.http.delete( url )
+                    .pipe(
+                      map( resp => {
+                        console.log('Se elimino la relacion a partir del cliente - catgoria ' + resp);
+                        return true;
+                      })
+                    );
+
   }
 
   activateClient(  cliente: Client  ) {
@@ -222,6 +261,7 @@ export class ClientService {
                       map( (resp: any) => {
                         console.log(resp);
                         // swal('Cliente Creado!', 'Cliente almacenado correctamente', 'success');
+                        swal('Asigned!', 'The category has been asigned correctly to this client', 'success');
                         this.insertRelationInMaster(id, category)
                         .subscribe( (master) => {
                           this.insertMasterInClient(id, master._id)
@@ -534,7 +574,7 @@ export class ClientService {
     return this.http.delete(url)
                     .pipe(
                       map( (resp: any) => {
-                        swal('Relación eliminada!!', 'Cliente - Categoria', 'success');
+                        swal('Deleted!!', 'Client - Category relationship deleted', 'success');
                         return true;
                       } )
                     );
